@@ -1,0 +1,1271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="20dp">
+
+        <TextView
+            android:text="Player 1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/player1_textView"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:elevation="0dp" />
+
+        <Button
+            android:text="FG2M"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg2m_button1"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill" />
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg2m_textView1"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:textAlignment="center"
+            android:layout_rowWeight=".5" />
+
+        <Button
+            android:text="FG2A"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg2a_button1"
+            android:layout_row="0"
+            android:layout_column="2"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg2a_textView1"
+            android:layout_row="1"
+            android:layout_column="2"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="FG3M"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg3m_button1"
+            android:layout_row="0"
+            android:layout_column="3"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg3mm_textView1"
+            android:layout_row="1"
+            android:layout_column="3"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="FG3A"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg3a_button1"
+            android:layout_row="0"
+            android:layout_column="4"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg3a_textView1"
+            android:layout_row="1"
+            android:layout_column="4"
+            android:layout_columnWeight="1"
+            android:textAlignment="center"/>
+
+        <Button
+            android:text="FTM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ftm_button1"
+            android:layout_row="0"
+            android:layout_column="5"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ftm_textView1"
+            android:layout_row="1"
+            android:layout_column="5"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="FTA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fta_button1"
+            android:layout_row="0"
+            android:layout_column="6"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fta_textView1"
+            android:layout_row="1"
+            android:layout_column="6"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="O REB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/oreb_button1"
+            android:layout_row="0"
+            android:layout_column="7"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/orebm_textView1"
+            android:layout_row="1"
+            android:layout_column="7"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="D REB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dreb_button1"
+            android:layout_row="0"
+            android:layout_column="8"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dreb_textView1"
+            android:layout_row="1"
+            android:layout_column="8"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="AST"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ast_button1"
+            android:layout_row="0"
+            android:layout_column="9"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ast_textView1"
+            android:layout_row="1"
+            android:layout_column="9"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="STL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/stl_button1"
+            android:layout_row="0"
+            android:layout_column="10"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/stl_textView1"
+            android:layout_row="1"
+            android:layout_column="10"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="TO"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/to_button1"
+            android:layout_row="0"
+            android:layout_column="11"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/to_textView1"
+            android:layout_row="1"
+            android:layout_column="11"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="CHG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chg_button1"
+            android:layout_row="0"
+            android:layout_column="12"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chgm_textView1"
+            android:layout_row="1"
+            android:layout_column="12"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <TextView
+            android:text="Player 2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/player2_textView"
+            android:layout_row="2"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1" />
+
+        <Button
+            android:text="FG2M"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg2m_button2"
+            android:layout_row="2"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg2m_textView2"
+            android:layout_row="3"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:textAlignment="center"
+            android:layout_rowWeight=".5" />
+
+        <Button
+            android:text="FG2A"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg2a_button2"
+            android:layout_row="2"
+            android:layout_column="2"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg2a_textView2"
+            android:layout_row="3"
+            android:layout_column="2"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="FG3M"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg3m_button2"
+            android:layout_row="2"
+            android:layout_column="3"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg3mm_textView2"
+            android:layout_row="3"
+            android:layout_column="3"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="FG3A"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg3a_button2"
+            android:layout_row="2"
+            android:layout_column="4"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg3a_textView2"
+            android:layout_row="3"
+            android:layout_column="4"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="FTM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ftm_button2"
+            android:layout_row="2"
+            android:layout_column="5"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ftm_textView2"
+            android:layout_row="3"
+            android:layout_column="5"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="FTA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fta_button2"
+            android:layout_row="2"
+            android:layout_column="6"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fta_textView2"
+            android:layout_row="3"
+            android:layout_column="6"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="O REB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/oreb_button2"
+            android:layout_row="2"
+            android:layout_column="7"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/orebm_textView2"
+            android:layout_row="3"
+            android:layout_column="7"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="D REB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dreb_button2"
+            android:layout_row="2"
+            android:layout_column="8"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dreb_textView2"
+            android:layout_row="3"
+            android:layout_column="8"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="AST"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ast_button2"
+            android:layout_row="2"
+            android:layout_column="9"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ast_textView2"
+            android:layout_row="3"
+            android:layout_column="9"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="STL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/stl_button2"
+            android:layout_row="2"
+            android:layout_column="10"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/stl_textView2"
+            android:layout_row="3"
+            android:layout_column="10"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="TO"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/to_button2"
+            android:layout_row="2"
+            android:layout_column="11"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/to_textView2"
+            android:layout_row="3"
+            android:layout_column="11"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="CHG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chg_button2"
+            android:layout_row="2"
+            android:layout_column="12"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chgm_textView2"
+            android:layout_row="3"
+            android:layout_column="12"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <TextView
+            android:text="Player 3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/player3_textView"
+            android:layout_row="4"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1" />
+
+        <Button
+            android:text="FG2M"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg2m_button3"
+            android:layout_row="4"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg2m_textView3"
+            android:layout_row="5"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:textAlignment="center"
+            android:layout_rowWeight=".5" />
+
+        <Button
+            android:text="FG2A"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg2a_button3"
+            android:layout_row="4"
+            android:layout_column="2"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg2a_textView3"
+            android:layout_row="5"
+            android:layout_column="2"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="FG3M"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg3m_button3"
+            android:layout_row="4"
+            android:layout_column="3"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg3mm_textView3"
+            android:layout_row="5"
+            android:layout_column="3"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="FG3A"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg3a_button3"
+            android:layout_row="4"
+            android:layout_column="4"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg3a_textView3"
+            android:layout_row="5"
+            android:layout_column="4"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="FTM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ftm_button3"
+            android:layout_row="4"
+            android:layout_column="5"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ftm_textView3"
+            android:layout_row="5"
+            android:layout_column="5"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="FTA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fta_button3"
+            android:layout_row="4"
+            android:layout_column="6"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fta_textView3"
+            android:layout_row="5"
+            android:layout_column="6"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="O REB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/oreb_button3"
+            android:layout_row="4"
+            android:layout_column="7"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/orebm_textView3"
+            android:layout_row="5"
+            android:layout_column="7"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="D REB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dreb_button3"
+            android:layout_row="4"
+            android:layout_column="8"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dreb_textView3"
+            android:layout_row="5"
+            android:layout_column="8"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="AST"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ast_button3"
+            android:layout_row="4"
+            android:layout_column="9"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ast_textView3"
+            android:layout_row="5"
+            android:layout_column="9"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="STL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/stl_button3"
+            android:layout_row="4"
+            android:layout_column="10"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/stl_textView3"
+            android:layout_row="5"
+            android:layout_column="10"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="TO"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/to_button3"
+            android:layout_row="4"
+            android:layout_column="11"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/to_textView3"
+            android:layout_row="5"
+            android:layout_column="11"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="CHG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chg_button3"
+            android:layout_row="4"
+            android:layout_column="12"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chgm_textView3"
+            android:layout_row="5"
+            android:layout_column="12"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <TextView
+            android:text="Player 4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/player4_textView"
+            android:layout_row="6"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1" />
+
+        <Button
+            android:text="FG2M"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg2m_button4"
+            android:layout_row="6"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg2m_textView4"
+            android:layout_row="7"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:textAlignment="center"
+            android:layout_rowWeight=".5" />
+
+        <Button
+            android:text="FG2A"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg2a_button4"
+            android:layout_row="6"
+            android:layout_column="2"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg2a_textView4"
+            android:layout_row="7"
+            android:layout_column="2"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="FG3M"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg3m_button4"
+            android:layout_row="6"
+            android:layout_column="3"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg3mm_textView4"
+            android:layout_row="7"
+            android:layout_column="3"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="FG3A"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg3a_button4"
+            android:layout_row="6"
+            android:layout_column="4"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg3a_textView4"
+            android:layout_row="7"
+            android:layout_column="4"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="FTM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ftm_button4"
+            android:layout_row="6"
+            android:layout_column="5"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ftm_textView4"
+            android:layout_row="7"
+            android:layout_column="5"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="FTA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fta_button4"
+            android:layout_row="6"
+            android:layout_column="6"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fta_textView4"
+            android:layout_row="7"
+            android:layout_column="6"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="O REB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/oreb_button4"
+            android:layout_row="6"
+            android:layout_column="7"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/orebm_textView4"
+            android:layout_row="7"
+            android:layout_column="7"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="D REB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dreb_button4"
+            android:layout_row="6"
+            android:layout_column="8"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dreb_textView4"
+            android:layout_row="7"
+            android:layout_column="8"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="AST"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ast_button4"
+            android:layout_row="6"
+            android:layout_column="9"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ast_textView4"
+            android:layout_row="7"
+            android:layout_column="9"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="STL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/stl_button4"
+            android:layout_row="6"
+            android:layout_column="10"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/stl_textView4"
+            android:layout_row="7"
+            android:layout_column="10"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="TO"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/to_button4"
+            android:layout_row="6"
+            android:layout_column="11"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/to_textView4"
+            android:layout_row="7"
+            android:layout_column="11"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="CHG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chg_button4"
+            android:layout_row="6"
+            android:layout_column="12"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chgm_textView4"
+            android:layout_row="7"
+            android:layout_column="12"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <TextView
+            android:text="Player 5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/player5_textView"
+            android:layout_row="8"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1" />
+
+        <Button
+            android:text="FG2M"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg2m_button5"
+            android:layout_row="8"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg2m_textView5"
+            android:layout_row="9"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:textAlignment="center"
+            android:layout_rowWeight=".5" />
+
+        <Button
+            android:text="FG2A"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg2a_button5"
+            android:layout_row="8"
+            android:layout_column="2"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg2a_textView5"
+            android:layout_row="9"
+            android:layout_column="2"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="FG3M"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg3m_button5"
+            android:layout_row="8"
+            android:layout_column="3"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg3mm_textView5"
+            android:layout_row="9"
+            android:layout_column="3"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="FG3A"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg3a_button5"
+            android:layout_row="8"
+            android:layout_column="4"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fg3a_textView5"
+            android:layout_row="9"
+            android:layout_column="4"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="FTM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ftm_button5"
+            android:layout_row="8"
+            android:layout_column="5"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ftm_textView5"
+            android:layout_row="9"
+            android:layout_column="5"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="FTA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fta_button5"
+            android:layout_row="8"
+            android:layout_column="6"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fta_textView5"
+            android:layout_row="9"
+            android:layout_column="6"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="O REB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/oreb_button5"
+            android:layout_row="8"
+            android:layout_column="7"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/orebm_textView51"
+            android:layout_row="9"
+            android:layout_column="7"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="D REB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dreb_button5"
+            android:layout_row="8"
+            android:layout_column="8"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dreb_textView5"
+            android:layout_row="9"
+            android:layout_column="8"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="AST"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ast_button5"
+            android:layout_row="8"
+            android:layout_column="9"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ast_textView5"
+            android:layout_row="9"
+            android:layout_column="9"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="STL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/stl_button5"
+            android:layout_row="8"
+            android:layout_column="10"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/stl_textView5"
+            android:layout_row="9"
+            android:layout_column="10"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="TO"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/to_button5"
+            android:layout_row="8"
+            android:layout_column="11"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/to_textView5"
+            android:layout_row="9"
+            android:layout_column="11"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+
+        <Button
+            android:text="CHG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chg_button5"
+            android:layout_row="8"
+            android:layout_column="12"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"/>
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chgm_textView5"
+            android:layout_row="9"
+            android:layout_column="12"
+            android:layout_columnWeight="1"
+            android:textAlignment="center" />
+    </GridLayout>
+</LinearLayout>
