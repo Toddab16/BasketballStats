@@ -24,11 +24,25 @@ public class MainActivity extends AppCompatActivity {
 
         dataSource.open();
 
-        List<Comment> comments = dataSource.getAllComments();
+        List<GameModel> games = dataSource.getAllGames();
+        List<PlayerModel> players = dataSource.getAllPlayers();
+        List<StatModel> stats = dataSource.getAllStats();
 
         /*
-        ArrayAdapter<Comment> adapter = new ArrayAdapter<Comment>(this,
-                R.layout.list_textview, comments);
+        ArrayAdapter<GameModel> adapter = new ArrayAdapter<GameModel>(this,
+                R.layout.textview_nameofGameView, comments);
+        setListAdapter(adapter);
+        */
+
+        /*
+        ArrayAdapter<PlayerModel> adapter = new ArrayAdapter<PlayerModel>(this,
+                R.layout.textview_nameofPlayerView, comments);
+        setListAdapter(adapter);
+        */
+
+        /*
+        ArrayAdapter<StatModel> adapter = new ArrayAdapter<StatModel>(this,
+                R.layout.textview_nameofStatView, comments);
         setListAdapter(adapter);
         */
     }
