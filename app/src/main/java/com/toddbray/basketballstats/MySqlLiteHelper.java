@@ -83,8 +83,8 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
         db.execSQL(sql);
 
         sql = "CREATE TABLE " + STAT_TABLE + " (" +
-                StatColumns.game_id + " INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , " +
-                StatColumns.player_id + " INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL , " +
+                StatColumns.game_id + " INTEGER NOT NULL , " +
+                StatColumns.player_id + " INTEGER NOT NULL , " +
                 StatColumns.shot + " INTEGER NOT NULL , " +
                 StatColumns.o_rebound + " INTEGER NOT NULL , " +
                 StatColumns.d_rebound + " INTEGER NOT NULL , " +
@@ -93,7 +93,8 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
                 StatColumns.turnover + " INTEGER NOT NULL , " +
                 StatColumns.two_pointer + " INTEGER NOT NULL , " +
                 StatColumns.three_pointer + " INTEGER NOT NULL , " +
-                StatColumns.dunk + " INTEGER NOT NULL )";
+                StatColumns.dunk + " INTEGER NOT NULL , " +
+                "PRIMARY KEY ( " + StatColumns.game_id + " , " + StatColumns.player_id + " ))";
         db.execSQL(sql);
     }
 

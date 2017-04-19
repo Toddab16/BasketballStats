@@ -197,7 +197,7 @@ public class DbDataSource {
     public List<StatModel> getAllStats() {
         List<StatModel> stats = new ArrayList<>();
 
-        String columns[] = MySqlLiteHelper.GameColumns.names();
+        String columns[] = MySqlLiteHelper.StatColumns.names();
 
         Cursor cursor = database.query(MySqlLiteHelper.STAT_TABLE,
                 columns,
