@@ -11,7 +11,7 @@
     tools:context="com.toddbray.basketballstats.MainActivity">
 
     <TextView
-        android:text="B&T Basketball Stats"
+        android:text="B&amp;T Basketball Stats"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
