@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -41,6 +42,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         List<GameModel> games = dataSource.getAllGames();
         List<PlayerModel> players = dataSource.getAllPlayers();
         List<StatModel> stats = dataSource.getAllStats();
+
+        Date dateTest = new Date();
+
+        GameModel game = new GameModel();
+        game.setBoys_jv(dateTest);
+        game.setBoys_v(dateTest);
+        game.setGirls_jv(dateTest);
+        game.setGirls_v(dateTest);
+        game.setGame_date(dateTest);
+        game.setLocation("Clarksville");
+        game.setOpp_name("Broncos");
+        game.setVenue("Arena");
+
+        game = dataSource.createGame(game);
+
+        /*
+        PlayerModel player = new PlayerModel();
+        player.setFirst_name("Brad");
+        player.setLast_name("Jordan");
+        player.setNumber(18);
+        player.setYear("Sophomore");
+
+        player = dataSource.createPlayer(player);
+        */
 
         /*
         ArrayAdapter<GameModel> adapter = new ArrayAdapter<GameModel>(this,

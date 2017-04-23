@@ -56,6 +56,10 @@ public class DbDataSource {
         return gameModel;
     }
 
+    public void removeGame(int id) {
+        database.delete(MySqlLiteHelper.STAT_TABLE, (MySqlLiteHelper.StatColumns.game_id.toString() + "=?"), new String[]{Integer.toString(id)});
+        database.delete(MySqlLiteHelper.GAME_TABLE, (MySqlLiteHelper.GameColumns.game_id.toString() + "=?"), new String[]{Integer.toString(id)});
+    }
 
     public List<GameModel> getAllGames() {
         List<GameModel> games = new ArrayList<>();
@@ -130,6 +134,11 @@ public class DbDataSource {
         return playerModel;
     }
 
+    public void removePlayer(int id) {
+        database.delete(MySqlLiteHelper.STAT_TABLE, (MySqlLiteHelper.StatColumns.player_id.toString() + "=?"), new String[]{Integer.toString(id)});
+        database.delete(MySqlLiteHelper.PLAYER_TABLE, (MySqlLiteHelper.PlayerColumns.player_id.toString() + "=?"), new String[]{Integer.toString(id)});
+    }
+
     public List<PlayerModel> getAllPlayers() {
         List<PlayerModel> players = new ArrayList<>();
 
@@ -196,6 +205,11 @@ public class DbDataSource {
                 null, contentValues);
     }
 
+    public void removeStat(int g_id, int p_id) {
+        database.execSQL("DELETE FROM " + MySqlLiteHelper.STAT_TABLE +
+                " WHERE " + MySqlLiteHelper.StatColumns.game_id.toString() + " = '" + g_id + "'" +
+                " AND " + MySqlLiteHelper.StatColumns.player_id.toString() + " = '" + g_id + "'" );
+    }
 
     public List<StatModel> getAllStats() {
         List<StatModel> stats = new ArrayList<>();

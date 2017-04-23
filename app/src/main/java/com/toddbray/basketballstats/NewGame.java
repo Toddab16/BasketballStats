@@ -54,6 +54,10 @@ public class NewGame extends AppCompatActivity {
                 String bv_time = et.getText().toString();
 
 
+                Date dateTest = new Date();
+
+                dateTest = db.GetDate(date);
+
                 GameModel newGame = new GameModel();
                 newGame.setGame_date(db.GetDate(date));
                 newGame.setOpp_name(opp);
