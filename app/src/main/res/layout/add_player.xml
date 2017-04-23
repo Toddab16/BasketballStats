@@ -39,30 +39,31 @@
         android:text="Name"
         android:ems="10"
         android:id="@+id/fname_editText" />
+    <RadioGroup android:id="@+id/player_class_group" android:layout_width="fill_parent" android:layout_height="wrap_content" >
+        <RadioButton
+            android:text="Freshman"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/fr_radioButton" />
 
-    <RadioButton
-        android:text="Freshman"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/fr_radioButton" />
+        <RadioButton
+            android:text="Sophomore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/so_radioButton" />
 
-    <RadioButton
-        android:text="Sophomore"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/so_radioButton" />
+        <RadioButton
+            android:text="Junior"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/jr_radioButton" />
 
-    <RadioButton
-        android:text="Junior"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/jr_radioButton" />
-
-    <RadioButton
-        android:text="Senior"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/sr_radioButton" />
+        <RadioButton
+            android:text="Senior"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sr_radioButton" />
+    </RadioGroup>
 
     <TextView
         android:text="Number"
