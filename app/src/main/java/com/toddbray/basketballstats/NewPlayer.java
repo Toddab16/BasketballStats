@@ -17,6 +17,7 @@ public class NewPlayer extends AppCompatActivity {
 
     DbDataSource db = new DbDataSource(this);
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,12 +40,15 @@ public class NewPlayer extends AppCompatActivity {
                 int number = Integer.parseInt(et.getText().toString());
 
                 PlayerModel newPlayer = new PlayerModel();
+
                 newPlayer.setFirst_name(fname);
                 newPlayer.setLast_name(lname);
                 newPlayer.setNumber(number);
                 newPlayer.setYear(grade);
 
+                db.open();
                 db.createPlayer(newPlayer);
+                db.close();
 
             }
         });

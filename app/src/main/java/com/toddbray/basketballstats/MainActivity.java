@@ -21,6 +21,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dataSource = new DbDataSource(getApplicationContext());
         Button newPlayer = (Button) findViewById(R.id.add_player_button);
         newPlayer.setOnClickListener(this);
+
+        Button viewRoster = (Button) findViewById(R.id.roster_view_button);
+        viewRoster.setOnClickListener(this);
     }
 
     @Override
@@ -62,6 +65,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.add_player_button:
                 Intent intent = new Intent (this, NewPlayer.class);
+                startActivity(intent);
+                break;
+            case R.id.roster_view_button:
+                intent = new Intent (this, ViewPlayer.class);
                 startActivity(intent);
                 break;
 

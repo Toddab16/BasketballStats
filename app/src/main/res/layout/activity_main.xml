@@ -48,4 +48,12 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="28dp"
         android:id="@+id/game_stats_button" />
+
+    <Button
+        android:text="View Roster"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignEnd="@+id/add_game_button"
+        android:id="@+id/roster_view_button" />
 </RelativeLayout>
