@@ -23,7 +23,6 @@ public class ViewPlayer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_players);
 
-        String html = "<h2>Current Roster</h2><table>";
         db.open();
         List<PlayerModel> players = db.getAllPlayers();
 

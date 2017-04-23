@@ -44,7 +44,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/location_textView" />
-
+    <RadioGroup
+        android:id="@+id/location_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     <RadioButton
         android:text="Home"
         android:layout_width="match_parent"
@@ -56,7 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/away_radioButton" />
-
+    </RadioGroup>
     <TextView
         android:text="Location"
         android:layout_width="match_parent"
@@ -152,7 +155,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="time"
                 android:ems="10"
-                android:id="@+id/gvar_time_editText" />
+                android:id="@+id/bvar_time_editText" />
 
         </TableRow>
 

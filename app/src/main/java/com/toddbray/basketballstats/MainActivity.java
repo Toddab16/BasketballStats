@@ -24,6 +24,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button viewRoster = (Button) findViewById(R.id.roster_view_button);
         viewRoster.setOnClickListener(this);
+
+        Button newGame = (Button) findViewById(R.id.add_game_button);
+        newGame.setOnClickListener(this);
+
+        Button viewSchedule = (Button) findViewById(R.id.schedule_view_button);
+        viewSchedule.setOnClickListener(this);
     }
 
     @Override
@@ -67,8 +73,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent = new Intent (this, NewPlayer.class);
                 startActivity(intent);
                 break;
+            case R.id.add_game_button:
+                intent = new Intent (this, NewGame.class);
+                startActivity(intent);
+                break;
             case R.id.roster_view_button:
                 intent = new Intent (this, ViewPlayer.class);
+                startActivity(intent);
+                break;
+            case R.id.schedule_view_button:
+                intent = new Intent (this, ViewSchedule.class);
                 startActivity(intent);
                 break;
 

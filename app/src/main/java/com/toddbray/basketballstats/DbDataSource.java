@@ -266,7 +266,7 @@ public class DbDataSource {
         return statModel;
     }
 
-    private Date GetDate(String d) {
+    public Date GetDate(String d) {
         DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy", Locale.ENGLISH);
         GameModel testModel = new GameModel();
 

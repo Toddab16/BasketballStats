@@ -16,8 +16,11 @@
         </activity>
         <activity android:name=".NewPlayer">
         </activity>
-
+        <activity android:name=".NewGame">
+        </activity>
         <activity android:name=".ViewPlayer">
+        </activity>
+        <activity android:name=".ViewSchedule">
         </activity>
 
     </application>
