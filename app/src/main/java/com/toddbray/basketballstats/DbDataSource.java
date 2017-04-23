@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -265,7 +266,7 @@ public class DbDataSource {
         return statModel;
     }
 
-    private Date GetDate(String d) {
+    public Date GetDate(String d) {
         DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy", Locale.ENGLISH);
         GameModel testModel = new GameModel();
 

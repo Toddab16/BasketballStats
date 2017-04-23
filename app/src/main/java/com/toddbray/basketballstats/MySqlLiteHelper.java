@@ -3,6 +3,7 @@ package com.toddbray.basketballstats;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by Brad on 4/14/2017.
@@ -62,7 +63,7 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        Log.i("TEST..............", "Database Table Created!");
         String sql = "CREATE TABLE " + GAME_TABLE + " (" +
                 GameColumns.game_id + " INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , " +
                 GameColumns.game_date + " TEXT NOT NULL , " +
