@@ -43,7 +43,8 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
     }
 
     public enum StatColumns {
-        game_id, player_id, shot, o_rebound, d_rebound, assist, steal, turnover, two_pointer, three_pointer, dunk;
+        game_id, player_id, o_rebound, d_rebound, assist, steal, turnover, two_pointer, three_pointer,
+        two_pointer_made, three_pointer_made, free_throw, free_throw_made, charge;
 
         public static String[] names() {
             StatColumns[] v = values();
@@ -85,15 +86,18 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
         sql = "CREATE TABLE " + STAT_TABLE + " (" +
                 StatColumns.game_id + " INTEGER NOT NULL , " +
                 StatColumns.player_id + " INTEGER NOT NULL , " +
-                StatColumns.shot + " INTEGER NOT NULL , " +
                 StatColumns.o_rebound + " INTEGER NOT NULL , " +
                 StatColumns.d_rebound + " INTEGER NOT NULL , " +
                 StatColumns.assist + " INTEGER NOT NULL , " +
                 StatColumns.steal + " INTEGER NOT NULL , " +
                 StatColumns.turnover + " INTEGER NOT NULL , " +
                 StatColumns.two_pointer + " INTEGER NOT NULL , " +
+                StatColumns.two_pointer_made + " INTEGER NOT NULL , " +
                 StatColumns.three_pointer + " INTEGER NOT NULL , " +
-                StatColumns.dunk + " INTEGER NOT NULL , " +
+                StatColumns.three_pointer_made + " INTEGER NOT NULL , " +
+                StatColumns.free_throw + " INTEGER NOT NULL , " +
+                StatColumns.free_throw_made + " INTEGER NOT NULL , " +
+                StatColumns.charge + " INTEGER NOT NULL , " +
                 "PRIMARY KEY ( " + StatColumns.game_id + " , " + StatColumns.player_id + " ))";
         db.execSQL(sql);
     }

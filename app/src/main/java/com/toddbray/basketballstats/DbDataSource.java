@@ -129,7 +129,6 @@ public class DbDataSource {
         return playerModel;
     }
 
-
     public List<PlayerModel> getAllPlayers() {
         List<PlayerModel> players = new ArrayList<>();
 
@@ -178,15 +177,18 @@ public class DbDataSource {
 
         contentValues.put(MySqlLiteHelper.StatColumns.game_id.toString(), statModel.getGame_id());
         contentValues.put(MySqlLiteHelper.StatColumns.player_id.toString(), statModel.getPlayer_id());
-        contentValues.put(MySqlLiteHelper.StatColumns.shot.toString(), statModel.getShot());
         contentValues.put(MySqlLiteHelper.StatColumns.steal.toString(), statModel.getSteal());
         contentValues.put(MySqlLiteHelper.StatColumns.d_rebound.toString(), statModel.getD_rebound());
         contentValues.put(MySqlLiteHelper.StatColumns.o_rebound.toString(), statModel.getO_rebound());
         contentValues.put(MySqlLiteHelper.StatColumns.assist.toString(), statModel.getAssist());
         contentValues.put(MySqlLiteHelper.StatColumns.turnover.toString(), statModel.getTurnover());
         contentValues.put(MySqlLiteHelper.StatColumns.two_pointer.toString(), statModel.getTwo_pointer());
+        contentValues.put(MySqlLiteHelper.StatColumns.two_pointer_made.toString(), statModel.getTwo_pointer_made());
         contentValues.put(MySqlLiteHelper.StatColumns.three_pointer.toString(), statModel.getThree_pointer());
-        contentValues.put(MySqlLiteHelper.StatColumns.dunk.toString(), statModel.getDunk());
+        contentValues.put(MySqlLiteHelper.StatColumns.three_pointer_made.toString(), statModel.getThree_pointer_made());
+        contentValues.put(MySqlLiteHelper.StatColumns.free_throw.toString(), statModel.getFree_throw());
+        contentValues.put(MySqlLiteHelper.StatColumns.free_throw_made.toString(), statModel.getFree_throw_made());
+        contentValues.put(MySqlLiteHelper.StatColumns.charge.toString(), statModel.getCharge());
 
         // insert into comment (comment, date_created) values ('hi', '12:00 AM')
         database.insert(MySqlLiteHelper.STAT_TABLE,
@@ -230,17 +232,14 @@ public class DbDataSource {
         num = cursor.getInt(MySqlLiteHelper.StatColumns.steal.ordinal());
         statModel.setSteal(num);
 
-        num = cursor.getInt(MySqlLiteHelper.StatColumns.shot.ordinal());
-        statModel.setShot(num);
-
         num = cursor.getInt(MySqlLiteHelper.StatColumns.three_pointer.ordinal());
         statModel.setThree_pointer(num);
 
+        num = cursor.getInt(MySqlLiteHelper.StatColumns.three_pointer_made.ordinal());
+        statModel.setThree_pointer_made(num);
+
         num = cursor.getInt(MySqlLiteHelper.StatColumns.assist.ordinal());
         statModel.setAssist(num);
-
-        num = cursor.getInt(MySqlLiteHelper.StatColumns.dunk.ordinal());
-        statModel.setDunk(num);
 
         num = cursor.getInt(MySqlLiteHelper.StatColumns.o_rebound.ordinal());
         statModel.setO_rebound(num);
@@ -250,6 +249,18 @@ public class DbDataSource {
 
         num = cursor.getInt(MySqlLiteHelper.StatColumns.two_pointer.ordinal());
         statModel.setTwo_pointer(num);
+
+        num = cursor.getInt(MySqlLiteHelper.StatColumns.two_pointer_made.ordinal());
+        statModel.setTwo_pointer_made(num);
+
+        num = cursor.getInt(MySqlLiteHelper.StatColumns.free_throw.ordinal());
+        statModel.setFree_throw(num);
+
+        num = cursor.getInt(MySqlLiteHelper.StatColumns.free_throw_made.ordinal());
+        statModel.setFree_throw_made(num);
+
+        num = cursor.getInt(MySqlLiteHelper.StatColumns.charge.ordinal());
+        statModel.setCharge(num);
 
         return statModel;
     }

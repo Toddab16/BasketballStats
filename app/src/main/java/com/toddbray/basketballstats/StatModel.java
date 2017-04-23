@@ -6,7 +6,48 @@ package com.toddbray.basketballstats;
 
 public class StatModel {
 
-    private int game_id, player_id, shot, o_rebound, d_rebound, assist, steal, turnover, two_pointer, three_pointer, dunk;
+    private int game_id, player_id, o_rebound, d_rebound, assist, steal, turnover, two_pointer,
+            three_pointer, two_pointer_made, three_pointer_made, free_throw, free_throw_made, charge;
+
+    public int getTwo_pointer_made() {
+        return two_pointer_made;
+    }
+
+    public void setTwo_pointer_made(int two_pointer_made) {
+        this.two_pointer_made = two_pointer_made;
+    }
+
+    public int getThree_pointer_made() {
+        return three_pointer_made;
+    }
+
+    public void setThree_pointer_made(int three_pointer_made) {
+        this.three_pointer_made = three_pointer_made;
+    }
+
+    public int getFree_throw() {
+        return free_throw;
+    }
+
+    public void setFree_throw(int free_throws) {
+        this.free_throw = free_throws;
+    }
+
+    public int getFree_throw_made() {
+        return free_throw_made;
+    }
+
+    public void setFree_throw_made(int free_throws_made) {
+        this.free_throw_made = free_throws_made;
+    }
+
+    public int getCharge() {
+        return charge;
+    }
+
+    public void setCharge(int charges) {
+        this.charge = charges;
+    }
 
     public StatModel() {
 
@@ -26,14 +67,6 @@ public class StatModel {
 
     public void setPlayer_id(int player_id) {
         this.player_id = player_id;
-    }
-
-    public int getShot() {
-        return shot;
-    }
-
-    public void setShot(int shot) {
-        this.shot = shot;
     }
 
     public int getO_rebound() {
@@ -90,13 +123,5 @@ public class StatModel {
 
     public void setThree_pointer(int three_pointer) {
         this.three_pointer = three_pointer;
-    }
-
-    public int getDunk() {
-        return dunk;
-    }
-
-    public void setDunk(int dunk) {
-        this.dunk = dunk;
     }
 }
