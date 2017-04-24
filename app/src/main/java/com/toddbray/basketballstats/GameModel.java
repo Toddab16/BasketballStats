@@ -1,5 +1,7 @@
 package com.toddbray.basketballstats;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -92,9 +94,11 @@ public class GameModel {
 
     @Override
     public String toString() {
-        String tmp = opp_name;
-        if (tmp.length() > 20) {
-            tmp = tmp.substring(0, 20) + "...";
+        DateFormat df = new SimpleDateFormat("MM/dd");
+        String tmp = df.format(game_date);
+        tmp += "   " + opp_name;
+        if (tmp.length() > 40) {
+            tmp = tmp.substring(0, 40) + "...";
         }
         return tmp;
     }
