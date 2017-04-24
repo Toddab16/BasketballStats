@@ -13,19 +13,6 @@
         android:textColor="@android:color/black" />
 
     <TextView
-        android:text="Date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/date_textView" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="date"
-        android:ems="10"
-        android:id="@+id/date_editText" />
-
-    <TextView
         android:text="Opponent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -73,97 +60,98 @@
         android:ems="10"
         android:id="@+id/location_editText" />
 
-    <TextView
-        android:text="Game Times"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/times_textView" />
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp">
 
-    <TableLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:elevation="1dp">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            <DatePicker
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:id="@+id/datePicker" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            android:layout_weight="1">
 
             <TextView
-                android:text="Girls JV : "
-                android:layout_width="wrap_content"
+                android:text="Girls' JV"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/gjv_time_textView" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="time"
                 android:ems="10"
                 android:id="@+id/gjv_time_editText" />
 
-        </TableRow>
+            <TextView
+                android:text="Girls' Varsity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/gv_time_textView" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="time"
+                android:ems="10"
+                android:id="@+id/gv_time_editText" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="250dp"
+            android:layout_weight="1">
 
             <TextView
-                android:text="Boys JV : "
-                android:layout_width="wrap_content"
+                android:text="Boys' JV"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/bjv_time_textView" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="time"
                 android:ems="10"
                 android:id="@+id/bjv_time_editText" />
 
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
             <TextView
-                android:text="Girls Varsity : "
-                android:layout_width="wrap_content"
+                android:text="Boys' Varsity"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/gvar_time_textView" />
+                android:id="@+id/bv_time_textView" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="time"
                 android:ems="10"
-                android:id="@+id/gvar_time_editText" />
+                android:id="@+id/bv_time_editText" />
 
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <TextView
-                android:text="Boys Varsity : "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/bvar_time_textView" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="time"
-                android:ems="10"
-                android:id="@+id/bvar_time_editText" />
-
-        </TableRow>
-
-    </TableLayout>
+        </LinearLayout>
+    </LinearLayout>
 
     <Button
         android:text="Save"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="53dp"
         android:id="@+id/game_save_button" />
 </LinearLayout>
