@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -23,13 +21,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button newPlayer = (Button) findViewById(R.id.add_player_button);
         newPlayer.setOnClickListener(this);
 
-        Button viewRoster = (Button) findViewById(R.id.roster_view_button);
+        Button viewRoster = (Button) findViewById(R.id.player_stats_button);
         viewRoster.setOnClickListener(this);
 
         Button newGame = (Button) findViewById(R.id.add_game_button);
         newGame.setOnClickListener(this);
 
-        Button viewSchedule = (Button) findViewById(R.id.schedule_view_button);
+        Button viewSchedule = (Button) findViewById(R.id.game_stats_button);
         viewSchedule.setOnClickListener(this);
 
         Button gameStats = (Button) findViewById(R.id.game_stats_button);
@@ -81,15 +79,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent = new Intent (this, NewGame.class);
                 startActivity(intent);
                 break;
-            case R.id.roster_view_button:
+            case R.id.player_stats_button:
                 intent = new Intent (this, ViewPlayer.class);
                 startActivity(intent);
                 break;
-            case R.id.schedule_view_button:
+            case R.id.view_schedule_button:
                 intent = new Intent (this, ViewSchedule.class);
                 startActivity(intent);
                 break;
-            case R.id.game_stats_button:
+            case R.id.start_game_button:
                 intent = new Intent (this, GameList.class);
                 startActivity(intent);
                 break;

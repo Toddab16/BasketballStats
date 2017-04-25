@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="20dp">
 
     <TextView
         android:text="Add Game"
@@ -10,55 +11,73 @@
         android:id="@+id/title_textView"
         android:textAlignment="center"
         android:textSize="30sp"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="20dp" />
 
     <TextView
         android:text="Opponent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/opponent_textView" />
+        android:id="@+id/opponent_textView"
+        android:textColor="@android:color/black" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Name"
         android:ems="10"
-        android:id="@+id/opponent_editText" />
+        android:id="@+id/opponent_editText"
+        android:layout_marginBottom="10dp" />
 
     <TextView
         android:text="Location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/location_textView" />
-    <RadioGroup
-        android:id="@+id/location_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    <RadioButton
-        android:text="Home"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/home_radioButton" />
-
-    <RadioButton
-        android:text="Away"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/away_radioButton" />
-    </RadioGroup>
-    <TextView
-        android:text="Location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/loc_textView" />
+        android:id="@+id/loc_textView"
+        android:textColor="@android:color/black" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
         android:ems="10"
-        android:id="@+id/location_editText" />
+        android:id="@+id/location_editText"
+        android:layout_marginBottom="10dp" />
+
+    <TextView
+        android:text="Location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/location_textView"
+        android:textColor="@android:color/black" />
+    <RadioGroup
+        android:id="@+id/location_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+            android:text="Home"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/home_radioButton"
+                android:layout_weight="1"
+                android:paddingRight="20dp" />
+
+            <RadioButton
+            android:text="Away"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/away_radioButton"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+    </RadioGroup>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -76,8 +95,9 @@
 
             <DatePicker
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:id="@+id/datePicker" />
+                android:layout_height="wrap_content"
+                android:id="@+id/datePicker"
+                android:headerBackground="@android:color/holo_blue_bright" />
         </LinearLayout>
 
         <LinearLayout
@@ -90,7 +110,8 @@
                 android:text="Girls' JV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/gjv_time_textView" />
+                android:id="@+id/gjv_time_textView"
+                android:textColor="@android:color/black" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -103,7 +124,8 @@
                 android:text="Girls' Varsity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/gv_time_textView" />
+                android:id="@+id/gv_time_textView"
+                android:textColor="@android:color/black" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -124,7 +146,8 @@
                 android:text="Boys' JV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/bjv_time_textView" />
+                android:id="@+id/bjv_time_textView"
+                android:textColor="@android:color/black" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -137,7 +160,8 @@
                 android:text="Boys' Varsity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/bv_time_textView" />
+                android:id="@+id/bv_time_textView"
+                android:textColor="@android:color/black" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -150,8 +174,10 @@
     </LinearLayout>
 
     <Button
-        android:text="Save"
+        android:text="SAVE GAME"
         android:layout_width="match_parent"
-        android:layout_height="53dp"
-        android:id="@+id/game_save_button" />
+        android:layout_height="wrap_content"
+        android:id="@+id/game_save_button"
+        android:textSize="24sp"
+        android:layout_marginTop="20dp" />
 </LinearLayout>
