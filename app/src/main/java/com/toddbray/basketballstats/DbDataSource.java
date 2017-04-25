@@ -208,7 +208,7 @@ public class DbDataSource {
     public void removeStat(int g_id, int p_id) {
         database.execSQL("DELETE FROM " + MySqlLiteHelper.STAT_TABLE +
                 " WHERE " + MySqlLiteHelper.StatColumns.game_id.toString() + " = '" + g_id + "'" +
-                " AND " + MySqlLiteHelper.StatColumns.player_id.toString() + " = '" + g_id + "'" );
+                " AND " + MySqlLiteHelper.StatColumns.player_id.toString() + " = '" + p_id + "'" );
     }
 
     public List<StatModel> getAllStats() {
