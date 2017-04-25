@@ -38,6 +38,7 @@ public class DbDataSource {
     public GameModel createGame(GameModel gameModel) {
         ContentValues contentValues = new ContentValues();
 
+        contentValues.put(MySqlLiteHelper.GameColumns.season_id.toString(), gameModel.getSeason_id());
         contentValues.put(MySqlLiteHelper.GameColumns.game_date.toString(), gameModel.getGame_date().toString());
         contentValues.put(MySqlLiteHelper.GameColumns.opp_name.toString(), gameModel.getOpp_name().toString());
         contentValues.put(MySqlLiteHelper.GameColumns.location.toString(), gameModel.getLocation().toString());
@@ -87,6 +88,9 @@ public class DbDataSource {
         // Build Integers
         int num = cursor.getInt(MySqlLiteHelper.GameColumns.game_id.ordinal());
         gameModel.setGame_id(num);
+
+        num = cursor.getInt(MySqlLiteHelper.GameColumns.season_id.ordinal());
+        gameModel.setSeason_id(num);
 
         // Build Strings
         String s = cursor.getString(MySqlLiteHelper.GameColumns.opp_name.ordinal());
@@ -278,6 +282,59 @@ public class DbDataSource {
         statModel.setCharge(num);
 
         return statModel;
+    }
+
+    public SeasonModel createSeason(SeasonModel seasonModel) {
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(MySqlLiteHelper.PlayerColumns.last_name.toString(), seasonModel.getSeason_id());
+
+        // insert into comment (comment, date_created) values ('hi', '12:00 AM')
+        long id = database.insert(MySqlLiteHelper.PLAYER_TABLE,
+                null, contentValues);
+
+        seasonModel.setSeason_id((int) id);
+
+        return seasonModel;
+    }
+
+    public void removeSeason(int id) {
+        database.delete(MySqlLiteHelper.STAT_TABLE, (MySqlLiteHelper.StatColumns.player_id.toString() + "=?"), new String[]{Integer.toString(id)});
+        database.delete(MySqlLiteHelper.GAME_TABLE, (MySqlLiteHelper.GameColumns.game_id.toString() + "=?"), new String[]{Integer.toString(id)});
+        database.delete(MySqlLiteHelper.SEASON_TABLE, (MySqlLiteHelper.SeasonColumns.season_id.toString() + "=?"), new String[]{Integer.toString(id)});
+    }
+
+    public List<SeasonModel> getAllSeasons() {
+        List<SeasonModel> seasons = new ArrayList<>();
+
+        String columns[] = MySqlLiteHelper.SeasonColumns.names();
+
+        Cursor cursor = database.query(MySqlLiteHelper.SEASON_TABLE,
+                columns,
+                null, null, null, null, null);
+
+        cursor.moveToNext();
+        while (!cursor.isAfterLast()) {
+            SeasonModel season = cursorToSeasonModel(cursor);
+            seasons.add(season);
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return seasons;
+    }
+
+    private SeasonModel cursorToSeasonModel(Cursor cursor) {
+        SeasonModel seasonModel = new SeasonModel();
+
+        // Build Integers
+        int num = cursor.getInt(MySqlLiteHelper.PlayerColumns.player_id.ordinal());
+        seasonModel.setSeason_id(num);
+
+        num = cursor.getInt(MySqlLiteHelper.PlayerColumns.number.ordinal());
+        seasonModel.setSeason_name(num);
+
+        return seasonModel;
     }
 
     public Date GetDate(String d) {

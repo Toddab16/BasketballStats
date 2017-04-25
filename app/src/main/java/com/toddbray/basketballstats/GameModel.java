@@ -9,6 +9,10 @@ import java.util.Date;
 public class GameModel {
 
     private int game_id;
+
+
+
+    private int season_id;
     private Date game_date, girls_jv, boys_jv, girls_v, boys_v;
     private String opp_name;
     private String location;
@@ -24,6 +28,14 @@ public class GameModel {
 
     public void setGame_id(int game_id) {
         this.game_id = game_id;
+    }
+
+    public int getSeason_id() {
+        return season_id;
+    }
+
+    public void setSeason_id(int season_id) {
+        this.season_id = season_id;
     }
 
     public Date getGame_date() {

@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         List<GameModel> games = dataSource.getAllGames();
         List<PlayerModel> players = dataSource.getAllPlayers();
         List<StatModel> stats = dataSource.getAllStats();
+        List<SeasonModel> seasons = dataSource.getAllSeasons();
 
         Date dateTest = new Date();
 
