@@ -56,26 +56,20 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp">
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <RadioButton
+        android:text="Home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/home_radioButton"
+            android:layout_weight="1"
+            android:paddingRight="20dp" />
 
-            <RadioButton
-            android:text="Home"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/home_radioButton"
-                android:layout_weight="1"
-                android:paddingRight="20dp" />
-
-            <RadioButton
-            android:text="Away"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/away_radioButton"
-                android:layout_weight="1" />
-        </LinearLayout>
+        <RadioButton
+        android:text="Away"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/away_radioButton"
+            android:layout_weight="1" />
 
     </RadioGroup>
 

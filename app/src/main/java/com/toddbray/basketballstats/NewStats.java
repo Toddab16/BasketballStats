@@ -60,6 +60,7 @@ public class NewStats extends AppCompatActivity {
     DbDataSource db = new DbDataSource(this);
     int game_id;
     int mode = 0;
+    String opp_name;
     PlayerModel lineup[];
     StatModel game_stats[];
 
@@ -70,9 +71,13 @@ public class NewStats extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             game_id = extras.getInt("GAME_ID");
+            opp_name = extras.getString("OPP");
         }
 
         db.open();
+
+        TextView tv = (TextView)findViewById(R.id.opponent_textView);
+        tv.setText(opp_name);
 
         List<PlayerModel> players = db.getAllPlayers();
         List<StatModel> player_stats = db.getAllStats();

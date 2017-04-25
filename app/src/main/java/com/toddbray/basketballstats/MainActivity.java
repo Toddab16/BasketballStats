@@ -1,11 +1,15 @@
 package com.toddbray.basketballstats;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -21,17 +25,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button newPlayer = (Button) findViewById(R.id.add_player_button);
         newPlayer.setOnClickListener(this);
 
-        Button viewRoster = (Button) findViewById(R.id.player_stats_button);
-        viewRoster.setOnClickListener(this);
-
         Button newGame = (Button) findViewById(R.id.add_game_button);
         newGame.setOnClickListener(this);
 
-        Button viewSchedule = (Button) findViewById(R.id.game_stats_button);
-        viewSchedule.setOnClickListener(this);
+        Button startGame = (Button) findViewById(R.id.start_game_button);
+        startGame.setOnClickListener(this);
 
-        Button gameStats = (Button) findViewById(R.id.game_stats_button);
-        gameStats.setOnClickListener(this);
+        Button viewRoster = (Button) findViewById(R.id.view_roster_button);
+        viewRoster.setOnClickListener(this);
+
+        Button viewSchedule = (Button) findViewById(R.id.view_schedule_button);
+        viewSchedule.setOnClickListener(this);
     }
 
     @Override
@@ -79,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent = new Intent (this, NewGame.class);
                 startActivity(intent);
                 break;
-            case R.id.player_stats_button:
+            case R.id.view_roster_button:
                 intent = new Intent (this, ViewPlayer.class);
                 startActivity(intent);
                 break;
@@ -88,12 +92,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.start_game_button:
-                intent = new Intent (this, GameList.class);
-                startActivity(intent);
+                gamesDialog();
                 break;
 
             default:
                 break;
         }
+    }
+
+    public void gamesDialog () {
+        final List<GameModel> games = dataSource.getAllGames();
+        CharSequence[] games_list = new CharSequence[games.size()];
+        DateFormat df = new SimpleDateFormat("MM/dd");
+        for (int i = 0; i < games.size(); i++) {
+            games_list[i] = df.format(games.get(i).getGame_date()) + "     " + games.get(i).getOpp_name();
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Choose Game");
+
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.setItems(games_list, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                Intent intent = new Intent (getApplicationContext(), NewStats.class);
+                intent.putExtra("GAME_ID",games.get(item).getGame_id());
+                intent.putExtra("OPP", games.get(item).getOpp_name());
+                startActivity(intent);
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }

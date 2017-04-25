@@ -1,6 +1,7 @@
 package com.toddbray.basketballstats;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -69,6 +70,9 @@ public class NewGame extends AppCompatActivity implements View.OnFocusChangeList
                 db.open();
                 db.createGame(newGame);
                 db.close();
+
+                Intent intent = new Intent (getApplicationContext(), MainActivity.class);
+                startActivity(intent);
             }
         });
 
