@@ -22,8 +22,6 @@
         </activity>
         <activity android:name=".ViewSchedule">
         </activity>
-        <activity android:name=".GameList">
-        </activity>
         <activity android:name=".NewStats">
         </activity>
 
