@@ -18,7 +18,7 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
     public static final String STAT_TABLE = "Stats";
     public static final String SEASON_TABLE = "Season";
     public static final String MYSQL_DATABASE = "t_bray_bball_stats";
-    public static final String MYSQL_HOST = "fox.wuffhost.ovh";
+    public static final String MYSQL_HOST = "jdbc:mysql://fox.wuffhost.ovh:3306/";
     public static final String MYSQL_USERNAME = "t_bray_19751087";
     public static final String MYSQL_PASSWORD = "bballadmin16";
     public static final int MYSQL_PORT = 3306;
@@ -86,7 +86,7 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         Log.i("TEST..............", "Database Table Created!");
         String sql = "CREATE TABLE " + GAME_TABLE + " (" +
-                GameColumns.game_id + " INTEGER AUTOINCREMENT  NOT NULL  UNIQUE , " +
+                GameColumns.game_id + " INTEGER NOT NULL, " +
                 GameColumns.season_id + " INTEGER NOT NULL, " +
                 GameColumns.game_date + " TEXT NOT NULL , " +
                 GameColumns.location + " TEXT NOT NULL , " +
@@ -95,7 +95,7 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
                 GameColumns.boys_jv + " TEXT NOT NULL , " +
                 GameColumns.girls_v + " TEXT NOT NULL , " +
                 GameColumns.boys_v + " TEXT NOT NULL , " +
-                GameColumns.opp_name + " TEXT NOT NULL " +
+                GameColumns.opp_name + " TEXT NOT NULL, " +
                 "PRIMARY KEY ( " + GameColumns.game_id + " , " + GameColumns.season_id + " ))";
         db.execSQL(sql);
 

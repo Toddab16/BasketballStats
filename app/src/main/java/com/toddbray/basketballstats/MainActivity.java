@@ -13,6 +13,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private DbDataSource dataSource;
+    private MyDbDataSource myDataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +21,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         dataSource = new DbDataSource(getApplicationContext());
+        myDataSource = new MyDbDataSource();
+
         Button newPlayer = (Button) findViewById(R.id.add_player_button);
         newPlayer.setOnClickListener(this);
 
@@ -45,6 +48,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         List<SeasonModel> seasons = dataSource.getAllSeasons();
 
         Date dateTest = new Date();
+
+        try {
+            String s = myDataSource.testConnect();
+        }
+        catch(Exception e) {
+
+        }
 
         GameModel game = new GameModel();
         game.setBoys_jv(dateTest);
