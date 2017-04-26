@@ -1,20 +1,39 @@
 package com.toddbray.basketballstats;
 
+
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
+
+import java.util.Date;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+
 import java.util.List;
+
+import static android.R.id.input;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private DbDataSource dataSource;
+    private MyDbDataSource myDataSource;
+
+    private final int GET_INTERNET = 5150;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         dataSource = new DbDataSource(getApplicationContext());
+        myDataSource = new MyDbDataSource();
+
         Button newPlayer = (Button) findViewById(R.id.add_player_button);
         newPlayer.setOnClickListener(this);
 
@@ -47,6 +68,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         List<GameModel> games = dataSource.getAllGames();
         List<PlayerModel> players = dataSource.getAllPlayers();
         List<StatModel> stats = dataSource.getAllStats();
+        List<SeasonModel> seasons = dataSource.getAllSeasons();
+
+        Date dateTest = new Date();
+
+        checkPermission();
+
+        GameModel game = new GameModel();
+        game.setBoys_jv(dateTest);
+        game.setBoys_v(dateTest);
+        game.setGirls_jv(dateTest);
+        game.setGirls_v(dateTest);
+        game.setGame_date(dateTest);
+        game.setLocation("Clarksville");
+        game.setOpp_name("Broncos");
+        game.setVenue("Arena");
+
+        game = dataSource.createGame(game);
+
+        /*
+        PlayerModel player = new PlayerModel();
+        player.setFirst_name("Brad");
+        player.setLast_name("Jordan");
+        player.setNumber(18);
+        player.setYear("Sophomore");
+
+        player = dataSource.createPlayer(player);
+        */
 
         /*
         ArrayAdapter<GameModel> adapter = new ArrayAdapter<GameModel>(this,
@@ -100,6 +148,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+    // Ask user for permission to save write to external disk
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+
+            case GET_INTERNET:
+                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    try {
+                        String s = myDataSource.testConnect();
+                    }
+                    catch(Exception e) {
+
+                    }
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    // Verify if permission to save has been allowed (Needed for API 23+)
+    private void checkPermission(){
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE);
+
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    this, new String[]{Manifest.permission.ACCESS_NETWORK_STATE}, GET_INTERNET);
+        } else {
+            try {
+                String s = myDataSource.testConnect();
+                Toast.makeText(getApplicationContext(), s,
+                        Toast.LENGTH_LONG).show();
+            }
+            catch(Exception e) {
+
+            }
+        }
+
     public void gamesDialog () {
         final List<GameModel> games = dataSource.getAllGames();
         CharSequence[] games_list = new CharSequence[games.size()];
@@ -128,5 +216,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
         AlertDialog alert = builder.create();
         alert.show();
+
     }
 }
