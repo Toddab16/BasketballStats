@@ -12,7 +12,11 @@
         android:textAlignment="center"
         android:textSize="30sp"
         android:textColor="@android:color/black"
+
+        />
+
         android:layout_marginBottom="20dp" />
+
 
     <TextView
         android:text="Opponent"
