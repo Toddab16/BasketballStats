@@ -1,19 +1,29 @@
 package com.toddbray.basketballstats;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.Date;
 import java.util.List;
+
+import static android.R.id.input;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private DbDataSource dataSource;
     private MyDbDataSource myDataSource;
+
+    private final int GET_INTERNET = 5150;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Date dateTest = new Date();
 
-        try {
-            String s = myDataSource.testConnect();
-        }
-        catch(Exception e) {
-
-        }
+        checkPermission();
 
         GameModel game = new GameModel();
         game.setBoys_jv(dateTest);
@@ -124,6 +129,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             default:
                 break;
+        }
+    }
+
+    // Ask user for permission to save write to external disk
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+
+            case GET_INTERNET:
+                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    try {
+                        String s = myDataSource.testConnect();
+                    }
+                    catch(Exception e) {
+
+                    }
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    // Verify if permission to save has been allowed (Needed for API 23+)
+    private void checkPermission(){
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE);
+
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    this, new String[]{Manifest.permission.ACCESS_NETWORK_STATE}, GET_INTERNET);
+        } else {
+            try {
+                String s = myDataSource.testConnect();
+                Toast.makeText(getApplicationContext(), s,
+                        Toast.LENGTH_LONG).show();
+            }
+            catch(Exception e) {
+
+            }
         }
     }
 }
