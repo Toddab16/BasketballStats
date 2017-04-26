@@ -48,7 +48,6 @@ public class DbDataSource {
         contentValues.put(MySqlLiteHelper.GameColumns.girls_v.toString(), gameModel.getGirls_v().toString());
         contentValues.put(MySqlLiteHelper.GameColumns.boys_v.toString(), gameModel.getBoys_v().toString());
 
-        // insert into comment (comment, date_created) values ('hi', '12:00 AM')
         long id = database.insert(MySqlLiteHelper.GAME_TABLE,
                 null, contentValues);
 

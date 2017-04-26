@@ -1,19 +1,29 @@
 package com.toddbray.basketballstats;
 
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.v7.app.AlertDialog;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
+
 import java.util.Date;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import java.util.List;
 
 import static android.R.id.input;
@@ -36,13 +46,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button newPlayer = (Button) findViewById(R.id.add_player_button);
         newPlayer.setOnClickListener(this);
 
-        Button viewRoster = (Button) findViewById(R.id.roster_view_button);
-        viewRoster.setOnClickListener(this);
-
         Button newGame = (Button) findViewById(R.id.add_game_button);
         newGame.setOnClickListener(this);
 
-        Button viewSchedule = (Button) findViewById(R.id.schedule_view_button);
+        Button startGame = (Button) findViewById(R.id.start_game_button);
+        startGame.setOnClickListener(this);
+
+        Button viewRoster = (Button) findViewById(R.id.view_roster_button);
+        viewRoster.setOnClickListener(this);
+
+        Button viewSchedule = (Button) findViewById(R.id.view_schedule_button);
         viewSchedule.setOnClickListener(this);
     }
 
@@ -118,19 +131,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent = new Intent (this, NewGame.class);
                 startActivity(intent);
                 break;
-            case R.id.roster_view_button:
+            case R.id.view_roster_button:
                 intent = new Intent (this, ViewPlayer.class);
                 startActivity(intent);
                 break;
-            case R.id.schedule_view_button:
+            case R.id.view_schedule_button:
                 intent = new Intent (this, ViewSchedule.class);
                 startActivity(intent);
+                break;
+            case R.id.start_game_button:
+                gamesDialog();
                 break;
 
             default:
                 break;
         }
     }
+
 
     // Ask user for permission to save write to external disk
     @Override
@@ -170,5 +187,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         }
+
+    public void gamesDialog () {
+        final List<GameModel> games = dataSource.getAllGames();
+        CharSequence[] games_list = new CharSequence[games.size()];
+        DateFormat df = new SimpleDateFormat("MM/dd");
+        for (int i = 0; i < games.size(); i++) {
+            games_list[i] = df.format(games.get(i).getGame_date()) + "     " + games.get(i).getOpp_name();
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Choose Game");
+
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.setItems(games_list, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                Intent intent = new Intent (getApplicationContext(), NewStats.class);
+                intent.putExtra("GAME_ID",games.get(item).getGame_id());
+                intent.putExtra("OPP", games.get(item).getOpp_name());
+                startActivity(intent);
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+
     }
 }
