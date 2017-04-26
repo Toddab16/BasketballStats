@@ -48,10 +48,28 @@ public class DbDataSource {
         contentValues.put(MySqlLiteHelper.GameColumns.girls_v.toString(), gameModel.getGirls_v().toString());
         contentValues.put(MySqlLiteHelper.GameColumns.boys_v.toString(), gameModel.getBoys_v().toString());
 
-        long id = database.insert(MySqlLiteHelper.GAME_TABLE,
-                null, contentValues);
+        if(gameModel.getGame_id() != -99)
+        {
+            contentValues.put(MySqlLiteHelper.GameColumns.game_id.toString(), gameModel.getGame_id());
 
-        gameModel.setGame_id((int) id);
+            /*
+            database.execSQL("UPDATE " + MySqlLiteHelper.GAME_TABLE +
+                " SET " + MySqlLiteHelper.GameColumns.game_date.toString() + " = '" + gameModel.getGame_date().toString() + "'," +
+                " WHERE " + MySqlLiteHelper.StatColumns.game_id.toString() + " = '" + gameModel.getGame_id() + "'" );
+
+            // Old non working (remove after execSQL is good)
+            database.update(MySqlLiteHelper.GAME_TABLE,
+                    MySqlLiteHelper.GameColumns.game_id.toString() + "=?", gameModel.getGame_id());
+            */
+        }
+        else {
+
+
+            long id = database.insert(MySqlLiteHelper.GAME_TABLE,
+                    null, contentValues);
+
+            gameModel.setGame_id((int) id);
+        }
 
         return gameModel;
     }

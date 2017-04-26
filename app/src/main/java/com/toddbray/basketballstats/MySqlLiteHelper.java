@@ -86,17 +86,17 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         Log.i("TEST..............", "Database Table Created!");
         String sql = "CREATE TABLE " + GAME_TABLE + " (" +
-                GameColumns.game_id + " INTEGER NOT NULL, " +
-                GameColumns.season_id + " INTEGER NOT NULL, " +
+                GameColumns.game_id + " INTEGER PRIMARY KEY  AUTOINCREMENT NOT NULL  UNIQUE , " +
+                GameColumns.season_id + " INTEGER NOT NULL , " +
                 GameColumns.game_date + " TEXT NOT NULL , " +
                 GameColumns.location + " TEXT NOT NULL , " +
                 GameColumns.venue + " TEXT NOT NULL , " +
-                GameColumns.girls_jv + " TEXT NOT NULL , " +
-                GameColumns.boys_jv + " TEXT NOT NULL , " +
-                GameColumns.girls_v + " TEXT NOT NULL , " +
-                GameColumns.boys_v + " TEXT NOT NULL , " +
-                GameColumns.opp_name + " TEXT NOT NULL, " +
-                "PRIMARY KEY ( " + GameColumns.game_id + " , " + GameColumns.season_id + " ))";
+                GameColumns.girls_jv + " TEXT , " +
+                GameColumns.boys_jv + " TEXT , " +
+                GameColumns.girls_v + " TEXT , " +
+                GameColumns.boys_v + " TEXT , " +
+                GameColumns.opp_name + " TEXT NOT NULL ) ";
+
         db.execSQL(sql);
 
         sql = "CREATE TABLE " + PLAYER_TABLE + " (" +
@@ -110,18 +110,18 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
         sql = "CREATE TABLE " + STAT_TABLE + " (" +
                 StatColumns.game_id + " INTEGER NOT NULL , " +
                 StatColumns.player_id + " INTEGER NOT NULL , " +
-                StatColumns.o_rebound + " INTEGER NOT NULL , " +
-                StatColumns.d_rebound + " INTEGER NOT NULL , " +
-                StatColumns.assist + " INTEGER NOT NULL , " +
-                StatColumns.steal + " INTEGER NOT NULL , " +
-                StatColumns.turnover + " INTEGER NOT NULL , " +
-                StatColumns.two_pointer + " INTEGER NOT NULL , " +
-                StatColumns.two_pointer_made + " INTEGER NOT NULL , " +
-                StatColumns.three_pointer + " INTEGER NOT NULL , " +
-                StatColumns.three_pointer_made + " INTEGER NOT NULL , " +
-                StatColumns.free_throw + " INTEGER NOT NULL , " +
-                StatColumns.free_throw_made + " INTEGER NOT NULL , " +
-                StatColumns.charge + " INTEGER NOT NULL , " +
+                StatColumns.o_rebound + " INTEGER NOT NULL DEFAULT 0 , " +
+                StatColumns.d_rebound + " INTEGER NOT NULL DEFAULT 0 , " +
+                StatColumns.assist + " INTEGER NOT NULL DEFAULT 0 , " +
+                StatColumns.steal + " INTEGER NOT NULL DEFAULT 0 , " +
+                StatColumns.turnover + " INTEGER NOT NULL DEFAULT 0 , " +
+                StatColumns.two_pointer + " INTEGER NOT NULL DEFAULT 0 , " +
+                StatColumns.two_pointer_made + " INTEGER NOT NULL DEFAULT 0 , " +
+                StatColumns.three_pointer + " INTEGER NOT NULL DEFAULT 0 , " +
+                StatColumns.three_pointer_made + " INTEGER NOT NULL DEFAULT 0 , " +
+                StatColumns.free_throw + " INTEGER NOT NULL DEFAULT 0 , " +
+                StatColumns.free_throw_made + " INTEGER NOT NULL DEFAULT 0 , " +
+                StatColumns.charge + " INTEGER NOT NULL DEFAULT 0 , " +
                 "PRIMARY KEY ( " + StatColumns.game_id + " , " + StatColumns.player_id + " ))";
         db.execSQL(sql);
 

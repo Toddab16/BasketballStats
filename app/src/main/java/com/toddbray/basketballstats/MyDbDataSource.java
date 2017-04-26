@@ -39,8 +39,6 @@ public class MyDbDataSource {
             ResultSet rs = st.executeQuery("SELECT * FROM Season");
             ResultSetMetaData rsmd = rs.getMetaData();
 
-
-
             rs.first();
             while(!rs.isAfterLast()) {
                 result += rsmd.getColumnName(1) + ": " + rs.getInt(1) + "\n";

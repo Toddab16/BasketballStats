@@ -11,9 +11,6 @@ import java.util.Date;
 public class GameModel {
 
     private int game_id;
-
-
-
     private int season_id;
     private Date game_date, girls_jv, boys_jv, girls_v, boys_v;
     private String opp_name;
@@ -21,7 +18,8 @@ public class GameModel {
     private String venue;
 
     public GameModel() {
-
+        game_id = -99;
+        season_id = -99;
     }
 
     public int getGame_id() {
