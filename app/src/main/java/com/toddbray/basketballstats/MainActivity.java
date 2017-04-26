@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     // Verify if permission to save has been allowed (Needed for API 23+)
-    private void checkPermission(){
+    private void checkPermission() {
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE);
 
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
@@ -182,11 +182,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String s = myDataSource.testConnect();
                 Toast.makeText(getApplicationContext(), s,
                         Toast.LENGTH_LONG).show();
-            }
-            catch(Exception e) {
+            } catch (Exception e) {
 
             }
         }
+    }
 
     public void gamesDialog () {
         final List<GameModel> games = dataSource.getAllGames();
