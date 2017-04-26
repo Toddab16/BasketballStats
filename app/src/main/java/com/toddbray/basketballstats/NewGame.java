@@ -55,10 +55,6 @@ public class NewGame extends AppCompatActivity implements View.OnFocusChangeList
                 EditText location = (EditText) findViewById(R.id.location_editText);
                 String loc = location.getText().toString();
 
-                Date dateTest = new Date();
-
-                dateTest = db.GetDate(date);
-
                 GameModel newGame = new GameModel();
                 newGame.setGame_date(date);
                 newGame.setGirls_jv(times[0]);
@@ -68,8 +64,6 @@ public class NewGame extends AppCompatActivity implements View.OnFocusChangeList
                 newGame.setOpp_name(opponent);
                 newGame.setVenue(venue_name);
                 newGame.setLocation(loc);
-
-
 
                 db.open();
                 db.createGame(newGame);

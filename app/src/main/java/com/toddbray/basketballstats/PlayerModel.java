@@ -10,7 +10,7 @@ public class PlayerModel {
     private String first_name, last_name, year;
 
     public PlayerModel() {
-
+        player_id = -99;
     }
 
     public int getPlayer_id() {

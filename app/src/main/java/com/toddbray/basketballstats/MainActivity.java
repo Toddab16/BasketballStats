@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Date dateTest = new Date();
 
-        checkPermission();
+        // checkPermission();
 
         GameModel game = new GameModel();
         game.setBoys_jv(dateTest);
@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     // Verify if permission to save has been allowed (Needed for API 23+)
-    private void checkPermission(){
+    private void checkPermission() {
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE);
 
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
@@ -180,13 +180,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             try {
                 String s = myDataSource.testConnect();
-                Toast.makeText(getApplicationContext(), s,
-                        Toast.LENGTH_LONG).show();
-            }
-            catch(Exception e) {
+                //Toast.makeText(getApplicationContext(), s,
+                //        Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
 
             }
         }
+    }
 
     public void gamesDialog () {
         final List<GameModel> games = dataSource.getAllGames();
