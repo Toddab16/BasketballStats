@@ -9,6 +9,11 @@ public class StatModel {
     private int game_id, player_id, o_rebound, d_rebound, assist, steal, turnover, two_pointer,
             three_pointer, two_pointer_made, three_pointer_made, free_throw, free_throw_made, charge;
 
+    public StatModel() {
+        game_id = -99;
+        player_id = -99;
+    }
+
     public int getTwo_pointer_made() {
         return two_pointer_made;
     }
@@ -47,10 +52,6 @@ public class StatModel {
 
     public void setCharge(int charges) {
         this.charge = charges;
-    }
-
-    public StatModel() {
-
     }
 
     public int getGame_id() {

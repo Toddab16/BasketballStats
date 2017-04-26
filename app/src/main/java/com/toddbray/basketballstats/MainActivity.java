@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Date dateTest = new Date();
 
-        checkPermission();
+        // checkPermission();
 
         GameModel game = new GameModel();
         game.setBoys_jv(dateTest);
@@ -180,8 +180,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             try {
                 String s = myDataSource.testConnect();
-                Toast.makeText(getApplicationContext(), s,
-                        Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), s,
+                //        Toast.LENGTH_LONG).show();
             } catch (Exception e) {
 
             }
