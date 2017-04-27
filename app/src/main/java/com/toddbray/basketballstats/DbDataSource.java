@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -52,12 +53,18 @@ public class DbDataSource {
         {
             contentValues.put(MySqlLiteHelper.GameColumns.game_id.toString(), gameModel.getGame_id());
 
-            /*
             database.execSQL("UPDATE " + MySqlLiteHelper.GAME_TABLE +
                 " SET " + MySqlLiteHelper.GameColumns.game_date.toString() + " = '" + gameModel.getGame_date().toString() + "'," +
-                " WHERE " + MySqlLiteHelper.StatColumns.game_id.toString() + " = '" + gameModel.getGame_id() + "'" );
+                            MySqlLiteHelper.GameColumns.opp_name.toString() + " = '" + gameModel.getOpp_name().toString() + "'," +
+                            MySqlLiteHelper.GameColumns.location.toString() + " = '" + gameModel.getLocation().toString() + "'," +
+                            MySqlLiteHelper.GameColumns.venue.toString() + " = '" + gameModel.getVenue().toString() + "'," +
+                            MySqlLiteHelper.GameColumns.girls_jv.toString() + " = '" + gameModel.getGirls_jv().toString() + "'," +
+                            MySqlLiteHelper.GameColumns.boys_jv.toString() + " = '" + gameModel.getBoys_jv().toString() + "'," +
+                            MySqlLiteHelper.GameColumns.girls_v.toString() + " = '" + gameModel.getGirls_v().toString() + "'," +
+                            MySqlLiteHelper.GameColumns.boys_v.toString() + " = '" + gameModel.getBoys_v().toString() + "'" +
+                " WHERE " + MySqlLiteHelper.GameColumns.game_id.toString() + " = '" + gameModel.getGame_id() + "'" );
 
-            // Old non working (remove after execSQL is good)
+            /* Old non working (remove after execSQL is good)
             database.update(MySqlLiteHelper.GAME_TABLE,
                     MySqlLiteHelper.GameColumns.game_id.toString() + "=?", gameModel.getGame_id());
             */
@@ -97,6 +104,27 @@ public class DbDataSource {
         cursor.close();
 
         return games;
+    }
+
+    public GameModel getGame(int game_id) {
+        GameModel game = new GameModel();
+
+        String columns[] = MySqlLiteHelper.GameColumns.names();
+
+        String selectString = MySqlLiteHelper.GameColumns.game_id + " = ?";
+
+        Cursor cursor = database.query(MySqlLiteHelper.GAME_TABLE,
+                columns,
+                selectString, new String[] {Integer.toString(game_id)}, null, null, null);
+
+        if(cursor.moveToFirst()){
+            game = cursorToGameModel(cursor);
+        }
+
+        cursor.close();
+
+        return game;
+
     }
 
     private GameModel cursorToGameModel(Cursor cursor) {
@@ -139,6 +167,7 @@ public class DbDataSource {
     }
 
     public PlayerModel createPlayer(PlayerModel playerModel) {
+
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(MySqlLiteHelper.PlayerColumns.first_name.toString(), playerModel.getFirst_name().toString());
@@ -146,11 +175,31 @@ public class DbDataSource {
         contentValues.put(MySqlLiteHelper.PlayerColumns.year.toString(), playerModel.getYear().toString());
         contentValues.put(MySqlLiteHelper.PlayerColumns.number.toString(), playerModel.getNumber());
 
-        // insert into comment (comment, date_created) values ('hi', '12:00 AM')
-        long id = database.insert(MySqlLiteHelper.PLAYER_TABLE,
-                null, contentValues);
+        if(playerModel.getPlayer_id() != -99)
+        {
+            contentValues.put(MySqlLiteHelper.PlayerColumns.player_id.toString(), playerModel.getPlayer_id());
 
-        playerModel.setPlayer_id((int) id);
+            database.execSQL("UPDATE " + MySqlLiteHelper.PLAYER_TABLE +
+                    " SET " + MySqlLiteHelper.PlayerColumns.first_name.toString() + " = '" + playerModel.getFirst_name().toString() + "'," +
+                    MySqlLiteHelper.PlayerColumns.last_name.toString() + " = '" + playerModel.getLast_name().toString() + "'," +
+                    MySqlLiteHelper.PlayerColumns.year.toString() + " = '" + playerModel.getYear().toString() + "'," +
+                    MySqlLiteHelper.PlayerColumns.number.toString() + " = '" + playerModel.getNumber() + "'," +
+                    " WHERE " + MySqlLiteHelper.PlayerColumns.player_id.toString() + " = '" + playerModel.getPlayer_id() + "'" );
+
+            /* Old non working (remove after execSQL is good)
+            database.update(MySqlLiteHelper.GAME_TABLE,
+                    MySqlLiteHelper.GameColumns.game_id.toString() + "=?", gameModel.getGame_id());
+            */
+        }
+        else {
+
+
+            // insert into comment (comment, date_created) values ('hi', '12:00 AM')
+            long id = database.insert(MySqlLiteHelper.PLAYER_TABLE,
+                    null, contentValues);
+
+            playerModel.setPlayer_id((int) id);
+        }
 
         return playerModel;
     }
@@ -178,6 +227,23 @@ public class DbDataSource {
         cursor.close();
 
         return players;
+    }
+
+    public PlayerModel getPlayer(int player_id) {
+        PlayerModel player = new PlayerModel();
+
+        String selectString = "SELECT * FROM " + MySqlLiteHelper.PLAYER_TABLE + " WHERE " + MySqlLiteHelper.PlayerColumns.player_id + " =?";
+
+        Cursor cursor = database.rawQuery(selectString, new String[] {Integer.toString(player_id)});
+
+        if(cursor.moveToFirst()){
+            player = cursorToPlayerModel(cursor);
+
+        }
+
+        cursor.close();
+
+        return player;
     }
 
     private PlayerModel cursorToPlayerModel(Cursor cursor) {
@@ -221,10 +287,36 @@ public class DbDataSource {
         contentValues.put(MySqlLiteHelper.StatColumns.free_throw_made.toString(), statModel.getFree_throw_made());
         contentValues.put(MySqlLiteHelper.StatColumns.charge.toString(), statModel.getCharge());
 
-        // insert into comment (comment, date_created) values ('hi', '12:00 AM')
         database.insert(MySqlLiteHelper.STAT_TABLE,
-                null, contentValues);
+                    null, contentValues);
     }
+
+    public void updateStat(StatModel statModel) {
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MySqlLiteHelper.StatColumns.player_id.toString(), statModel.getPlayer_id());
+        contentValues.put(MySqlLiteHelper.StatColumns.game_id.toString(), statModel.getGame_id());
+
+            database.execSQL("UPDATE " + MySqlLiteHelper.STAT_TABLE +
+                    " SET " + MySqlLiteHelper.StatColumns.steal.toString() + " = '" + statModel.getSteal() + "'," +
+                    MySqlLiteHelper.StatColumns.o_rebound.toString() + " = '" + statModel.getO_rebound() + "'," +
+                    MySqlLiteHelper.StatColumns.d_rebound.toString() + " = '" + statModel.getD_rebound() + "'," +
+                    MySqlLiteHelper.StatColumns.assist.toString() + " = '" + statModel.getAssist() + "'," +
+                    MySqlLiteHelper.StatColumns.turnover.toString() + " = '" + statModel.getTurnover() + "'," +
+                    MySqlLiteHelper.StatColumns.two_pointer.toString() + " = '" + statModel.getTwo_pointer() + "'," +
+                    MySqlLiteHelper.StatColumns.two_pointer_made.toString() + " = '" + statModel.getTwo_pointer_made() + "'," +
+                    MySqlLiteHelper.StatColumns.three_pointer.toString() + " = '" + statModel.getThree_pointer() + "'," +
+                    MySqlLiteHelper.StatColumns.three_pointer_made.toString() + " = '" + statModel.getThree_pointer_made() + "'," +
+                    MySqlLiteHelper.StatColumns.free_throw.toString() + " = '" + statModel.getFree_throw() + "'," +
+                    MySqlLiteHelper.StatColumns.free_throw_made.toString() + " = '" + statModel.getFree_throw_made() + "'," +
+                    MySqlLiteHelper.StatColumns.charge.toString() + " = '" + statModel.getCharge() + "'" +
+                    " WHERE " + MySqlLiteHelper.StatColumns.player_id.toString() + " = '" + statModel.getPlayer_id() + "'" +
+                    " AND " + MySqlLiteHelper.StatColumns.game_id.toString() + " = '" + statModel.getGame_id() + "'"
+            );
+
+    }
+
+
 
     public void removeStat(int g_id, int p_id) {
         database.execSQL("DELETE FROM " + MySqlLiteHelper.STAT_TABLE +
@@ -251,6 +343,136 @@ public class DbDataSource {
 
         return stats;
     }
+
+    public List<StatModel> getGameStats(int game) {
+        List<StatModel> stats = new ArrayList<>();
+
+        String columns[] = MySqlLiteHelper.StatColumns.names();
+
+        String selectString = MySqlLiteHelper.StatColumns.game_id + " = ?";
+
+        Cursor cursor = database.query(MySqlLiteHelper.STAT_TABLE,
+                columns,
+                selectString, new String[] {Integer.toString(game)}, null, null, null);
+
+        cursor.moveToNext();
+        while (!cursor.isAfterLast()) {
+            StatModel stat = cursorToStatModel(cursor);
+            stats.add(stat);
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return stats;
+    }
+
+    public List<StatModel> getPlayerStats(int player) {
+        List<StatModel> stats = new ArrayList<>();
+
+        String columns[] = MySqlLiteHelper.StatColumns.names();
+
+        String selectString = MySqlLiteHelper.StatColumns.player_id + " = ?";
+
+        Cursor cursor = database.query(MySqlLiteHelper.STAT_TABLE,
+                columns,
+                selectString, new String[] {Integer.toString(player)}, null, null, null);
+
+        cursor.moveToNext();
+        while (!cursor.isAfterLast()) {
+            StatModel stat = cursorToStatModel(cursor);
+            stats.add(stat);
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return stats;
+    }
+
+    public StatModel getSeaonStats(int player) {
+        StatModel stats = new StatModel();
+
+        String columns[] = MySqlLiteHelper.SumStatColumns.names();
+
+        String selectString = MySqlLiteHelper.StatColumns.player_id + " = ?";
+
+        Cursor cursor = database.query(MySqlLiteHelper.STAT_TABLE,
+                columns,
+                selectString, new String[] {Integer.toString(player)}, null, null, null);
+
+        cursor.moveToNext();
+        while (!cursor.isAfterLast()) {
+            stats = cursorToStatModel(cursor);
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return stats;
+    }
+
+    public boolean checkStat(int player, int game) {
+        StatModel stats = new StatModel();
+
+        String selectString = "SELECT * FROM " + MySqlLiteHelper.STAT_TABLE + " WHERE " + MySqlLiteHelper.StatColumns.game_id + " =?" + " AND " + MySqlLiteHelper.StatColumns.player_id + " =?";
+
+        Cursor cursor = database.rawQuery(selectString, new String[] {Integer.toString(game), Integer.toString(player)});
+        boolean hasObject = false;
+
+        if(cursor.moveToFirst()){
+            hasObject = true;
+
+            int count = 0;
+            while(cursor.moveToNext()){
+                count++;
+            }
+        }
+
+        cursor.close();
+        return hasObject;
+    }
+
+    public boolean checkStatPlayer(int player) {
+        StatModel stats = new StatModel();
+
+        String selectString = "SELECT * FROM " + MySqlLiteHelper.STAT_TABLE + " WHERE " + MySqlLiteHelper.StatColumns.player_id + " =?";
+
+        Cursor cursor = database.rawQuery(selectString, new String[] {Integer.toString(player)});
+        boolean hasObject = false;
+
+        if(cursor.moveToFirst()){
+            hasObject = true;
+
+            int count = 0;
+            while(cursor.moveToNext()){
+                count++;
+            }
+        }
+
+        cursor.close();
+        return hasObject;
+    }
+
+    public StatModel getStat(int player, int game) {
+        StatModel stats = new StatModel();
+
+        String columns[] = MySqlLiteHelper.SumStatColumns.names();
+
+        String selectString = MySqlLiteHelper.StatColumns.player_id + " = ? AND " + MySqlLiteHelper.StatColumns.game_id + " = ?";
+
+        Cursor cursor = database.query(MySqlLiteHelper.STAT_TABLE,
+                columns,
+                selectString, new String[] {Integer.toString(player), Integer.toString(game)}, null, null, null);
+
+        cursor.moveToNext();
+        while (!cursor.isAfterLast()) {
+            stats = cursorToStatModel(cursor);
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return stats;
+    }
+
+
 
     private StatModel cursorToStatModel(Cursor cursor) {
         StatModel statModel = new StatModel();
