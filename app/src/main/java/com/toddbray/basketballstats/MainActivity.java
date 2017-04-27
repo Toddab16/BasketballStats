@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case GET_INTERNET:
                 if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     try {
-                        String s = myDataSource.testConnect();
+                        //String s = myDataSource;
                     }
                     catch(Exception e) {
 
@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     this, new String[]{Manifest.permission.ACCESS_NETWORK_STATE}, GET_INTERNET);
         } else {
             try {
-                String s = myDataSource.testConnect();
+                //String s = myDataSource;
                 //Toast.makeText(getApplicationContext(), s,
                 //        Toast.LENGTH_LONG).show();
             } catch (Exception e) {
