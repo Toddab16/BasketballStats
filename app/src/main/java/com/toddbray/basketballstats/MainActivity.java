@@ -4,6 +4,7 @@ package com.toddbray.basketballstats;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private DbDataSource dataSource;
     private MyDbDataSource myDataSource;
+    public String m_androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
     private final int GET_INTERNET = 5150;
 
