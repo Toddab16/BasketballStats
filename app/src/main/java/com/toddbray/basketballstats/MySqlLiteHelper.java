@@ -21,7 +21,9 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
     // UPDATE SQLITE_SEQUENCE SET seq = <n> WHERE name = '<table>'
 
     public enum GameColumns {
+
         android_id, season_id, game_id, game_date, opp_name, location, venue, girls_jv, boys_jv, girls_v, boys_v;
+
 
         public static String[] names() {
             GameColumns[] v = values();
@@ -55,6 +57,25 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
             String[] names = new String[v.length];
             for (int i = 0; i < v.length; i++) {
                 names[i] = v[i].toString();
+            }
+            return names;
+        }
+    }
+
+    public enum SumStatColumns {
+        game_id, player_id, o_rebound, d_rebound, assist, steal, turnover, two_pointer, three_pointer,
+        two_pointer_made, three_pointer_made, free_throw, free_throw_made, charge;
+
+        public static String[] names() {
+            SumStatColumns[] v = values();
+            String[] names = new String[v.length];
+            for (int i = 0; i < v.length; i++) {
+                if(i < 2) {
+                    names[i] = v[i].toString();
+                }else {
+                    names[i] = "sum(" + v[i].toString() + ")";
+                }
+
             }
             return names;
         }

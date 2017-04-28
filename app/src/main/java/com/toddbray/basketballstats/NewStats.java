@@ -1,6 +1,7 @@
 package com.toddbray.basketballstats;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,8 +15,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -61,8 +64,11 @@ public class NewStats extends AppCompatActivity {
     int game_id;
     int mode = 0;
     String opp_name;
-    PlayerModel lineup[];
-    StatModel game_stats[];
+    List<Integer> lineup = new ArrayList<>();
+    int rosterSize;
+    List<PlayerModel> players;
+    HashMap<Integer, StatModel> game_stats = new HashMap<Integer, StatModel>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,17 +85,25 @@ public class NewStats extends AppCompatActivity {
         TextView tv = (TextView)findViewById(R.id.opponent_textView);
         tv.setText(opp_name);
 
-        List<PlayerModel> players = db.getAllPlayers();
-        List<StatModel> player_stats = db.getAllStats();
+        players = db.getAllPlayers();
+        rosterSize = players.size();
 
-        lineup = new PlayerModel[5];
-        game_stats = new StatModel[players.size()];
-
-        for (int i = 0; i < players.size(); i++) {
-            game_stats[i] = new StatModel();
-            game_stats[i].setPlayer_id(players.get(i).getPlayer_id());
-            game_stats[i].setGame_id(game_id);
+        for (int i = 0; i < 5; i++) {
+            lineup.add(0);
         }
+
+        for (int i = 0; i < rosterSize; i++) {
+            Boolean b = db.checkStat(players.get(i).getPlayer_id(),game_id);
+            if (b) {
+                game_stats.put(players.get(i).getPlayer_id(), db.getStat(players.get(i).getPlayer_id(),game_id));
+            } else {
+                StatModel stat = new StatModel();
+                stat.setPlayer_id(players.get(i).getPlayer_id());
+                game_stats.put(players.get(i).getPlayer_id(), stat);
+
+            }
+        }
+
 
         for (int i = 0; i < buttons.length; i++) {
             for (int i2 = 0; i2 < buttons[i].length; i2++) {
@@ -99,32 +113,34 @@ public class NewStats extends AppCompatActivity {
                 buttonList[i][i2].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        TextView tv = (TextView) findViewById(stats_tv[it][it2]);
-                        int stat = Integer.parseInt(tv.getText().toString());
-                        if (mode == 0) {
-                            stat++;
-                        } else {
-                            stat--;
-                        }
-                        tv.setText(Integer.toString(stat));
-                        if (it2 == 0 || it2 == 2 || it2 == 4) {
-                            int n = it2 + 1;
-                            tv = (TextView) findViewById(stats_tv[it][n]);
-                            stat = Integer.parseInt(tv.getText().toString());
+                        if (lineup.get(it) != 0) {
+                            TextView tv = (TextView) findViewById(stats_tv[it][it2]);
+                            int stat = Integer.parseInt(tv.getText().toString());
                             if (mode == 0) {
                                 stat++;
                             } else {
                                 stat--;
                             }
                             tv.setText(Integer.toString(stat));
+                            if (it2 == 0 || it2 == 2 || it2 == 4) {
+                                int n = it2 + 1;
+                                tv = (TextView) findViewById(stats_tv[it][n]);
+                                stat = Integer.parseInt(tv.getText().toString());
+                                if (mode == 0) {
+                                    stat++;
+                                } else {
+                                    stat--;
+                                }
+                                tv.setText(Integer.toString(stat));
 
+                            }
                         }
                     }
                 });
             }
         }
 
-        for (int i = 0; i < lineup.length; i++) {
+        for (int i = 0; i < 5; i++) {
             lineupList[i] = ((Button) findViewById(lineup_ids[i]));
             final int it = i;
             lineupList[i].setOnClickListener(new View.OnClickListener() {
@@ -148,104 +164,123 @@ public class NewStats extends AppCompatActivity {
             }
         });
 
+        Button b = (Button)findViewById(R.id.save_stats_button);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                for (int i = 0; i < 5; i++) {
+                    if (lineup.get(i) != 0) {
+                        subOut(lineup.get(i), i);
+                    }
+                }
+
+                for (int i = 0; i < rosterSize; i++) {
+                    Boolean b = db.checkStat(players.get(i).getPlayer_id(),game_id);
+                    if (game_stats.get(players.get(i).getPlayer_id()).getGame_id() == game_id && !b) {
+                        db.createStat(game_stats.get(players.get(i).getPlayer_id()));
+                    }
+                    if (game_stats.get(players.get(i).getPlayer_id()).getGame_id() == game_id && b) {
+                        db.updateStat(game_stats.get(players.get(i).getPlayer_id()));
+
+                    }
+                }
+            }
+        });
+
     }
 
 
     public void subDialog (int pos) {
         final int lineup_pos = pos;
-        final List<PlayerModel> players = db.getAllPlayers();
-        CharSequence[] roster = new CharSequence[players.size()];
-        for (int i = 0; i < players.size(); i++) {
-            roster[i] = Integer.toString(players.get(i).getNumber()) + " " + players.get(i).getFirst_name() + " " + players.get(i).getLast_name();
+        final List<Integer> bench_ids = new ArrayList<Integer>();
+        for(int i = 0; i < rosterSize; i++) {
+            bench_ids.add(players.get(i).getPlayer_id());
         }
+        bench_ids.removeAll(lineup);
+        final List<String> bench = new ArrayList<String>();
+        for (int i = 0; i < bench_ids.size(); i++) {
+            PlayerModel pm = db.getPlayer(bench_ids.get(i));
+            bench.add(Integer.toString(pm.getNumber()) + " " + pm.getFirst_name() + " " + pm.getLast_name());
+        }
+        CharSequence[] benchChar = bench.toArray(new CharSequence[bench.size()]);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Choose Player to Sub In");
-        builder.setItems(roster, new DialogInterface.OnClickListener() {
+        builder.setItems(benchChar, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                if (lineup[lineup_pos] != null) {
-                    subOut(lineup[lineup_pos], lineup_pos);
+                if (lineup.get(lineup_pos) != 0) {
+                    subOut(lineup.get(lineup_pos), lineup_pos);
                 }
-
-                subIn(players.get(item), lineup_pos);
+                subIn(bench_ids.get(item), lineup_pos);
             }
         });
         AlertDialog alert = builder.create();
         alert.show();
     }
 
-    public void subIn (PlayerModel player, int pos) {
-        int selection = 0;
-        for (int i = 0; i < game_stats.length; i++) {
-            if (player.getPlayer_id() == game_stats[i].getPlayer_id()) {
-                selection = i;
-            }
-        }
-        if (game_stats[selection].getTwo_pointer() >= 0) {
+    public void subIn (int player_id, int pos) {
+
+        if (game_stats.get(player_id).getTwo_pointer() >= 0) {
             TextView tv = (TextView) findViewById(stats_tv[pos][0]);
-            tv.setText(Integer.toString(game_stats[selection].getTwo_pointer_made()));
+            tv.setText(Integer.toString(game_stats.get(player_id).getTwo_pointer_made()));
             tv = (TextView) findViewById(stats_tv[pos][1]);
-            tv.setText(Integer.toString(game_stats[selection].getTwo_pointer()));
+            tv.setText(Integer.toString(game_stats.get(player_id).getTwo_pointer()));
             tv = (TextView) findViewById(stats_tv[pos][2]);
-            tv.setText(Integer.toString(game_stats[selection].getThree_pointer_made()));
+            tv.setText(Integer.toString(game_stats.get(player_id).getThree_pointer_made()));
             tv = (TextView) findViewById(stats_tv[pos][3]);
-            tv.setText(Integer.toString(game_stats[selection].getThree_pointer()));
+            tv.setText(Integer.toString(game_stats.get(player_id).getThree_pointer()));
             tv = (TextView) findViewById(stats_tv[pos][4]);
-            tv.setText(Integer.toString(game_stats[selection].getFree_throw_made()));
+            tv.setText(Integer.toString(game_stats.get(player_id).getFree_throw_made()));
             tv = (TextView) findViewById(stats_tv[pos][5]);
-            tv.setText(Integer.toString(game_stats[selection].getFree_throw()));
+            tv.setText(Integer.toString(game_stats.get(player_id).getFree_throw()));
             tv = (TextView) findViewById(stats_tv[pos][6]);
-            tv.setText(Integer.toString(game_stats[selection].getO_rebound()));
+            tv.setText(Integer.toString(game_stats.get(player_id).getO_rebound()));
             tv = (TextView) findViewById(stats_tv[pos][7]);
-            tv.setText(Integer.toString(game_stats[selection].getD_rebound()));
+            tv.setText(Integer.toString(game_stats.get(player_id).getD_rebound()));
             tv = (TextView) findViewById(stats_tv[pos][8]);
-            tv.setText(Integer.toString(game_stats[selection].getAssist()));
+            tv.setText(Integer.toString(game_stats.get(player_id).getAssist()));
             tv = (TextView) findViewById(stats_tv[pos][9]);
-            tv.setText(Integer.toString(game_stats[selection].getSteal()));
+            tv.setText(Integer.toString(game_stats.get(player_id).getSteal()));
             tv = (TextView) findViewById(stats_tv[pos][10]);
-            tv.setText(Integer.toString(game_stats[selection].getTurnover()));
+            tv.setText(Integer.toString(game_stats.get(player_id).getTurnover()));
             tv = (TextView) findViewById(stats_tv[pos][11]);
-            tv.setText(Integer.toString(game_stats[selection].getCharge()));
+            tv.setText(Integer.toString(game_stats.get(player_id).getCharge()));
         }
-        lineup[pos] = player;
+        game_stats.get(player_id).setGame_id(game_id);
+        lineup.set(pos, player_id);
         lineupList[pos] = ((Button) findViewById(lineup_ids[pos]));
-        lineupList[pos].setText(Integer.toString(player.getNumber()));
+        PlayerModel pm = db.getPlayer(player_id);
+        lineupList[pos].setText(Integer.toString(pm.getNumber()));
     }
 
-    public void subOut (PlayerModel player, int pos) {
-        int selection = 0;
-        for (int i = 0; i < game_stats.length; i++) {
-            if (player.getPlayer_id() == game_stats[i].getPlayer_id()) {
-                selection = i;
-            }
-        }
+    public void subOut (int playerOut, int pos) {
         TextView tv = (TextView)findViewById(stats_tv[pos][0]);
-        game_stats[selection].setTwo_pointer_made(Integer.parseInt(tv.getText().toString()));
-        Log.i("Player", player.getFirst_name());
-        Log.i("FGM", Integer.toString(game_stats[selection].getTwo_pointer_made()));
-
+        game_stats.get(playerOut).setTwo_pointer_made(Integer.parseInt(tv.getText().toString()));
         tv = (TextView)findViewById(stats_tv[pos][1]);
-        game_stats[selection].setTwo_pointer(Integer.parseInt(tv.getText().toString()));
+        game_stats.get(playerOut).setTwo_pointer(Integer.parseInt(tv.getText().toString()));
         tv = (TextView)findViewById(stats_tv[pos][2]);
-        game_stats[selection].setThree_pointer_made(Integer.parseInt(tv.getText().toString()));
+        game_stats.get(playerOut).setThree_pointer_made(Integer.parseInt(tv.getText().toString()));
         tv = (TextView)findViewById(stats_tv[pos][3]);
-        game_stats[selection].setThree_pointer(Integer.parseInt(tv.getText().toString()));
+        game_stats.get(playerOut).setThree_pointer(Integer.parseInt(tv.getText().toString()));
         tv = (TextView)findViewById(stats_tv[pos][4]);
-        game_stats[selection].setFree_throw_made(Integer.parseInt(tv.getText().toString()));
+        game_stats.get(playerOut).setFree_throw_made(Integer.parseInt(tv.getText().toString()));
         tv = (TextView)findViewById(stats_tv[pos][5]);
-        game_stats[selection].setFree_throw(Integer.parseInt(tv.getText().toString()));
+        game_stats.get(playerOut).setFree_throw(Integer.parseInt(tv.getText().toString()));
         tv = (TextView)findViewById(stats_tv[pos][6]);
-        game_stats[selection].setO_rebound(Integer.parseInt(tv.getText().toString()));
+        game_stats.get(playerOut).setO_rebound(Integer.parseInt(tv.getText().toString()));
         tv = (TextView)findViewById(stats_tv[pos][7]);
-        game_stats[selection].setD_rebound(Integer.parseInt(tv.getText().toString()));
+        game_stats.get(playerOut).setD_rebound(Integer.parseInt(tv.getText().toString()));
         tv = (TextView)findViewById(stats_tv[pos][8]);
-        game_stats[selection].setAssist(Integer.parseInt(tv.getText().toString()));
+        game_stats.get(playerOut).setAssist(Integer.parseInt(tv.getText().toString()));
         tv = (TextView)findViewById(stats_tv[pos][9]);
-        game_stats[selection].setSteal(Integer.parseInt(tv.getText().toString()));
+        game_stats.get(playerOut).setSteal(Integer.parseInt(tv.getText().toString()));
         tv = (TextView)findViewById(stats_tv[pos][10]);
-        game_stats[selection].setTurnover(Integer.parseInt(tv.getText().toString()));
+        game_stats.get(playerOut).setTurnover(Integer.parseInt(tv.getText().toString()));
         tv = (TextView)findViewById(stats_tv[pos][11]);
-        game_stats[selection].setCharge(Integer.parseInt(tv.getText().toString()));
+        game_stats.get(playerOut).setCharge(Integer.parseInt(tv.getText().toString()));
+
+
 
     }
 

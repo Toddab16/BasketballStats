@@ -27,6 +27,8 @@
         </activity>
         <activity android:name=".NewStats">
         </activity>
+        <activity android:name=".ViewStats">
+        </activity>
 
     </application>
 

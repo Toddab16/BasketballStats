@@ -59,6 +59,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button viewSchedule = (Button) findViewById(R.id.view_schedule_button);
         viewSchedule.setOnClickListener(this);
+
+        Button viewGameStats = (Button) findViewById(R.id.game_stats_button);
+        viewGameStats.setOnClickListener(this);
+
+        Button viewSeasonStats = (Button) findViewById(R.id.season_stats_button);
+        viewSeasonStats.setOnClickListener(this);
+
+        Button viewPlayerStats = (Button) findViewById(R.id.player_stats_button);
+        viewPlayerStats.setOnClickListener(this);
     }
 
     @Override
@@ -75,18 +84,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Date dateTest = new Date();
 
         // checkPermission();
-
-        GameModel game = new GameModel();
-        game.setBoys_jv(dateTest);
-        game.setBoys_v(dateTest);
-        game.setGirls_jv(dateTest);
-        game.setGirls_v(dateTest);
-        game.setGame_date(dateTest);
-        game.setLocation("Clarksville");
-        game.setOpp_name("Broncos");
-        game.setVenue("Arena");
-
-        game = dataSource.createGame(game);
 
         /*
         PlayerModel player = new PlayerModel();
@@ -142,9 +139,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.start_game_button:
-                gamesDialog();
+                gamesDialog(0);
                 break;
-
+            case R.id.game_stats_button:
+                gamesDialog(1);
+                break;
+            case R.id.season_stats_button:
+                intent = new Intent(getApplicationContext(), ViewStats.class);
+                intent.putExtra("MODE", 2);
+                startActivity(intent);
+                break;
+            case R.id.player_stats_button:
+                playersDialog();
+                break;
             default:
                 break;
         }
@@ -190,7 +197,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void gamesDialog () {
+    public void gamesDialog (int mode) {
+        final int mode_select = mode;
         final List<GameModel> games = dataSource.getAllGames();
         CharSequence[] games_list = new CharSequence[games.size()];
         DateFormat df = new SimpleDateFormat("MM/dd");
@@ -210,10 +218,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         builder.setItems(games_list, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                Intent intent = new Intent (getApplicationContext(), NewStats.class);
-                intent.putExtra("GAME_ID",games.get(item).getGame_id());
-                intent.putExtra("OPP", games.get(item).getOpp_name());
-                startActivity(intent);
+                if (mode_select == 0) {
+                    Intent intent = new Intent(getApplicationContext(), NewStats.class);
+                    intent.putExtra("GAME_ID", games.get(item).getGame_id());
+                    intent.putExtra("OPP", games.get(item).getOpp_name());
+                    startActivity(intent);
+                }
+                if (mode_select == 1) {
+                    Intent intent = new Intent(getApplicationContext(), ViewStats.class);
+                    intent.putExtra("GAME_ID", games.get(item).getGame_id());
+                    intent.putExtra("OPP", games.get(item).getOpp_name());
+                    intent.putExtra("MODE", 1);
+                    startActivity(intent);
+                }
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+
+    }
+
+
+    public void playersDialog () {
+        final List<PlayerModel> players = dataSource.getAllPlayers();
+        CharSequence[] players_list = new CharSequence[players.size()];
+        for (int i = 0; i < players.size(); i++) {
+            players_list[i] = Integer.toString(players.get(i).getNumber()) + "     " + players.get(i).getLast_name() + ", " + players.get(i).getFirst_name();
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Choose Player");
+
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.setItems(players_list, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                    Intent intent = new Intent(getApplicationContext(), ViewStats.class);
+                    intent.putExtra("PLAYER_ID", players.get(item).getPlayer_id());
+                    intent.putExtra("MODE", 3);
+                    startActivity(intent);
             }
         });
         AlertDialog alert = builder.create();
