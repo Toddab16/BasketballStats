@@ -22,6 +22,8 @@ public class DbDataSource {
     private SQLiteDatabase database;
     private MySqlLiteHelper databaseHelper;
 
+    private String insertQuery, updateQuery;
+
     public DbDataSource(Context context) {
         databaseHelper = new MySqlLiteHelper(context);
     }
@@ -35,18 +37,12 @@ public class DbDataSource {
     }
 
 
+    public void runQuery(String query) {
+        database.execSQL(query);
+    }
+
     public GameModel createGame(GameModel gameModel) {
         ContentValues contentValues = new ContentValues();
-
-        contentValues.put(MySqlLiteHelper.GameColumns.season_id.toString(), gameModel.getSeason_id());
-        contentValues.put(MySqlLiteHelper.GameColumns.game_date.toString(), gameModel.getGame_date().toString());
-        contentValues.put(MySqlLiteHelper.GameColumns.opp_name.toString(), gameModel.getOpp_name().toString());
-        contentValues.put(MySqlLiteHelper.GameColumns.location.toString(), gameModel.getLocation().toString());
-        contentValues.put(MySqlLiteHelper.GameColumns.venue.toString(), gameModel.getVenue().toString());
-        contentValues.put(MySqlLiteHelper.GameColumns.girls_jv.toString(), gameModel.getGirls_jv().toString());
-        contentValues.put(MySqlLiteHelper.GameColumns.boys_jv.toString(), gameModel.getBoys_jv().toString());
-        contentValues.put(MySqlLiteHelper.GameColumns.girls_v.toString(), gameModel.getGirls_v().toString());
-        contentValues.put(MySqlLiteHelper.GameColumns.boys_v.toString(), gameModel.getBoys_v().toString());
 
         if(gameModel.getGame_id() != -99)
         {
