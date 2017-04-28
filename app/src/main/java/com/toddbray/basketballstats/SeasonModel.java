@@ -5,7 +5,15 @@ package com.toddbray.basketballstats;
  */
 
 public class SeasonModel {
-    private int season_id, season_name;
+    private int android_id, season_id, season_name;
+
+    public int getAndroid_id() {
+        return android_id;
+    }
+
+    public void setAndroid_id(int game_id) {
+        this.android_id = android_id;
+    }
 
     public int getSeason_id() {
         return season_id;

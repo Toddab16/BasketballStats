@@ -10,6 +10,7 @@ import java.util.Date;
 
 public class GameModel {
 
+    private int android_id;
     private int game_id;
     private int season_id;
     private Date game_date, girls_jv, boys_jv, girls_v, boys_v;
@@ -19,7 +20,14 @@ public class GameModel {
 
     public GameModel() {
         game_id = -99;
-        season_id = -99;
+    }
+
+    public int getAndroid_id() {
+        return android_id;
+    }
+
+    public void setAndroid_id(int game_id) {
+        this.android_id = android_id;
     }
 
     public int getGame_id() {

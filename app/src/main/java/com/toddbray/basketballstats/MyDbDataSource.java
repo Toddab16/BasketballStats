@@ -2,7 +2,6 @@ package com.toddbray.basketballstats;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.StrictMode;
 import android.provider.Settings;
 
 import java.sql.Connection;
@@ -11,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +30,6 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
 
     private String insertQuery;
     private String updateQuery;
-    private String allQuery;
 
     /*
     Synchronize MySQL
@@ -59,6 +56,8 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
     @Override
     protected String doInBackground(Context... contexts) {
         try {
+            // TODO: Implement Progress Update
+
             // Open SQLite connection
             DbDataSource sqLite = new DbDataSource(contexts[0]);
 
@@ -152,13 +151,8 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                 sqLite.runQuery(updateQuery);
             }
 
-            ///////////////////////// END SEASON DATA //////////////////////////////////////////////////
+            ///////////////////////// END SEASON DATA //////////////////////////////////////////////
 
-            /*
-
-
-            rs.close();
-            */
             con.close();
             return result;
         }

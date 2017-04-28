@@ -99,7 +99,10 @@ public class DbDataSource {
         GameModel gameModel = new GameModel();
 
         // Build Integers
-        int num = cursor.getInt(MySqlLiteHelper.GameColumns.game_id.ordinal());
+        int num = cursor.getInt(MySqlLiteHelper.GameColumns.android_id.ordinal());
+        gameModel.setAndroid_id(num);
+
+        num = cursor.getInt(MySqlLiteHelper.GameColumns.game_id.ordinal());
         gameModel.setGame_id(num);
 
         num = cursor.getInt(MySqlLiteHelper.GameColumns.season_id.ordinal());
@@ -137,6 +140,7 @@ public class DbDataSource {
     public PlayerModel createPlayer(PlayerModel playerModel) {
         ContentValues contentValues = new ContentValues();
 
+        contentValues.put(MySqlLiteHelper.PlayerColumns.android_id.toString(), playerModel.getAndroid_id());
         contentValues.put(MySqlLiteHelper.PlayerColumns.first_name.toString(), playerModel.getFirst_name().toString());
         contentValues.put(MySqlLiteHelper.PlayerColumns.last_name.toString(), playerModel.getLast_name().toString());
         contentValues.put(MySqlLiteHelper.PlayerColumns.year.toString(), playerModel.getYear().toString());
@@ -180,7 +184,10 @@ public class DbDataSource {
         PlayerModel playerModel = new PlayerModel();
 
         // Build Integers
-        int num = cursor.getInt(MySqlLiteHelper.PlayerColumns.player_id.ordinal());
+        int num = cursor.getInt(MySqlLiteHelper.PlayerColumns.android_id.ordinal());
+        playerModel.setAndroid_id(num);
+
+        num = cursor.getInt(MySqlLiteHelper.PlayerColumns.player_id.ordinal());
         playerModel.setPlayer_id(num);
 
         num = cursor.getInt(MySqlLiteHelper.PlayerColumns.number.ordinal());
@@ -252,7 +259,13 @@ public class DbDataSource {
         StatModel statModel = new StatModel();
 
         // Build Integers
-        int num = cursor.getInt(MySqlLiteHelper.StatColumns.game_id.ordinal());
+        int num = cursor.getInt(MySqlLiteHelper.StatColumns.android_id.ordinal());
+        statModel.setAndroid_id(num);
+
+        num = cursor.getInt(MySqlLiteHelper.StatColumns.stat_id.ordinal());
+        statModel.setStat_id(num);
+
+        num = cursor.getInt(MySqlLiteHelper.StatColumns.game_id.ordinal());
         statModel.setGame_id(num);
 
         num = cursor.getInt(MySqlLiteHelper.StatColumns.player_id.ordinal());
@@ -341,7 +354,10 @@ public class DbDataSource {
         SeasonModel seasonModel = new SeasonModel();
 
         // Build Integers
-        int num = cursor.getInt(MySqlLiteHelper.PlayerColumns.player_id.ordinal());
+        int num = cursor.getInt(MySqlLiteHelper.PlayerColumns.android_id.ordinal());
+        seasonModel.setAndroid_id(num);
+
+        num = cursor.getInt(MySqlLiteHelper.PlayerColumns.player_id.ordinal());
         seasonModel.setSeason_id(num);
 
         num = cursor.getInt(MySqlLiteHelper.PlayerColumns.number.ordinal());

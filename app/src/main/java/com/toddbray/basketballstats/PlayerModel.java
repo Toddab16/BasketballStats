@@ -6,8 +6,16 @@ package com.toddbray.basketballstats;
 
 public class PlayerModel {
 
-    private int player_id, number;
+    private int android_id, player_id, number;
     private String first_name, last_name, year;
+
+    public int getAndroid_id() {
+        return android_id;
+    }
+
+    public void setAndroid_id(int game_id) {
+        this.android_id = android_id;
+    }
 
     public PlayerModel() {
         player_id = -99;
