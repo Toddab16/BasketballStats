@@ -10,7 +10,7 @@ public class StatModel {
             three_pointer, two_pointer_made, three_pointer_made, free_throw, free_throw_made, charge;
 
     public StatModel() {
-        stat_id = -99;
+        stat_id = MySqlLiteHelper.NEW_ROW;
     }
 
     public int getAndroid_id() {

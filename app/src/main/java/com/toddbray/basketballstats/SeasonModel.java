@@ -7,6 +7,10 @@ package com.toddbray.basketballstats;
 public class SeasonModel {
     private int android_id, season_id, season_name;
 
+    public SeasonModel() {
+        season_id = MySqlLiteHelper.NEW_ROW;
+    }
+
     public int getAndroid_id() {
         return android_id;
     }

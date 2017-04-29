@@ -19,7 +19,7 @@ public class GameModel {
     private String venue;
 
     public GameModel() {
-        game_id = -99;
+        game_id = MySqlLiteHelper.NEW_ROW;
     }
 
     public int getAndroid_id() {

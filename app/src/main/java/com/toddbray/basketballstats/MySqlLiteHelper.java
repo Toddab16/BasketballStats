@@ -13,6 +13,7 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "bbstattracker.sqlite";
     private static final int DB_VERSION = 1;
 
+    public static final int NEW_ROW = 99;
     public static final String GAME_TABLE = "Game";
     public static final String PLAYER_TABLE = "Player";
     public static final String STAT_TABLE = "Stats";

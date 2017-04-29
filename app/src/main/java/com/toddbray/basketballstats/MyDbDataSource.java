@@ -192,7 +192,8 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
     private void createGameQuery(GameModel gameModel) {
 
         insertQuery = "INSERT OR IGNORE INTO " + MySqlLiteHelper.GAME_TABLE +
-                " VALUES ( "+ gameModel.getGame_id() + " , " +
+                " VALUES ( "+ gameModel.getAndroid_id() + " , " +
+                gameModel.getGame_id() + " , " +
                 gameModel.getSeason_id() + " , " +
                 "'" + gameModel.getGame_date().toString() + "' , " +
                 "'" + gameModel.getLocation() + "' , " +
@@ -204,7 +205,6 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                 "'" + gameModel.getOpp_name() + "'" +
                 " )";
 
-
         updateQuery = "UPDATE " + MySqlLiteHelper.GAME_TABLE + " " +
                 "SET " + MySqlLiteHelper.GameColumns.season_id.toString() + " = " + gameModel.getSeason_id() + " , " +
                 "SET " + MySqlLiteHelper.GameColumns.game_date.toString() + " = '" + gameModel.getGame_date().toString() + "' , " +
@@ -215,7 +215,8 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                 "SET " + MySqlLiteHelper.GameColumns.girls_v.toString() + " = '" + gameModel.getGirls_v().toString() + "' , " +
                 "SET " + MySqlLiteHelper.GameColumns.boys_v.toString() + " = '" + gameModel.getBoys_v().toString() + "' , " +
                 "SET " + MySqlLiteHelper.GameColumns.opp_name.toString() + " = '" + gameModel.getOpp_name() + "' " +
-                "WHERE " + MySqlLiteHelper.GameColumns.game_id.toString() + " = " + gameModel.getGame_id();
+                "WHERE " + MySqlLiteHelper.GameColumns.android_id.toString() + " = " + gameModel.getAndroid_id() +
+                " AND " + MySqlLiteHelper.GameColumns.game_id.toString() + " = " + gameModel.getGame_id();
     }
 
     private List<GameModel> getAllGames(Statement st) throws SQLException {
@@ -238,6 +239,7 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
     private GameModel resultSetToGameModel(ResultSet rs) throws SQLException {
         GameModel gameModel = new GameModel();
 
+        gameModel.setAndroid_id(rs.getInt(MySqlLiteHelper.GameColumns.android_id.toString()));
         gameModel.setGame_id(rs.getInt(MySqlLiteHelper.GameColumns.game_id.toString()));
         gameModel.setSeason_id(rs.getInt(MySqlLiteHelper.GameColumns.season_id.toString()));
         gameModel.setGame_date(rs.getDate(MySqlLiteHelper.GameColumns.game_date.toString()));
@@ -255,7 +257,8 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
     private void createPlayerQuery(PlayerModel playerModel) {
 
         insertQuery = "INSERT OR IGNORE INTO " + MySqlLiteHelper.PLAYER_TABLE +
-                " VALUES ( "+ playerModel.getPlayer_id() + " , " +
+                " VALUES ( "+ playerModel.getAndroid_id() + " , " +
+                playerModel.getPlayer_id() + " , " +
                 "'" + playerModel.getFirst_name() + "' , " +
                 "'" + playerModel.getLast_name() + "' , " +
                 "'" + playerModel.getYear() + "' , " +
@@ -267,7 +270,8 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                 "SET " + MySqlLiteHelper.PlayerColumns.last_name.toString() + " = '" + playerModel.getLast_name() + "' , " +
                 "SET " + MySqlLiteHelper.PlayerColumns.year.toString() + " = '" + playerModel.getYear() + "' , " +
                 "SET " + MySqlLiteHelper.PlayerColumns.number.toString() + " = '" + playerModel.getNumber() + "' " +
-                "WHERE " + MySqlLiteHelper.GameColumns.game_id.toString() + " = " + playerModel.getPlayer_id();
+                "WHERE " + MySqlLiteHelper.PlayerColumns.android_id.toString() + " = " + playerModel.getAndroid_id() +
+                " AND " + MySqlLiteHelper.PlayerColumns.player_id.toString() + " = " + playerModel.getPlayer_id();
     }
 
     private List<PlayerModel> getAllPlayers(Statement st) throws SQLException {
@@ -290,6 +294,7 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
     private PlayerModel resultSetToPlayerModel(ResultSet rs) throws SQLException {
         PlayerModel playerModel = new PlayerModel();
 
+        playerModel.setAndroid_id(rs.getInt(MySqlLiteHelper.PlayerColumns.android_id.toString()));
         playerModel.setPlayer_id(rs.getInt(MySqlLiteHelper.PlayerColumns.player_id.toString()));
         playerModel.setFirst_name(rs.getString(MySqlLiteHelper.PlayerColumns.first_name.toString()));
         playerModel.setLast_name(rs.getString(MySqlLiteHelper.PlayerColumns.last_name.toString()));
@@ -302,7 +307,9 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
     private void createStatQuery(StatModel statModel) {
 
         insertQuery = "INSERT OR IGNORE INTO " + MySqlLiteHelper.STAT_TABLE +
-                " VALUES ( "+ statModel.getGame_id() + " , " +
+                " VALUES ( "+ statModel.getAndroid_id() + " , " +
+                statModel.getStat_id() + " , " +
+                statModel.getGame_id() + " , " +
                 statModel.getPlayer_id() + " , " +
                 statModel.getO_rebound() + " , " +
                 statModel.getD_rebound() + " , " +
@@ -333,7 +340,8 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                 "SET " + MySqlLiteHelper.StatColumns.free_throw.toString() + " = " + statModel.getFree_throw() + " , " +
                 "SET " + MySqlLiteHelper.StatColumns.free_throw_made.toString() + " = " + statModel.getFree_throw_made() + " , " +
                 "SET " + MySqlLiteHelper.StatColumns.charge.toString() + " = " + statModel.getCharge() + " " +
-                "WHERE " + MySqlLiteHelper.StatColumns.game_id.toString() + " = " + statModel.getGame_id();
+                "WHERE " + MySqlLiteHelper.StatColumns.android_id.toString() + " = " + statModel.getAndroid_id() +
+                " AND " + MySqlLiteHelper.StatColumns.stat_id.toString() + " = " + statModel.getStat_id();
     }
 
     private List<StatModel> getAllStats(Statement st) throws SQLException {
@@ -356,6 +364,8 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
     private StatModel resultSetToStatModel(ResultSet rs) throws SQLException {
         StatModel statModel = new StatModel();
 
+        statModel.setAndroid_id(rs.getInt(MySqlLiteHelper.StatColumns.android_id.toString()));
+        statModel.setStat_id(rs.getInt(MySqlLiteHelper.StatColumns.stat_id.toString()));
         statModel.setGame_id(rs.getInt(MySqlLiteHelper.StatColumns.game_id.toString()));
         statModel.setPlayer_id(rs.getInt(MySqlLiteHelper.StatColumns.player_id.toString()));
         statModel.setO_rebound(rs.getInt(MySqlLiteHelper.StatColumns.o_rebound.toString()));
@@ -377,13 +387,15 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
     private void createSeasonQuery(SeasonModel seasonModel) {
 
         insertQuery = "INSERT OR IGNORE INTO " + MySqlLiteHelper.SEASON_TABLE +
-                " VALUES ( "+ seasonModel.getSeason_id() + " , " +
+                " VALUES ( "+ seasonModel.getAndroid_id() + " , " +
+                seasonModel.getSeason_id() + " , " +
                 seasonModel.getSeason_name() +
                 " )";
 
         updateQuery = "UPDATE " + MySqlLiteHelper.SEASON_TABLE + " " +
                 "SET " + MySqlLiteHelper.SeasonColumns.season_name.toString() + " = " + seasonModel.getSeason_name() + " " +
-                "WHERE " + MySqlLiteHelper.SeasonColumns.season_id.toString() + " = " + seasonModel.getSeason_id();
+                "WHERE " + MySqlLiteHelper.SeasonColumns.android_id.toString() + " = " + seasonModel.getAndroid_id() +
+                " AND " + MySqlLiteHelper.SeasonColumns.season_id.toString() + " = " + seasonModel.getSeason_id();
     }
 
     private List<SeasonModel> getAllSeasons(Statement st) throws SQLException {
@@ -406,6 +418,7 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
     private SeasonModel resultSetToSeasonModel(ResultSet rs) throws SQLException {
         SeasonModel seasonModel = new SeasonModel();
 
+        seasonModel.setAndroid_id(rs.getInt(MySqlLiteHelper.SeasonColumns.android_id.toString()));
         seasonModel.setSeason_id(rs.getInt(MySqlLiteHelper.SeasonColumns.season_id.toString()));
         seasonModel.setSeason_name(rs.getInt(MySqlLiteHelper.SeasonColumns.season_name.toString()));
 

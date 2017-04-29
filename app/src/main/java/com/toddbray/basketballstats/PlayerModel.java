@@ -18,7 +18,7 @@ public class PlayerModel {
     }
 
     public PlayerModel() {
-        player_id = -99;
+        player_id = MySqlLiteHelper.NEW_ROW;
     }
 
     public int getPlayer_id() {
