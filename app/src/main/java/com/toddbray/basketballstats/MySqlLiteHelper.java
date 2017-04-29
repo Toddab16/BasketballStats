@@ -103,8 +103,8 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         Log.i("TEST..............", "Database Table Created!");
         String sql = "CREATE TABLE " + GAME_TABLE + " (" +
-                GameColumns.android_id + " INTEGER NOT NULL , " +
-                GameColumns.game_id + " INTEGER AUTOINCREMENT NOT NULL  UNIQUE , " +
+                GameColumns.android_id + " TEXT NOT NULL , " +
+                GameColumns.game_id + " INTEGER PRIMARY KEY AUTOINCREMENT , " +
                 GameColumns.season_id + " INTEGER NOT NULL , " +
                 GameColumns.game_date + " TEXT NOT NULL , " +
                 GameColumns.location + " TEXT NOT NULL , " +
@@ -113,24 +113,24 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
                 GameColumns.boys_jv + " TEXT , " +
                 GameColumns.girls_v + " TEXT , " +
                 GameColumns.boys_v + " TEXT , " +
-                GameColumns.opp_name + " TEXT NOT NULL " +
-                "PRIMARY KEY ( " + GameColumns.android_id + " , " + StatColumns.game_id + " ))";
+                GameColumns.opp_name + " TEXT NOT NULL , " +
+                "UNIQUE ( " + GameColumns.android_id + " , " + GameColumns.game_id + " ) ON CONFLICT IGNORE )"; // TODO: Verify we want to IGNORE here or REPLACE
 
         db.execSQL(sql);
 
         sql = "CREATE TABLE " + PLAYER_TABLE + " (" +
-                PlayerColumns.android_id + " INTEGER NOT NULL , " +
-                PlayerColumns.player_id + " INTEGER AUTOINCREMENT  NOT NULL  UNIQUE , " +
+                PlayerColumns.android_id + " TEXT NOT NULL , " +
+                PlayerColumns.player_id + " INTEGER PRIMARY KEY AUTOINCREMENT , " +
                 PlayerColumns.first_name + " TEXT NOT NULL , " +
                 PlayerColumns.last_name + " TEXT NOT NULL , " +
                 PlayerColumns.year + " TEXT NOT NULL , " +
-                PlayerColumns.number + " TEXT NOT NULL " +
-                "PRIMARY KEY ( " + PlayerColumns.android_id + " , " + PlayerColumns.player_id + " ))";
+                PlayerColumns.number + " TEXT NOT NULL ," +
+                "UNIQUE ( " + PlayerColumns.android_id + " , " + PlayerColumns.player_id + " ) ON CONFLICT IGNORE )"; // TODO: Verify we want to IGNORE here or REPLACE
         db.execSQL(sql);
 
         sql = "CREATE TABLE " + STAT_TABLE + " (" +
-                StatColumns.android_id + " INTEGER NOT NULL , " +
-                StatColumns.stat_id + " INTEGER AUTOINCREMENT  NOT NULL  UNIQUE , " +
+                StatColumns.android_id + " TEXT NOT NULL , " +
+                StatColumns.stat_id + " INTEGER PRIMARY KEY AUTOINCREMENT , " +
                 StatColumns.game_id + " INTEGER NOT NULL , " +
                 StatColumns.player_id + " INTEGER NOT NULL , " +
                 StatColumns.o_rebound + " INTEGER NOT NULL DEFAULT 0 , " +
@@ -145,14 +145,14 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
                 StatColumns.free_throw + " INTEGER NOT NULL DEFAULT 0 , " +
                 StatColumns.free_throw_made + " INTEGER NOT NULL DEFAULT 0 , " +
                 StatColumns.charge + " INTEGER NOT NULL DEFAULT 0 , " +
-                "PRIMARY KEY ( " + StatColumns.android_id + " , " + StatColumns.stat_id + " ))";
+                "UNIQUE ( " + StatColumns.android_id + " , " + StatColumns.stat_id + " ) ON CONFLICT IGNORE )"; // TODO: Verify we want to IGNORE here or REPLACE
         db.execSQL(sql);
 
         sql = "CREATE TABLE " + SEASON_TABLE + " (" +
-                SeasonColumns.android_id + " INTEGER NOT NULL , " +
-                SeasonColumns.season_id + " INTEGER AUTOINCREMENT NOT NULL UNIQUE , " +
-                SeasonColumns.season_name + " INTEGER NOT NULL " +
-                "PRIMARY KEY ( " + SeasonColumns.android_id + " , " + SeasonColumns.season_id + " ))";
+                SeasonColumns.android_id + " TEXT NOT NULL , " +
+                SeasonColumns.season_id + " INTEGER PRIMARY KEY AUTOINCREMENT , " +
+                SeasonColumns.season_name + " INTEGER NOT NULL ," +
+                "UNIQUE ( " + SeasonColumns.android_id + " , " + SeasonColumns.season_id + " ) ON CONFLICT IGNORE )"; // TODO: Verify we want to IGNORE here or REPLACE
         db.execSQL(sql);
     }
 

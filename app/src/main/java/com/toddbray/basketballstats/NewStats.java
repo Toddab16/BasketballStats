@@ -3,6 +3,7 @@ package com.toddbray.basketballstats;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,6 +28,10 @@ import java.util.List;
  */
 
 public class NewStats extends AppCompatActivity {
+
+    // This value only works on physical devices
+    //private String m_androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+    private String m_androidId = "Todd Bray Marshmallow";
 
     private Button buttonList[][] = new Button[5][12];
     private Button lineupList[] = new Button[5];
@@ -93,11 +98,11 @@ public class NewStats extends AppCompatActivity {
         }
 
         for (int i = 0; i < rosterSize; i++) {
-            Boolean b = db.checkStat(players.get(i).getPlayer_id(),game_id);
+            Boolean b = db.checkStat(players.get(i).getPlayer_id(),game_id, m_androidId);
             if (b) {
-                game_stats.put(players.get(i).getPlayer_id(), db.getStat(players.get(i).getPlayer_id(),game_id));
+                game_stats.put(players.get(i).getPlayer_id(), db.getStat(players.get(i).getPlayer_id(),game_id, m_androidId));
             } else {
-                StatModel stat = new StatModel();
+                StatModel stat = new StatModel(m_androidId);
                 stat.setPlayer_id(players.get(i).getPlayer_id());
                 game_stats.put(players.get(i).getPlayer_id(), stat);
 
@@ -176,7 +181,7 @@ public class NewStats extends AppCompatActivity {
                 }
 
                 for (int i = 0; i < rosterSize; i++) {
-                    Boolean b = db.checkStat(players.get(i).getPlayer_id(),game_id);
+                    Boolean b = db.checkStat(players.get(i).getPlayer_id(),game_id, m_androidId);
                     if (game_stats.get(players.get(i).getPlayer_id()).getGame_id() == game_id && !b) {
                         db.createStat(game_stats.get(players.get(i).getPlayer_id()));
                     }
@@ -200,7 +205,7 @@ public class NewStats extends AppCompatActivity {
         bench_ids.removeAll(lineup);
         final List<String> bench = new ArrayList<String>();
         for (int i = 0; i < bench_ids.size(); i++) {
-            PlayerModel pm = db.getPlayer(bench_ids.get(i));
+            PlayerModel pm = db.getPlayer(bench_ids.get(i), m_androidId);
             bench.add(Integer.toString(pm.getNumber()) + " " + pm.getFirst_name() + " " + pm.getLast_name());
         }
         CharSequence[] benchChar = bench.toArray(new CharSequence[bench.size()]);
@@ -250,7 +255,7 @@ public class NewStats extends AppCompatActivity {
         game_stats.get(player_id).setGame_id(game_id);
         lineup.set(pos, player_id);
         lineupList[pos] = ((Button) findViewById(lineup_ids[pos]));
-        PlayerModel pm = db.getPlayer(player_id);
+        PlayerModel pm = db.getPlayer(player_id, m_androidId);
         lineupList[pos].setText(Integer.toString(pm.getNumber()));
     }
 

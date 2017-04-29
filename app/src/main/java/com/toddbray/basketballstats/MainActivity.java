@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private DbDataSource dataSource;
     private MyDbDataSource myDataSource;
-    public String m_androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
     private final int GET_INTERNET = 5150;
 
@@ -157,7 +156,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
     // Ask user for permission to save write to external disk
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -237,7 +235,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         alert.show();
 
     }
-
 
     public void playersDialog () {
         final List<PlayerModel> players = dataSource.getAllPlayers();

@@ -2,6 +2,7 @@ package com.toddbray.basketballstats;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -17,7 +18,9 @@ import android.widget.RadioGroup;
 public class NewPlayer extends AppCompatActivity {
 
     DbDataSource db = new DbDataSource(this);
-
+    // This value only works on physical devices
+    //private String m_androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+    private String m_androidId = "Todd Bray Marshmallow";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,7 @@ public class NewPlayer extends AppCompatActivity {
                 et = (EditText)findViewById(R.id.number_editText);
                 int number = Integer.parseInt(et.getText().toString());
 
-                PlayerModel newPlayer = new PlayerModel();
+                PlayerModel newPlayer = new PlayerModel(m_androidId);
 
                 newPlayer.setFirst_name(fname);
                 newPlayer.setLast_name(lname);

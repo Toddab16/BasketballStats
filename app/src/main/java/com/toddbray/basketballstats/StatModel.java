@@ -6,18 +6,20 @@ package com.toddbray.basketballstats;
 
 public class StatModel {
 
-    private int android_id, stat_id, game_id, player_id, o_rebound, d_rebound, assist, steal, turnover, two_pointer,
+    private int stat_id, game_id, player_id, o_rebound, d_rebound, assist, steal, turnover, two_pointer,
             three_pointer, two_pointer_made, three_pointer_made, free_throw, free_throw_made, charge;
+    private String android_id;
 
-    public StatModel() {
+    public StatModel(String android_id) {
         stat_id = MySqlLiteHelper.NEW_ROW;
+        this.android_id = android_id;
     }
 
-    public int getAndroid_id() {
+    public String getAndroid_id() {
         return android_id;
     }
 
-    public void setAndroid_id(int game_id) {
+    public void setAndroid_id(String android_id) {
         this.android_id = android_id;
     }
 
@@ -25,8 +27,8 @@ public class StatModel {
         return stat_id;
     }
 
-    public void setStat_id(int game_id) {
-        this.android_id = stat_id;
+    public void setStat_id(int stat_id) {
+        this.stat_id = stat_id;
     }
 
     public int getTwo_pointer_made() {

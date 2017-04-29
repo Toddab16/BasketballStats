@@ -3,6 +3,7 @@ package com.toddbray.basketballstats;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +28,9 @@ public class NewGame extends AppCompatActivity implements View.OnFocusChangeList
     DbDataSource db = new DbDataSource(this);
     Date date;
     Date [] times = new Date[4];
+    // This value only works on physical devices
+    //private String m_androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+    private String m_androidId = "Todd Bray Marshmallow";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +59,7 @@ public class NewGame extends AppCompatActivity implements View.OnFocusChangeList
                 EditText location = (EditText) findViewById(R.id.location_editText);
                 String loc = location.getText().toString();
 
-                GameModel newGame = new GameModel();
+                GameModel newGame = new GameModel(m_androidId);
                 newGame.setGame_date(date);
                 newGame.setGirls_jv(times[0]);
                 newGame.setBoys_jv(times[1]);

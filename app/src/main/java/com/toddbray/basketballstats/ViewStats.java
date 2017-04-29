@@ -2,6 +2,7 @@ package com.toddbray.basketballstats;
 
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.Gravity;
@@ -29,6 +30,10 @@ public class ViewStats extends AppCompatActivity {
     int game_id = 0;
     int player_id;
     String opp_name;
+
+    // This value only works on physical devices
+    //private String m_androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+    private String m_androidId = "Todd Bray Marshmallow";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +83,7 @@ public class ViewStats extends AppCompatActivity {
     public void createTable() {
         for (int i = 0; i < stats.size(); i++) {
             StatModel currentPlayer = stats.get(i);
-            PlayerModel player = db.getPlayer(currentPlayer.getPlayer_id());
+            PlayerModel player = db.getPlayer(currentPlayer.getPlayer_id(), m_androidId);
             TableRow row = new TableRow(this);
             TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
             row.setLayoutParams(lp);
@@ -86,9 +91,9 @@ public class ViewStats extends AppCompatActivity {
                 displayStat(Integer.toString(player.getNumber()) + "   " + player.getLast_name() + ", " + player.getFirst_name(), row, 0);
             } else if (mode == 3 && game_id == 0) {
                 displayStat("SEASON TOTALS", row, 0);
-                game_id = -99;
+                game_id = MySqlLiteHelper.NEW_ROW;
             } else {
-                GameModel gm = db.getGame(stats.get(i).getGame_id());
+                GameModel gm = db.getGame(stats.get(i).getGame_id(), m_androidId);
                 game_id = gm.getGame_id();
                 DateFormat df = new SimpleDateFormat("MM/dd");
                 displayStat(df.format(gm.getGame_date()) + " " + gm.getOpp_name(), row,  0);
@@ -173,14 +178,14 @@ public class ViewStats extends AppCompatActivity {
     }
 
     public void getGameStats() {
-        stats = db.getGameStats(game_id);
+        stats = db.getGameStats(game_id, m_androidId);
     }
 
     public void getPlayerStats() {
-        if (db.checkStatPlayer(player_id)) {
-            stats.add(db.getSeaonStats(player_id));
+        if (db.checkStatPlayer(player_id, m_androidId)) {
+            stats.add(db.getSeasonStats(player_id, 1, m_androidId)); // TODO: We need to reference a Season_ID where 1 is
         } else {
-            StatModel newPlayer = new StatModel();
+            StatModel newPlayer = new StatModel(m_androidId);
             newPlayer.setPlayer_id(player_id);
             stats.add(newPlayer);
         }
@@ -191,10 +196,10 @@ public class ViewStats extends AppCompatActivity {
         stats = new ArrayList<>();
         List<PlayerModel> players = db.getAllPlayers();
         for (int i = 0; i < players.size(); i++) {
-            if (db.checkStatPlayer(players.get(i).getPlayer_id())) {
-                stats.add(db.getSeaonStats(players.get(i).getPlayer_id()));
+            if (db.checkStatPlayer(players.get(i).getPlayer_id(), m_androidId)) {
+                stats.add(db.getSeasonStats(players.get(i).getPlayer_id(),1, m_androidId)); // TODO: We need to reference a Season_ID where 1 is
             } else {
-                StatModel newPlayer = new StatModel();
+                StatModel newPlayer = new StatModel(m_androidId);
                 newPlayer.setPlayer_id(players.get(i).getPlayer_id());
                 stats.add(newPlayer);
             }
@@ -205,7 +210,7 @@ public class ViewStats extends AppCompatActivity {
     public void displayPlayerHeader() {
         TextView tv = new TextView(this);
         TextView tv2 = new TextView(this);
-        PlayerModel pm = db.getPlayer(player_id);
+        PlayerModel pm = db.getPlayer(player_id, m_androidId);
         tv.setText("#" + Integer.toString(pm.getNumber()) + " " + pm.getFirst_name() + " " + pm.getLast_name());
         tv2.setText("SEASON STATS");
         tv.setGravity(Gravity.CENTER);
@@ -225,7 +230,7 @@ public class ViewStats extends AppCompatActivity {
     }
 
     public void displayGameStats() {
-        stats = db.getPlayerStats(player_id);
+        stats = db.getPlayerStats(player_id, m_androidId);
     }
 
 

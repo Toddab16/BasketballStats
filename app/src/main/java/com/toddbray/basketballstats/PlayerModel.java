@@ -6,19 +6,20 @@ package com.toddbray.basketballstats;
 
 public class PlayerModel {
 
-    private int android_id, player_id, number;
-    private String first_name, last_name, year;
+    private int player_id, number;
+    private String android_id, first_name, last_name, year;
 
-    public int getAndroid_id() {
+    public String getAndroid_id() {
         return android_id;
     }
 
-    public void setAndroid_id(int game_id) {
+    public void setAndroid_id(String android_id) {
         this.android_id = android_id;
     }
 
-    public PlayerModel() {
+    public PlayerModel(String android_id) {
         player_id = MySqlLiteHelper.NEW_ROW;
+        this.android_id = android_id;
     }
 
     public int getPlayer_id() {
