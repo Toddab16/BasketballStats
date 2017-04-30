@@ -104,7 +104,7 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
         Log.i("TEST..............", "Database Table Created!");
         String sql = "CREATE TABLE " + GAME_TABLE + " (" +
                 GameColumns.android_id + " TEXT NOT NULL , " +
-                GameColumns.game_id + " INTEGER PRIMARY KEY AUTOINCREMENT , " +
+                GameColumns.game_id + " INTEGER NOT NULL DEFAULT 0 , " +
                 GameColumns.season_id + " INTEGER NOT NULL , " +
                 GameColumns.game_date + " TEXT NOT NULL , " +
                 GameColumns.location + " TEXT NOT NULL , " +
@@ -120,7 +120,7 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
 
         sql = "CREATE TABLE " + PLAYER_TABLE + " (" +
                 PlayerColumns.android_id + " TEXT NOT NULL , " +
-                PlayerColumns.player_id + " INTEGER PRIMARY KEY AUTOINCREMENT , " +
+                PlayerColumns.player_id + " INTEGER NOT NULL DEFAULT 0 , " +
                 PlayerColumns.first_name + " TEXT NOT NULL , " +
                 PlayerColumns.last_name + " TEXT NOT NULL , " +
                 PlayerColumns.year + " TEXT NOT NULL , " +
@@ -130,7 +130,7 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
 
         sql = "CREATE TABLE " + STAT_TABLE + " (" +
                 StatColumns.android_id + " TEXT NOT NULL , " +
-                StatColumns.stat_id + " INTEGER PRIMARY KEY AUTOINCREMENT , " +
+                StatColumns.stat_id + " INTEGER NOT NULL DEFAULT 0 , " +
                 StatColumns.game_id + " INTEGER NOT NULL , " +
                 StatColumns.player_id + " INTEGER NOT NULL , " +
                 StatColumns.o_rebound + " INTEGER NOT NULL DEFAULT 0 , " +
@@ -150,7 +150,7 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
 
         sql = "CREATE TABLE " + SEASON_TABLE + " (" +
                 SeasonColumns.android_id + " TEXT NOT NULL , " +
-                SeasonColumns.season_id + " INTEGER PRIMARY KEY AUTOINCREMENT , " +
+                SeasonColumns.season_id + " INTEGER NOT NULL DEFAULT 0 , " +
                 SeasonColumns.season_name + " INTEGER NOT NULL ," +
                 "UNIQUE ( " + SeasonColumns.android_id + " , " + SeasonColumns.season_id + " ) ON CONFLICT IGNORE )"; // TODO: Verify we want to IGNORE here or REPLACE
         db.execSQL(sql);
