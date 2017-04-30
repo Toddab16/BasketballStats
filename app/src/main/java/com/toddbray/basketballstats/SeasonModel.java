@@ -6,6 +6,20 @@ package com.toddbray.basketballstats;
 
 public class SeasonModel {
     private int season_id, season_name;
+    private String android_id;
+
+    public SeasonModel(String android_id) {
+        season_id = MySqlLiteHelper.NEW_ROW;
+        this.android_id = android_id;
+    }
+
+    public String getAndroid_id() {
+        return android_id;
+    }
+
+    public void setAndroid_id(String android_id) {
+        this.android_id = android_id;
+    }
 
     public int getSeason_id() {
         return season_id;

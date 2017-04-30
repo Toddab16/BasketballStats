@@ -10,6 +10,7 @@ import java.util.Date;
 
 public class GameModel {
 
+    private String android_id;
     private int game_id;
     private int season_id;
     private Date game_date, girls_jv, boys_jv, girls_v, boys_v;
@@ -17,9 +18,17 @@ public class GameModel {
     private String location;
     private String venue;
 
-    public GameModel() {
-        game_id = -99;
-        season_id = -99;
+    public GameModel(String android_id) {
+        game_id = MySqlLiteHelper.NEW_ROW;
+        this.android_id = android_id;
+    }
+
+    public String getAndroid_id() {
+        return android_id;
+    }
+
+    public void setAndroid_id(String android_id) {
+        this.android_id = android_id;
     }
 
     public int getGame_id() {

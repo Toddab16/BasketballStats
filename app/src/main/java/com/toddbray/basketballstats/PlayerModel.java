@@ -7,10 +7,19 @@ package com.toddbray.basketballstats;
 public class PlayerModel {
 
     private int player_id, number;
-    private String first_name, last_name, year;
+    private String android_id, first_name, last_name, year;
 
-    public PlayerModel() {
-        player_id = -99;
+    public String getAndroid_id() {
+        return android_id;
+    }
+
+    public void setAndroid_id(String android_id) {
+        this.android_id = android_id;
+    }
+
+    public PlayerModel(String android_id) {
+        player_id = MySqlLiteHelper.NEW_ROW;
+        this.android_id = android_id;
     }
 
     public int getPlayer_id() {
