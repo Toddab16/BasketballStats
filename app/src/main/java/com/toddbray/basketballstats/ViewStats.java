@@ -1,31 +1,24 @@
 package com.toddbray.basketballstats;
 
-import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
-import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Todd Desktop on 4/23/2017.
- */
-
 public class ViewStats extends AppCompatActivity {
     DbDataSource db = new DbDataSource(this);
     TableLayout layout;
+    TableRow row;
+    TableRow.LayoutParams lp;
     List<StatModel> stats = new ArrayList<>();
     int mode;
     int game_id = 0;
@@ -41,40 +34,46 @@ public class ViewStats extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_players);
 
+        // Gets extras passed in from Main Activity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            game_id = extras.getInt("GAME_ID");
-            player_id = extras.getInt("PLAYER_ID");
-            opp_name = extras.getString("OPP");
-            mode = extras.getInt("MODE");
+            game_id = extras.getInt(MainActivity.GAME_ID);
+            player_id = extras.getInt(MainActivity.PLAYER_ID);
+            opp_name = extras.getString(MainActivity.OPP);
+            mode = extras.getInt(MainActivity.MODE);
         }
 
+        // opens database
         db.open();
 
         layout = (TableLayout) findViewById(R.id.roster_table);
+        row = new TableRow(this);
+        lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+        row.setLayoutParams(lp);
 
+        // Switch statement to display different stats options
         switch (mode) {
             case 1:
-                displayHead();
-                getGameStats();
-                createTable();
-                db.close();
+                displayHead(); // Displays stat headings
+                getGameStats(); // Loads cumulative game stats into stats list
+                createTable(); // Populates table with stats
+                db.close(); // closes database
                 break;
             case 2:
-                displayHead();
-                getSeasonStats();
-                createTable();
-                db.close();
+                displayHead(); // Displays stat headings
+                getSeasonStats(); // Loads cumulative season stats into stats list
+                createTable(); // Populates table with stats
+                db.close(); // closes database
                 break;
             case 3:
-                getPlayerStats();
-                displayPlayerHeader();
-                displayHead();
-                createTable();
-                displayGameStatsHeader();
-                displayGameStats();
-                createTable();
-                db.close();
+                getPlayerStats(); // Loads cumulative player stats into stats list
+                displayPlayerHeader(); // Displays player information
+                displayHead(); // Displays stat headings
+                createTable(); // Populates table with stats
+                displayGameStatsHeader(); // Displays stat headings
+                displayGameStats(); // Loads individual game stats into stats list
+                createTable(); // Populates table with stats
+                db.close(); // closes database
             default:
                 break;
 
@@ -82,13 +81,19 @@ public class ViewStats extends AppCompatActivity {
 
     }
 
+    /* Function that retrieves and displays stats from Stats List */
     public void createTable() {
         for (int i = 0; i < stats.size(); i++) {
+            // Loads current player
             StatModel currentPlayer = stats.get(i);
             PlayerModel player = db.getPlayer(currentPlayer.getPlayer_id(), m_androidId);
+
+            // Creates new row
             TableRow row = new TableRow(this);
             TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
             row.setLayoutParams(lp);
+
+            // Displays relavent info for the first column
             if (mode != 3) {
                 displayStat(Integer.toString(player.getNumber()) + "   " + player.getLast_name() + ", " + player.getFirst_name(), row, 0);
             } else if (mode == 3 && game_id == 0) {
@@ -100,25 +105,32 @@ public class ViewStats extends AppCompatActivity {
                 DateFormat df = new SimpleDateFormat("MM/dd");
                 displayStat(df.format(gm.getGame_date()) + " " + gm.getOpp_name(), row,  0);
             }
-            displayStat(Integer.toString(currentPlayer.getTwo_pointer_made() + currentPlayer.getThree_pointer_made()), row, 1);
-            displayStat(Integer.toString(currentPlayer.getTwo_pointer() + currentPlayer.getThree_pointer()), row, 1);
-            displayStat(Integer.toString(getPercentage((currentPlayer.getTwo_pointer_made() + currentPlayer.getThree_pointer_made()),(currentPlayer.getTwo_pointer() + currentPlayer.getThree_pointer()))) + "%", row, 1);
-            displayStat(Integer.toString(currentPlayer.getTwo_pointer_made()), row, 1);
-            displayStat(Integer.toString(currentPlayer.getTwo_pointer()), row, 1);
-            displayStat(Integer.toString(getPercentage(currentPlayer.getTwo_pointer_made(),currentPlayer.getTwo_pointer())) + "%", row, 1);
-            displayStat(Integer.toString(currentPlayer.getThree_pointer_made()), row, 1);
-            displayStat(Integer.toString(currentPlayer.getThree_pointer()), row, 1);
-            displayStat(Integer.toString(getPercentage(currentPlayer.getThree_pointer_made(),currentPlayer.getThree_pointer())) + "%", row, 1);
-            displayStat(Integer.toString(currentPlayer.getFree_throw_made()), row, 1);
-            displayStat(Integer.toString(currentPlayer.getFree_throw()), row, 1);
-            displayStat(Integer.toString(getPercentage(currentPlayer.getFree_throw_made(),currentPlayer.getFree_throw())) + "%", row, 1);
-            displayStat(Integer.toString(currentPlayer.getO_rebound() + currentPlayer.getD_rebound()), row, 1);
-            displayStat(Integer.toString(currentPlayer.getO_rebound()), row, 1);
-            displayStat(Integer.toString(currentPlayer.getD_rebound()), row, 1);
-            displayStat(Integer.toString(currentPlayer.getAssist()), row, 1);
-            displayStat(Integer.toString(currentPlayer.getSteal()), row, 1);
-            displayStat(Integer.toString(currentPlayer.getTurnover()), row, 1);
-            displayStat(Integer.toString(currentPlayer.getCharge()), row, 1);
+
+            // Saves stats from stat model into string
+            String stats [] = {Integer.toString(currentPlayer.getTwo_pointer_made() + currentPlayer.getThree_pointer_made()),
+                    Integer.toString(currentPlayer.getTwo_pointer() + currentPlayer.getThree_pointer()),
+                    Integer.toString(getPercentage((currentPlayer.getTwo_pointer_made() + currentPlayer.getThree_pointer_made()),(currentPlayer.getTwo_pointer() + currentPlayer.getThree_pointer()))) + "%",
+                    Integer.toString(currentPlayer.getTwo_pointer_made()),
+                    Integer.toString(currentPlayer.getTwo_pointer()),
+                    Integer.toString(getPercentage(currentPlayer.getTwo_pointer_made(),currentPlayer.getTwo_pointer())) + "%",
+                    Integer.toString(currentPlayer.getThree_pointer_made()),
+                    Integer.toString(currentPlayer.getThree_pointer()),
+                    Integer.toString(getPercentage(currentPlayer.getThree_pointer_made(),currentPlayer.getThree_pointer())) + "%",
+                    Integer.toString(currentPlayer.getFree_throw_made()),
+                    Integer.toString(currentPlayer.getFree_throw()),
+                    Integer.toString(getPercentage(currentPlayer.getFree_throw_made(),currentPlayer.getFree_throw())) + "%",
+                    Integer.toString(currentPlayer.getO_rebound() + currentPlayer.getD_rebound()),
+                    Integer.toString(currentPlayer.getO_rebound()),
+                    Integer.toString(currentPlayer.getD_rebound()),
+                    Integer.toString(currentPlayer.getAssist()),
+                    Integer.toString(currentPlayer.getSteal()),
+                    Integer.toString(currentPlayer.getTurnover()),
+                    Integer.toString(currentPlayer.getCharge())};
+
+            // Loops through array to display stats on screen
+            for (int i2 = 0; i2 < stats.length; i2++) {
+                displayStat(stats[i2], row, 1);
+            }
             layout.addView(row);
 
         }
@@ -126,7 +138,7 @@ public class ViewStats extends AppCompatActivity {
 
     }
 
-
+    /* Creates textview and adds to row */
     public void displayStat(String text, TableRow row, int align) {
         TextView tv = new TextView(this);
         tv.setText(text);
@@ -141,51 +153,38 @@ public class ViewStats extends AppCompatActivity {
         row.addView(tv);
     }
 
+    /* Displays headings for each of the stat categories on screen */
     public void displayHead() {
-        TableRow row = new TableRow(this);
-        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
-        row.setLayoutParams(lp);
         if (mode != 3) {
             displayStat("Player", row, 0);
         }
         else {
             displayStat("", row, 1);
         }
-        displayStat("FGM", row, 1);
-        displayStat("FGA", row, 1);
-        displayStat("FG%", row, 1);
-        displayStat("FG2M", row, 1);
-        displayStat("FG2A", row, 1);
-        displayStat("FG2%", row, 1);
-        displayStat("FG3M", row, 1);
-        displayStat("FG3A", row, 1);
-        displayStat("FG3%", row, 1);
-        displayStat("FTM", row, 1);
-        displayStat("FTA", row, 1);
-        displayStat("FT%", row, 1);
-        displayStat("REB", row, 1);
-        displayStat("OREB", row, 1);
-        displayStat("DREB", row, 1);
-        displayStat("AST", row, 1);
-        displayStat("STL", row, 1);
-        displayStat("TO", row, 1);
-        displayStat("CHG", row, 1);
+        String headers [] = {"FGM", "FGA", "FG%", "FG2M", "FG2A", "FG2%", "FG3M", "FG3A", "FG3%",
+                            "FTM", "FTA", "FT%", "REB", "OREB", "DREB", "AST", "STL", "TO", "CHG"};
+        for (int i = 0; i < headers.length; i++) {
+            displayStat(headers[i], row, 1);
+        }
         layout.addView(row);
     }
 
+    /* Calculates percentage of 2 integer values and returns int */
     public int getPercentage(int i, int i2) {
-        Double percentage = (double) (i) / (double) (i2);
+        double percentage = (double) (i) / (double) (i2);
         percentage *= 100;
-        return percentage.intValue();
+        return (int) Math.round(percentage);
     }
 
+    /* Retrieves game stats from DB and loads them into stats List */
     public void getGameStats() {
         stats = db.getGameStats(game_id, m_androidId);
     }
 
+    /* Retrieves player stats from DB and loads them into stats List */
     public void getPlayerStats() {
         if (db.checkStatPlayer(player_id, m_androidId)) {
-            stats.add(db.getSeasonStats(player_id, season_id, m_androidId)); // TODO: We need to reference a Season_ID where 1 is
+            stats.add(db.getSeasonStats(player_id, season_id, m_androidId));
         } else {
             StatModel newPlayer = new StatModel(m_androidId);
             newPlayer.setPlayer_id(player_id);
@@ -194,6 +193,7 @@ public class ViewStats extends AppCompatActivity {
 
     }
 
+    /* Retrieves season stats from DB and loads them into stats List */
     public void getSeasonStats() {
         stats = new ArrayList<>();
         List<PlayerModel> players = db.getAllPlayers();
@@ -209,6 +209,7 @@ public class ViewStats extends AppCompatActivity {
 
     }
 
+    /* Displays header for individual player stats */
     public void displayPlayerHeader() {
         TextView tv = new TextView(this);
         TextView tv2 = new TextView(this);
@@ -223,6 +224,7 @@ public class ViewStats extends AppCompatActivity {
         layout.addView(tv2);
     }
 
+    /* Displays header for game stats */
     public void displayGameStatsHeader() {
         TextView tv = new TextView(this);
         tv.setText("GAME STATS");
@@ -235,6 +237,16 @@ public class ViewStats extends AppCompatActivity {
         stats = db.getPlayerStats(player_id, m_androidId);
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent iActivity_Main = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(iActivity_Main);
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
 
 }
