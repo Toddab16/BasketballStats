@@ -72,7 +72,7 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
             String[] names = new String[v.length];
             for (int i = 0; i < v.length; i++) {
                 if(i < 3) {
-                    names[i] = "Stats." + v[i].toString();
+                    names[i] = v[i].toString();
                 }else {
                     names[i] = "sum(" + v[i].toString() + ")";
                 }
