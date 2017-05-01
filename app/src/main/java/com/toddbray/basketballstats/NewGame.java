@@ -31,6 +31,7 @@ public class NewGame extends AppCompatActivity implements View.OnFocusChangeList
     // This value only works on physical devices
     //private String m_androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
     private String m_androidId = "Todd Bray Marshmallow";
+    int season_id = 2017;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class NewGame extends AppCompatActivity implements View.OnFocusChangeList
                 String loc = location.getText().toString();
 
                 GameModel newGame = new GameModel(m_androidId);
+                newGame.setSeason_id(season_id);
                 newGame.setGame_date(date);
                 newGame.setGirls_jv(times[0]);
                 newGame.setBoys_jv(times[1]);

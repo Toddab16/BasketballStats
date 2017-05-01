@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -59,6 +60,7 @@ public class DbDataSource {
                 " AND " + MySqlLiteHelper.GameColumns.game_id.toString() + " = '" + gameModel.getGame_id() + "'" );
         }
         else {
+
             int lastId = getLastId(MySqlLiteHelper.SeasonColumns.season_id.toString(), MySqlLiteHelper.SEASON_TABLE) + 1;
 
             database.execSQL("INSERT OR IGNORE INTO " + MySqlLiteHelper.GAME_TABLE +
@@ -74,6 +76,24 @@ public class DbDataSource {
                     "'" + gameModel.getBoys_v().toString() + "' , " +
                     "'" + gameModel.getOpp_name() + "'" +
                     " )");
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MySqlLiteHelper.GameColumns.android_id.toString(), gameModel.getAndroid_id().toString());
+            contentValues.put(MySqlLiteHelper.GameColumns.season_id.toString(), gameModel.getAndroid_id().toString());
+            contentValues.put(MySqlLiteHelper.GameColumns.game_date.toString(), gameModel.getGame_date().toString());
+            contentValues.put(MySqlLiteHelper.GameColumns.opp_name.toString(), gameModel.getOpp_name().toString());
+            contentValues.put(MySqlLiteHelper.GameColumns.location.toString(), gameModel.getLocation().toString());
+            contentValues.put(MySqlLiteHelper.GameColumns.venue.toString(), gameModel.getVenue().toString());
+            contentValues.put(MySqlLiteHelper.GameColumns.girls_jv.toString(), gameModel.getGirls_jv().toString());
+            contentValues.put(MySqlLiteHelper.GameColumns.boys_jv.toString(), gameModel.getBoys_jv().toString());
+            contentValues.put(MySqlLiteHelper.GameColumns.girls_v.toString(), gameModel.getGirls_v().toString());
+            contentValues.put(MySqlLiteHelper.GameColumns.boys_v.toString(), gameModel.getBoys_v().toString());
+
+            long id = database.insert(MySqlLiteHelper.GAME_TABLE,
+                    null, contentValues);
+
+            gameModel.setGame_id((int) id);
+
         }
 
         return gameModel;
@@ -413,16 +433,17 @@ public class DbDataSource {
     // TODO: This one won't work until the multiple table query is properly defined
     public StatModel getSeasonStats(int player_id, int season_id, String android_id) {
         StatModel stats = new StatModel(null);
+        SQLiteQueryBuilder sq = new SQLiteQueryBuilder();
+        sq.setTables(MySqlLiteHelper.STAT_TABLE + " LEFT OUTER JOIN " + MySqlLiteHelper.GAME_TABLE + " ON " + MySqlLiteHelper.STAT_TABLE + "." + MySqlLiteHelper.StatColumns.game_id + " = " + MySqlLiteHelper.GAME_TABLE + "." + MySqlLiteHelper.GameColumns.game_id );
 
         String columns[] = MySqlLiteHelper.SumStatColumns.names();
 
-        String selectString = MySqlLiteHelper.StatColumns.android_id + " = ?" +
-                " AND " + MySqlLiteHelper.StatColumns.player_id + " = ?" +
-                " AND " + MySqlLiteHelper.SeasonColumns.season_id + " = ?";
+        String selectString = MySqlLiteHelper.STAT_TABLE + "." + MySqlLiteHelper.StatColumns.android_id + " = ?" +
+                " AND " + MySqlLiteHelper.StatColumns.player_id + " = ?";
 
-        Cursor cursor = database.query(MySqlLiteHelper.STAT_TABLE,
+        Cursor cursor = sq.query(database,
                 columns,
-                selectString, new String[] {android_id, Integer.toString(player_id), Integer.toString(season_id)}, null, null, null);
+                selectString, new String[] {android_id, Integer.toString(player_id)}, null, null, null);
 
         cursor.moveToNext();
         while (!cursor.isAfterLast()) {
