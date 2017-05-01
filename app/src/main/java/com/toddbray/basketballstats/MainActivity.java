@@ -83,28 +83,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         List<SeasonModel> seasons = dataSource.getAllSeasons();
 
         // TESTING SYNCHRONIZATION HERE
-        // myDataSource.execute(getApplicationContext());
+        //myDataSource.execute(getApplicationContext());
 
         // checkPermission();
 
         // Date dateTest = new Date();
 
-        /*
 
+        /*
         PlayerModel player = new PlayerModel(m_androidId);
-        player.setFirst_name("Brad");
+        player.setFirst_name("Bradley A");
         player.setLast_name("Jordan");
-        player.setNumber(18);
-        player.setYear("Sophomore");
+        player.setNumber(12);
+        player.setYear("Freshmen");
 
         player = dataSource.createPlayer(player);
 
         Date dateTest = new Date();
         GameModel game = new GameModel(m_androidId);
         game.setGame_date(dateTest);
-        game.setVenue("Arena");
-        game.setOpp_name("Gladiators");
-        game.setLocation("Parking Lot");
+        game.setVenue("ArenaAAA");
+        game.setOpp_name("GladiatorsAAA");
+        game.setLocation("Parking LotAAA");
         game.setBoys_jv(dateTest);
         game.setBoys_v(dateTest);
         game.setGirls_jv(dateTest);
@@ -115,11 +115,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         SeasonModel season = new SeasonModel(m_androidId);
 
-        season.setSeason_name(2014);
+        season.setSeason_name(2016);
 
         season = dataSource.createSeason(season);
-
         */
+
 
         /*
         ArrayAdapter<GameModel> adapter = new ArrayAdapter<GameModel>(this,
@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void onClick(View v) {
+
         switch (v.getId()) {
             case R.id.add_player_button:
                 Intent intent = new Intent (this, NewPlayer.class);
