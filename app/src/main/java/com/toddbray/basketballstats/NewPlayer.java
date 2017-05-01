@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 public class NewPlayer extends AppCompatActivity {
 
@@ -45,12 +46,12 @@ public class NewPlayer extends AppCompatActivity {
                 newPlayer.setNumber(number);
                 newPlayer.setYear(grade);
 
-                db.open();
-                db.createPlayer(newPlayer);
-                db.close();
+                    db.open();
+                    db.createPlayer(newPlayer);
+                    db.close();
 
-                Intent intent = new Intent (getApplicationContext(), MainActivity.class);
-                startActivity(intent);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
 
             }
         });
