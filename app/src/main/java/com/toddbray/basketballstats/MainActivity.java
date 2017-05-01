@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
+import java.security.Timestamp;
 import java.util.Date;
 
 import java.text.DateFormat;
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Date dateTest = new Date();
 
         /*
+
         PlayerModel player = new PlayerModel(m_androidId);
         player.setFirst_name("Brad");
         player.setLast_name("Jordan");
@@ -96,9 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         player.setYear("Sophomore");
 
         player = dataSource.createPlayer(player);
-        */
 
-        /*
         Date dateTest = new Date();
         GameModel game = new GameModel(m_androidId);
         game.setGame_date(dateTest);
@@ -112,18 +112,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         game.setSeason_id(1);
 
         game = dataSource.createGame(game);
-        */
-
-        /*
 
         SeasonModel season = new SeasonModel(m_androidId);
 
-        season.setSeason_name(2015);
+        season.setSeason_name(2014);
 
         season = dataSource.createSeason(season);
 
         */
-
 
         /*
         ArrayAdapter<GameModel> adapter = new ArrayAdapter<GameModel>(this,

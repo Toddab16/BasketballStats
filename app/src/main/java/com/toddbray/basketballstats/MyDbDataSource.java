@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.provider.Settings;
 
+import java.security.Timestamp;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -11,6 +12,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -113,7 +115,7 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                 }
             }
             ///////////////////////// END SEASON DATA //////////////////////////////////////////////
-            /*
+
             ///////////////////////// GAME DATA ////////////////////////////////////////////////////
 
             // Send all game data
@@ -135,7 +137,7 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                 }
             }
             ///////////////////////// END GAME DATA ////////////////////////////////////////////////
-            */
+
             ///////////////////////// STAT DATA ////////////////////////////////////////////////////
 
             // Send all stat data
@@ -197,31 +199,74 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
 
     private void createGameQuery(GameModel gameModel, boolean isSQLite) {
 
+        java.sql.Timestamp game_date;
+        java.sql.Timestamp girls_jv;
+        java.sql.Timestamp boys_jv;
+        java.sql.Timestamp girls_v;
+        java.sql.Timestamp boys_v;
+
+        if(!isSQLite) {
+            game_date = new java.sql.Timestamp(gameModel.getGame_date().getTime());
+            girls_jv = new java.sql.Timestamp(gameModel.getGirls_jv().getTime());
+            boys_jv = new java.sql.Timestamp(gameModel.getBoys_jv().getTime());
+            girls_v = new java.sql.Timestamp(gameModel.getGirls_v().getTime());
+            boys_v = new java.sql.Timestamp(gameModel.getBoys_v().getTime());
+        }
+        else {
+            Date date = new Date();
+            game_date = new java.sql.Timestamp(date.getTime());
+            girls_jv = new java.sql.Timestamp(date.getTime());
+            boys_jv = new java.sql.Timestamp(date.getTime());
+            girls_v = new java.sql.Timestamp(date.getTime());
+            boys_v = new java.sql.Timestamp(date.getTime());
+        }
+
         insertQuery = "INSERT ";
         if(isSQLite) insertQuery += "OR";
         insertQuery += " IGNORE INTO " + MySqlLiteHelper.GAME_TABLE +
                 " VALUES ( '"+ gameModel.getAndroid_id().toString() + "' , " +
                 gameModel.getGame_id() + " , " +
-                gameModel.getSeason_id() + " , " +
-                "'" + gameModel.getGame_date().toString() + "' , " +
-                "'" + gameModel.getLocation() + "' , " +
-                "'" + gameModel.getVenue() + "' , " +
-                "'" + gameModel.getGirls_jv().toString() + "' , " +
-                "'" + gameModel.getBoys_jv().toString() + "' , " +
-                "'" + gameModel.getGirls_v().toString() + "' , " +
-                "'" + gameModel.getBoys_v().toString() + "' , " +
-                "'" + gameModel.getOpp_name() + "'" +
-                " )";
+                gameModel.getSeason_id() + " , ";
+        if(isSQLite) insertQuery += "'" + gameModel.getGame_date().toString() + "' , ";
+        else insertQuery += "'" + game_date + "' , ";
+        insertQuery += "'" + gameModel.getLocation() + "' , " +
+            "'" + gameModel.getVenue() + "' , ";
+        if(isSQLite) insertQuery +=
+            "'" + gameModel.getGirls_jv().toString() + "' , " +
+            "'" + gameModel.getBoys_jv().toString() + "' , " +
+            "'" + gameModel.getGirls_v().toString() + "' , " +
+            "'" + gameModel.getBoys_v().toString() + "' , ";
+        else insertQuery +=
+            "'" + girls_jv + "' , " +
+            "'" + boys_jv + "' , " +
+            "'" + girls_v + "' , " +
+            "'" + boys_v + "' , ";
+        insertQuery +=
+            "'" + gameModel.getOpp_name() + "'" +
+            " )";
 
-        updateQuery = "UPDATE " + MySqlLiteHelper.GAME_TABLE + " " +
-                "SET " + MySqlLiteHelper.GameColumns.season_id.toString() + " = " + gameModel.getSeason_id() + " , " +
+        updateQuery =
+            "UPDATE " + MySqlLiteHelper.GAME_TABLE + " " +
+            "SET " + MySqlLiteHelper.GameColumns.season_id.toString() + " = " + gameModel.getSeason_id() + " , " +
+            MySqlLiteHelper.GameColumns.location.toString() + " = '" + gameModel.getLocation() + "' , " +
+            MySqlLiteHelper.GameColumns.venue.toString() + " = '" + gameModel.getVenue() + "' , ";
+        if (isSQLite) {
+            updateQuery +=
                 MySqlLiteHelper.GameColumns.game_date.toString() + " = '" + gameModel.getGame_date().toString() + "' , " +
-                MySqlLiteHelper.GameColumns.location.toString() + " = '" + gameModel.getLocation() + "' , " +
-                MySqlLiteHelper.GameColumns.venue.toString() + " = '" + gameModel.getVenue() + "' , " +
                 MySqlLiteHelper.GameColumns.girls_jv.toString() + " = '" + gameModel.getGirls_jv().toString() + "' , " +
                 MySqlLiteHelper.GameColumns.boys_jv.toString() + " = '" + gameModel.getBoys_jv().toString() + "' , " +
                 MySqlLiteHelper.GameColumns.girls_v.toString() + " = '" + gameModel.getGirls_v().toString() + "' , " +
-                MySqlLiteHelper.GameColumns.boys_v.toString() + " = '" + gameModel.getBoys_v().toString() + "' , " +
+                MySqlLiteHelper.GameColumns.boys_v.toString() + " = '" + gameModel.getBoys_v().toString() + "' , ";
+        }
+        else {
+            updateQuery +=
+            MySqlLiteHelper.GameColumns.game_date.toString() + " = '" + game_date + "' , " +
+            MySqlLiteHelper.GameColumns.girls_jv.toString() + " = '" + girls_jv + "' , " +
+            MySqlLiteHelper.GameColumns.boys_jv.toString() + " = '" + boys_jv + "' , " +
+            MySqlLiteHelper.GameColumns.girls_v.toString() + " = '" + girls_v + "' , " +
+            MySqlLiteHelper.GameColumns.boys_v.toString() + " = '" + boys_v + "' , ";
+        }
+        updateQuery +=
                 MySqlLiteHelper.GameColumns.opp_name.toString() + " = '" + gameModel.getOpp_name() + "' " +
                 "WHERE " + MySqlLiteHelper.GameColumns.android_id.toString() + " = '" + gameModel.getAndroid_id().toString() + "'"+
                 " AND " + MySqlLiteHelper.GameColumns.game_id.toString() + " = " + gameModel.getGame_id();
@@ -246,17 +291,33 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
 
     private GameModel resultSetToGameModel(ResultSet rs) throws SQLException {
         GameModel gameModel = new GameModel(null);
+        java.sql.Timestamp timestamp;
 
         gameModel.setAndroid_id(rs.getString(MySqlLiteHelper.GameColumns.android_id.toString()));
         gameModel.setGame_id(rs.getInt(MySqlLiteHelper.GameColumns.game_id.toString()));
         gameModel.setSeason_id(rs.getInt(MySqlLiteHelper.GameColumns.season_id.toString()));
-        gameModel.setGame_date(rs.getDate(MySqlLiteHelper.GameColumns.game_date.toString()));
+        //gameModel.setGame_date(rs.getDate(MySqlLiteHelper.GameColumns.game_date.toString()));
+        timestamp = rs.getTimestamp(MySqlLiteHelper.GameColumns.game_date.toString());
+        if (timestamp != null)
+            gameModel.setGame_date(new java.util.Date(timestamp.getTime()));
         gameModel.setLocation(rs.getString(MySqlLiteHelper.GameColumns.location.toString()));
         gameModel.setVenue(rs.getString(MySqlLiteHelper.GameColumns.venue.toString()));
-        gameModel.setGirls_jv(rs.getDate(MySqlLiteHelper.GameColumns.girls_jv.toString()));
-        gameModel.setBoys_jv(rs.getDate(MySqlLiteHelper.GameColumns.boys_jv.toString()));
-        gameModel.setGirls_v(rs.getDate(MySqlLiteHelper.GameColumns.girls_v.toString()));
-        gameModel.setBoys_v(rs.getDate(MySqlLiteHelper.GameColumns.boys_v.toString()));
+        //gameModel.setGirls_jv(rs.getDate(MySqlLiteHelper.GameColumns.girls_jv.toString()));
+        timestamp = rs.getTimestamp(MySqlLiteHelper.GameColumns.girls_jv.toString());
+        if (timestamp != null)
+            gameModel.setGirls_jv(new java.util.Date(timestamp.getTime()));
+        //gameModel.setBoys_jv(rs.getDate(MySqlLiteHelper.GameColumns.boys_jv.toString()));
+        timestamp = rs.getTimestamp(MySqlLiteHelper.GameColumns.boys_jv.toString());
+        if (timestamp != null)
+            gameModel.setBoys_jv(new java.util.Date(timestamp.getTime()));
+        //gameModel.setGirls_v(rs.getDate(MySqlLiteHelper.GameColumns.girls_v.toString()));
+        timestamp = rs.getTimestamp(MySqlLiteHelper.GameColumns.girls_v.toString());
+        if (timestamp != null)
+            gameModel.setGirls_v(new java.util.Date(timestamp.getTime()));
+        //gameModel.setBoys_v(rs.getDate(MySqlLiteHelper.GameColumns.boys_v.toString()));
+        timestamp = rs.getTimestamp(MySqlLiteHelper.GameColumns.boys_v.toString());
+        if (timestamp != null)
+            gameModel.setBoys_v(new java.util.Date(timestamp.getTime()));
         gameModel.setOpp_name(rs.getString(MySqlLiteHelper.GameColumns.opp_name.toString()));
 
         return gameModel;
