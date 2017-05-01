@@ -433,15 +433,13 @@ public class DbDataSource {
     // TODO: This one won't work until the multiple table query is properly defined
     public StatModel getSeasonStats(int player_id, int season_id, String android_id) {
         StatModel stats = new StatModel(null);
-        SQLiteQueryBuilder sq = new SQLiteQueryBuilder();
-        sq.setTables(MySqlLiteHelper.STAT_TABLE + " LEFT OUTER JOIN " + MySqlLiteHelper.GAME_TABLE + " ON " + MySqlLiteHelper.STAT_TABLE + "." + MySqlLiteHelper.StatColumns.game_id + " = " + MySqlLiteHelper.GAME_TABLE + "." + MySqlLiteHelper.GameColumns.game_id );
 
         String columns[] = MySqlLiteHelper.SumStatColumns.names();
 
         String selectString = MySqlLiteHelper.STAT_TABLE + "." + MySqlLiteHelper.StatColumns.android_id + " = ?" +
                 " AND " + MySqlLiteHelper.StatColumns.player_id + " = ?";
 
-        Cursor cursor = sq.query(database,
+        Cursor cursor =  database.query(MySqlLiteHelper.STAT_TABLE,
                 columns,
                 selectString, new String[] {android_id, Integer.toString(player_id)}, null, null, null);
 
