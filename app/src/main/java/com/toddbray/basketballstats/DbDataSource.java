@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -182,22 +183,14 @@ public class DbDataSource {
         else {
             int lastId = getLastId(MySqlLiteHelper.PlayerColumns.player_id.toString(), MySqlLiteHelper.PLAYER_TABLE) + 1;
 
-            try {
-                String values = "INSERT OR IGNORE INTO " + MySqlLiteHelper.PLAYER_TABLE +
-                        " VALUES ( '" + playerModel.getAndroid_id() + "' , " +
-                        lastId + " , " +
-                        "'" + playerModel.getFirst_name() + "' , " +
-                        "'" + playerModel.getLast_name() + "' , " +
-                        "'" + playerModel.getYear() + "' , " +
-                        playerModel.getNumber() +
-                        " )";
-
-                database.execSQL(values);
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
+            database.execSQL("INSERT OR IGNORE INTO " + MySqlLiteHelper.PLAYER_TABLE +
+                    " VALUES ( '"+ playerModel.getAndroid_id() + "' , " +
+                    lastId + " , " +
+                    "'" + playerModel.getFirst_name() + "' , " +
+                    "'" + playerModel.getLast_name() + "' , " +
+                    "'" + playerModel.getYear() + "' , " +
+                    playerModel.getNumber() +
+                    " )");
         }
 
         return playerModel;
@@ -421,6 +414,8 @@ public class DbDataSource {
     // TODO: This one won't work until the multiple table query is properly defined
     public StatModel getSeasonStats(int player_id, int season_id, String android_id) {
         StatModel stats = new StatModel(null);
+        SQLiteQueryBuilder sq = new SQLiteQueryBuilder();
+        sq.setTables(MySqlLiteHelper.STAT_TABLE + " LEFT OUTER JOIN " + MySqlLiteHelper.GAME_TABLE + " ON " + MySqlLiteHelper.STAT_TABLE + "." + MySqlLiteHelper.StatColumns.game_id + " = " + MySqlLiteHelper.GAME_TABLE + "." + MySqlLiteHelper.GameColumns.game_id );
 
         String columns[] = MySqlLiteHelper.SumStatColumns.names();
 
