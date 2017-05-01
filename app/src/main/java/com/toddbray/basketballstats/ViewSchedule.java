@@ -1,9 +1,11 @@
 package com.toddbray.basketballstats;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.view.KeyEvent;
 import android.widget.ArrayAdapter;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -19,124 +21,93 @@ import java.util.List;
 
 public class ViewSchedule extends AppCompatActivity {
     DbDataSource db = new DbDataSource(this);
-    private DbDataSource dataSource;
+    TableLayout layout;
+    TableRow row;
+    TableRow.LayoutParams lp;
+    TextView[] tv = new TextView[7];
+    TextView[] tvHead = new TextView[7];
+    String[] headers = {"DATE", "OPPONENT", "LOCATION", "JVG", "JVB", "GIRLS", "BOYS"};
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_schedule);
-
-        db.open();
-        List<GameModel> games = db.getAllGames();
-
-        final int num = games.size();
-        TableLayout layout = (TableLayout) findViewById(R.id.schedule_table);
-
-        TableRow row = new TableRow(this);
-        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+        layout = (TableLayout) findViewById(R.id.schedule_table);
+        row = new TableRow(this);
+        lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
         row.setLayoutParams(lp);
 
-        TextView tvDate = new TextView(this);
-        tvDate.setText("DATE");
-        tvDate.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
-        tvDate.setTextSize(24);
+        // Displays headings for table
+        displayHead();
 
-        TextView tvOpp = new TextView(this);
-        tvOpp.setText("OPPONENT");
-        tvOpp.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 4 ) );
-        tvOpp.setTextSize(24);
+        // Opens database
+        db.open();
 
-        TextView tvLoc = new TextView(this);
-        tvLoc.setText("LOCATION");
-        tvLoc.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
-        tvLoc.setTextSize(24);
+        // Queries database for games and saves them in List
+        List<GameModel> games = db.getAllGames();
 
-        TextView tvgjv = new TextView(this);
-        tvgjv.setText("G JV");
-        tvgjv.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
-        tvgjv.setTextSize(24);
-
-        TextView tvbjv = new TextView(this);
-        tvbjv.setText("B JV");
-        tvbjv.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
-        tvbjv.setTextSize(24);
-
-        TextView tvgv = new TextView(this);
-        tvgv.setText("GIRLS");
-        tvgv.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
-        tvgv.setTextSize(24);
-
-        TextView tvbv = new TextView(this);
-        tvbv.setText("BOYS");
-        tvbv.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
-        tvbv.setTextSize(24);
-
-        row.addView(tvDate);
-        row.addView(tvOpp);
-        row.addView(tvLoc);
-        row.addView(tvgjv);
-        row.addView(tvbjv);
-        row.addView(tvgv);
-        row.addView(tvbv);
-        layout.addView(row);
-
-
-
+        // Loops through list of games
         for (int i = 0; i < games.size(); i++) {
+
+            // Gets game model for game at current position in the loop
             GameModel currentGame = games.get(i);
+
+            // Creates new row in the table
             row = new TableRow(this);
             lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
             row.setLayoutParams(lp);
-            tvDate = new TextView(this);
+
+            // Formats to properly display date and time objects
             DateFormat df = new SimpleDateFormat("MM/dd");
-            tvDate.setText(df.format(currentGame.getGame_date()));
-            tvDate.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
-            tvDate.setTextSize(24);
-            tvOpp = new TextView(this);
-            tvOpp.setText(currentGame.getOpp_name());
-            tvOpp.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 4 ) );
-            tvOpp.setTextSize(24);
-            tvLoc = new TextView(this);
-            tvLoc.setText(currentGame.getLocation());
-            tvLoc.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
-            tvLoc.setTextSize(24);
+            DateFormat tf = new SimpleDateFormat("h:mm");
 
-            tvgjv = new TextView(this);
-            df = new SimpleDateFormat("h:mm");
-            tvgjv.setText(df.format(currentGame.getGirls_jv()));
-            tvgjv.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
-            tvgjv.setTextSize(24);
+            // Saves information about game in an array
+            String[] stats = {df.format(currentGame.getGame_date()), currentGame.getOpp_name(), currentGame.getLocation(), tf.format(currentGame.getGirls_jv()), tf.format(currentGame.getBoys_jv()), tf.format(currentGame.getGirls_v()), tf.format(currentGame.getBoys_v())};
 
-            tvbjv = new TextView(this);
-            tvbjv.setText(df.format(currentGame.getBoys_jv()));
-            tvbjv.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
-            tvbjv.setTextSize(24);
-
-            tvgv = new TextView(this);
-            tvgv.setText(df.format(currentGame.getGirls_v()));
-            tvgv.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
-            tvgv.setTextSize(24);
-
-            tvbv = new TextView(this);
-            tvbv.setText(df.format(currentGame.getBoys_v()));
-            tvbv.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
-            tvbv.setTextSize(24);
-
-            row.addView(tvDate);
-            row.addView(tvOpp);
-            row.addView(tvLoc);
-            row.addView(tvgjv);
-            row.addView(tvbjv);
-            row.addView(tvgv);
-            row.addView(tvbv);
+            // Loops through array to display game information and adds row to table
+            for (int i2 = 0; i2 < stats.length; i2++) {
+                tv[i2] = new TextView(this);
+                tv[i2].setPadding(0,5,0,0);
+                tv[i2].setText(stats[i2]);
+                tv[i2].setTextSize(24);
+                if (i2 == 1 || i2 == 2) {
+                    tv[i2].setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 2 ) );
+                } else {
+                    tv[i2].setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
+                }
+                row.addView(tv[i2]);
+            }
             layout.addView(row);
-
         }
 
-
+        // closes database
         db.close();
     }
 
+    /* Function to display table headings */
+    public void displayHead() {
+        for (int i = 0; i < headers.length; i++) {
+            tvHead[i] = new TextView(this);
+            tvHead[i].setText(headers[i]);
+            tvHead[i].setTextSize(24);
+            if (i == 1 || i == 2) {
+                tvHead[i].setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 2 ) );
+            } else {
+                tvHead[i].setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
+            }
+            row.addView(tvHead[i]);
+        }
+        layout.addView(row);
+    }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
 
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent iActivity_Main = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(iActivity_Main);
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
 }

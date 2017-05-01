@@ -3,29 +3,17 @@ package com.toddbray.basketballstats;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-
-/**
- * Created by Todd Desktop on 4/22/2017.
- */
 
 public class NewStats extends AppCompatActivity {
 
@@ -33,8 +21,13 @@ public class NewStats extends AppCompatActivity {
     //private String m_androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
     private String m_androidId = "Todd Bray Marshmallow";
 
+    // Creates array for stat buttons
     private Button buttonList[][] = new Button[5][12];
+
+    // Creates array for player buttons
     private Button lineupList[] = new Button[5];
+
+    // Arrays of ids for stats buttons
     private static final int[][] buttons = {
             {R.id.fg2m_button1, R.id.fg2a_button1, R.id.fg3m_button1, R.id.fg3a_button1, R.id.ftm_button1, R.id.fta_button1,
             R.id.oreb_button1, R.id.dreb_button1, R.id.ast_button1, R.id.stl_button1, R.id.to_button1, R.id.chg_button1 },
@@ -48,6 +41,7 @@ public class NewStats extends AppCompatActivity {
             R.id.oreb_button5, R.id.dreb_button5, R.id.ast_button5, R.id.stl_button5, R.id.to_button5, R.id.chg_button5}
     };
 
+    // Arrays of ids for stats textViews
     private static final int[][] stats_tv = {
             {R.id.fg2m_textView1, R.id.fg2a_textView1, R.id.fg3m_textView1, R.id.fg3a_textView1, R.id.ftm_textView1, R.id.fta_textView1,
             R.id.oreb_textView1, R.id.dreb_textView1, R.id.ast_textView1, R.id.stl_textView1, R.id.to_textView1, R.id.chg_textView1},
@@ -61,42 +55,52 @@ public class NewStats extends AppCompatActivity {
             R.id.oreb_textView5, R.id.dreb_textView5, R.id.ast_textView5, R.id.stl_textView5, R.id.to_textView5, R.id.chg_textView5}
     };
 
+    // Arrays of ids for player buttons
     private static final int[] lineup_ids = {
       R.id.player1_button, R.id.player2_button, R.id.player3_button, R.id.player4_button, R.id.player5_button
     };
 
-    DbDataSource db = new DbDataSource(this);
-    int game_id;
-    int mode = 0;
-    String opp_name;
-    List<Integer> lineup = new ArrayList<>();
-    int rosterSize;
-    List<PlayerModel> players;
-    HashMap<Integer, StatModel> game_stats = new HashMap<Integer, StatModel>();
 
+    DbDataSource db = new DbDataSource(this);
+    int game_id; // Game id
+    int mode = 0; // Mode used for addition or subtraction of stats
+    String opp_name; // Opponents name displayed at top of screen
+    List<Integer> lineup = new ArrayList<>(); // List containing the player_ids of players currently in the lineup
+    int rosterSize; // Size of roster
+    List<PlayerModel> players; // List of all players on the team
+    HashMap<Integer, StatModel> game_stats = new HashMap<Integer, StatModel>(); // Hashmap to identify statmodel to use, player_id used as the key
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_stats);
+
+        // Gets extras from intent
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            game_id = extras.getInt("GAME_ID");
-            opp_name = extras.getString("OPP");
+            game_id = extras.getInt(MainActivity.GAME_ID);
+            opp_name = extras.getString(MainActivity.OPP);
         }
 
+        // Opens Database
         db.open();
 
+        // Sets textview at the top of the screen to identify the current game opponent
         TextView tv = (TextView)findViewById(R.id.opponent_textView);
         tv.setText(opp_name);
 
+        // Loads all players from the database and saves roster size
         players = db.getAllPlayers();
         rosterSize = players.size();
 
+        // Initializes lineup array
         for (int i = 0; i < 5; i++) {
             lineup.add(0);
         }
 
+        // Gets player stats from database
+        // If stats already exist for the player, loads them into the game
+        // If no stats exist for the player, initializes a new stat model
         for (int i = 0; i < rosterSize; i++) {
             Boolean b = db.checkStat(players.get(i).getPlayer_id(),game_id, m_androidId);
             if (b) {
@@ -109,7 +113,9 @@ public class NewStats extends AppCompatActivity {
             }
         }
 
-
+        // Sets listener for each of the stats buttons
+        // If mode is add - Adds one to stat
+        // If mode is subtract - Subtracts one from stat
         for (int i = 0; i < buttons.length; i++) {
             for (int i2 = 0; i2 < buttons[i].length; i2++) {
                 buttonList[i][i2] = ((Button) findViewById(buttons[i][i2]));
@@ -127,6 +133,9 @@ public class NewStats extends AppCompatActivity {
                                 stat--;
                             }
                             tv.setText(Integer.toString(stat));
+
+                            // Method for 2 point, 3 point and free throw made
+                            // If the made button is presses, also adds one to attempted stat
                             if (it2 == 0 || it2 == 2 || it2 == 4) {
                                 int n = it2 + 1;
                                 tv = (TextView) findViewById(stats_tv[it][n]);
@@ -145,6 +154,7 @@ public class NewStats extends AppCompatActivity {
             }
         }
 
+        // Click event when player jersey is pressed
         for (int i = 0; i < 5; i++) {
             lineupList[i] = ((Button) findViewById(lineup_ids[i]));
             final int it = i;
@@ -156,6 +166,7 @@ public class NewStats extends AppCompatActivity {
             });
         }
 
+        // Switches between add and subtract mode
         Switch sw = (Switch) findViewById(R.id.add_delete_switch);
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -169,6 +180,9 @@ public class NewStats extends AppCompatActivity {
             }
         });
 
+        // Save button click
+        // Subs out all players (So stats will be saved to database)
+        // Writes data to the DB
         Button b = (Button)findViewById(R.id.save_stats_button);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,12 +204,19 @@ public class NewStats extends AppCompatActivity {
 
                     }
                 }
+                Intent intent = new Intent (getApplicationContext(), MainActivity.class);
+                startActivity(intent);
             }
+
+
         });
 
     }
 
 
+    // Dialog for subbing in a new player
+    // Creates a list of all players currently not in the lineup
+    // Selected player is sent to sub in function along with lineup position
     public void subDialog (int pos) {
         final int lineup_pos = pos;
         final List<Integer> bench_ids = new ArrayList<Integer>();
@@ -224,10 +245,14 @@ public class NewStats extends AppCompatActivity {
         alert.show();
     }
 
+    // Fuction takes the player ID of the player being subbed in and the lineup position
+    // Loads stats for player being subbed in
     public void subIn (int player_id, int pos) {
 
         if (game_stats.get(player_id).getTwo_pointer() >= 0) {
-            TextView tv = (TextView) findViewById(stats_tv[pos][0]);
+            TextView tv;
+
+            tv = (TextView) findViewById(stats_tv[pos][0]);
             tv.setText(Integer.toString(game_stats.get(player_id).getTwo_pointer_made()));
             tv = (TextView) findViewById(stats_tv[pos][1]);
             tv.setText(Integer.toString(game_stats.get(player_id).getTwo_pointer()));
@@ -252,13 +277,22 @@ public class NewStats extends AppCompatActivity {
             tv = (TextView) findViewById(stats_tv[pos][11]);
             tv.setText(Integer.toString(game_stats.get(player_id).getCharge()));
         }
+
+        // Adds game id to player being subbed in
+        // Determines if a player played in the game or not
         game_stats.get(player_id).setGame_id(game_id);
+
+        // Adds player to lineup
         lineup.set(pos, player_id);
+
+        // Sets jersey number on screen
         lineupList[pos] = ((Button) findViewById(lineup_ids[pos]));
         PlayerModel pm = db.getPlayer(player_id, m_androidId);
         lineupList[pos].setText(Integer.toString(pm.getNumber()));
     }
 
+    // Player being subbed out of the lineup
+    // Gets current game stats from stat TextViews and saves them to stat model
     public void subOut (int playerOut, int pos) {
         TextView tv = (TextView)findViewById(stats_tv[pos][0]);
         game_stats.get(playerOut).setTwo_pointer_made(Integer.parseInt(tv.getText().toString()));
@@ -284,10 +318,17 @@ public class NewStats extends AppCompatActivity {
         game_stats.get(playerOut).setTurnover(Integer.parseInt(tv.getText().toString()));
         tv = (TextView)findViewById(stats_tv[pos][11]);
         game_stats.get(playerOut).setCharge(Integer.parseInt(tv.getText().toString()));
-
-
-
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent iActivity_Main = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(iActivity_Main);
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
 }

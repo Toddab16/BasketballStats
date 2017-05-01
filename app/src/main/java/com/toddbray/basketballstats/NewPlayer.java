@@ -2,18 +2,14 @@ package com.toddbray.basketballstats;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-
-/**
- * Created by Todd Desktop on 4/22/2017.
- */
+import android.widget.Toast;
 
 public class NewPlayer extends AppCompatActivity {
 
@@ -50,12 +46,12 @@ public class NewPlayer extends AppCompatActivity {
                 newPlayer.setNumber(number);
                 newPlayer.setYear(grade);
 
-                db.open();
-                db.createPlayer(newPlayer);
-                db.close();
+                    db.open();
+                    db.createPlayer(newPlayer);
+                    db.close();
 
-                Intent intent = new Intent (getApplicationContext(), MainActivity.class);
-                startActivity(intent);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
 
             }
         });
@@ -66,4 +62,14 @@ public class NewPlayer extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent iActivity_Main = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(iActivity_Main);
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

@@ -3,8 +3,8 @@ package com.toddbray.basketballstats;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -12,16 +12,10 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-
-/**
- * Created by Todd Desktop on 4/22/2017.
- */
 
 public class NewGame extends AppCompatActivity implements View.OnFocusChangeListener{
 
@@ -136,6 +130,17 @@ public class NewGame extends AppCompatActivity implements View.OnFocusChangeList
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day);
         return calendar.getTime();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent iActivity_Main = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(iActivity_Main);
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 }

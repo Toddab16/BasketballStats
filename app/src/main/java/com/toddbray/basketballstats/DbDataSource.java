@@ -368,18 +368,15 @@ public class DbDataSource {
 
     public StatModel getSeasonStats(int player_id, int season_id, String android_id) {
         StatModel stats = new StatModel(null);
-        SQLiteQueryBuilder sq = new SQLiteQueryBuilder();
-        sq.setTables(MySqlLiteHelper.STAT_TABLE + " LEFT OUTER JOIN " + MySqlLiteHelper.GAME_TABLE + " ON " + MySqlLiteHelper.STAT_TABLE + "." + MySqlLiteHelper.StatColumns.game_id + " = " + MySqlLiteHelper.GAME_TABLE + "." + MySqlLiteHelper.GameColumns.game_id );
 
         String columns[] = MySqlLiteHelper.SumStatColumns.names();
 
         String selectString = MySqlLiteHelper.StatColumns.android_id + " = ?" +
-                " AND " + MySqlLiteHelper.StatColumns.player_id + " = ?" +
-                " AND " + MySqlLiteHelper.SeasonColumns.season_id + " = ?";
+                " AND " + MySqlLiteHelper.StatColumns.player_id + " = ?";
 
         Cursor cursor = database.query(MySqlLiteHelper.STAT_TABLE,
                 columns,
-                selectString, new String[] {android_id, Integer.toString(player_id), Integer.toString(season_id)}, null, null, null);
+                selectString, new String[] {android_id, Integer.toString(player_id)}, null, null, null);
 
         cursor.moveToNext();
         while (!cursor.isAfterLast()) {
