@@ -81,6 +81,12 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                     createPlayerQuery(player, false);
                     st.executeUpdate(insertQuery);
                     st.executeUpdate(updateQuery);
+
+                    if (isCancelled()) {
+                        // displayCancelMessage();
+                        return null;
+                    }
+                    Thread.sleep(30);
                 }
             }
             // Get all MySQL player data
@@ -90,9 +96,16 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                     createPlayerQuery(player, true);
                     sqLite.runQuery(insertQuery);
                     sqLite.runQuery(updateQuery);
+
+                    if (isCancelled()) {
+                        // displayCancelMessage();
+                        return null;
+                    }
+                    Thread.sleep(30);
                 }
             }
             ///////////////////////// END PLAYER DATA //////////////////////////////////////////////
+
 
             ///////////////////////// SEASON DATA //////////////////////////////////////////////////
 
@@ -103,6 +116,12 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                     createSeasonQuery(season, false);
                     st.executeUpdate(insertQuery);
                     st.executeUpdate(updateQuery);
+
+                    if (isCancelled()) {
+                        // displayCancelMessage();
+                        return null;
+                    }
+                    Thread.sleep(30);
                 }
             }
             // Get all MySQL season data
@@ -112,9 +131,16 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                     createSeasonQuery(season, true);
                     sqLite.runQuery(insertQuery);
                     sqLite.runQuery(updateQuery);
+
+                    if (isCancelled()) {
+                        // displayCancelMessage();
+                        return null;
+                    }
+                    Thread.sleep(30);
                 }
             }
             ///////////////////////// END SEASON DATA //////////////////////////////////////////////
+
 
             ///////////////////////// GAME DATA ////////////////////////////////////////////////////
 
@@ -125,6 +151,12 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                     createGameQuery(game, false);
                     st.executeUpdate(insertQuery);
                     st.executeUpdate(updateQuery);
+
+                    if (isCancelled()) {
+                        // displayCancelMessage();
+                        return null;
+                    }
+                    Thread.sleep(30);
                 }
             }
             // Receive all MySQL game data
@@ -134,6 +166,12 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                     createGameQuery(game, true);
                     sqLite.runQuery(insertQuery);
                     sqLite.runQuery(updateQuery);
+
+                    if (isCancelled()) {
+                        // displayCancelMessage();
+                        return null;
+                    }
+                    Thread.sleep(30);
                 }
             }
             ///////////////////////// END GAME DATA ////////////////////////////////////////////////
@@ -147,6 +185,12 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                     createStatQuery(stat, false);
                     st.executeUpdate(insertQuery);
                     st.executeUpdate(updateQuery);
+
+                    if (isCancelled()) {
+                        // displayCancelMessage();
+                        return null;
+                    }
+                    Thread.sleep(30);
                 }
             }
             // Get all MySQL stat data
@@ -156,6 +200,12 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                     createStatQuery(stat, true);
                     sqLite.runQuery(insertQuery);
                     sqLite.runQuery(updateQuery);
+
+                    if (isCancelled()) {
+                        // displayCancelMessage();
+                        return null;
+                    }
+                    Thread.sleep(30);
                 }
             }
             ///////////////////////// END STAT DATA ////////////////////////////////////////////////

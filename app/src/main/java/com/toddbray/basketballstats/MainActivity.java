@@ -4,6 +4,7 @@ package com.toddbray.basketballstats;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -44,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         dataSource = new DbDataSource(getApplicationContext());
-        myDataSource = new MyDbDataSource();
 
         Button newPlayer = (Button) findViewById(R.id.add_player_button);
         newPlayer.setOnClickListener(this);
@@ -69,6 +69,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button viewPlayerStats = (Button) findViewById(R.id.player_stats_button);
         viewPlayerStats.setOnClickListener(this);
+
+        Button syncButton = (Button) findViewById(R.id.sync_button);
+        syncButton.setOnClickListener(this);
     }
 
     @Override
@@ -178,6 +181,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.player_stats_button:
                 playersDialog();
+                break;
+            case R.id.sync_button:
+                if (myDataSource != null && myDataSource.getStatus() == AsyncTask.Status.FINISHED) {
+                    myDataSource = null;
+                }
+
+                if (myDataSource == null) {
+                    myDataSource = new MyDbDataSource();
+                    myDataSource.execute(getApplicationContext());
+                }
                 break;
             default:
                 break;
