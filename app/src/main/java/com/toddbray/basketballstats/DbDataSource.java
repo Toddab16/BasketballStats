@@ -59,9 +59,11 @@ public class DbDataSource {
                 " AND " + MySqlLiteHelper.GameColumns.game_id.toString() + " = '" + gameModel.getGame_id() + "'" );
         }
         else {
+            int lastId = getLastId(MySqlLiteHelper.SeasonColumns.season_id.toString(), MySqlLiteHelper.SEASON_TABLE) + 1;
+
             database.execSQL("INSERT OR IGNORE INTO " + MySqlLiteHelper.GAME_TABLE +
                     " VALUES ( '"+ gameModel.getAndroid_id().toString() + "' , " +
-                    "(SELECT MAX(" + MySqlLiteHelper.GameColumns.game_id.toString() + ") + 1 FROM " + MySqlLiteHelper.GAME_TABLE + ") , " +
+                    lastId + " , " +
                     gameModel.getSeason_id() + " , " +
                     "'" + gameModel.getGame_date().toString() + "' , " +
                     "'" + gameModel.getLocation() + "' , " +
@@ -178,14 +180,16 @@ public class DbDataSource {
                     " AND " + MySqlLiteHelper.PlayerColumns.player_id.toString() + " = '" + playerModel.getPlayer_id() + "'" );
         }
         else {
-            insertQuery = "INSERT OR IGNORE INTO " + MySqlLiteHelper.PLAYER_TABLE +
+            int lastId = getLastId(MySqlLiteHelper.SeasonColumns.season_id.toString(), MySqlLiteHelper.SEASON_TABLE) + 1;
+
+            database.execSQL("INSERT OR IGNORE INTO " + MySqlLiteHelper.PLAYER_TABLE +
                     " VALUES ( '"+ playerModel.getAndroid_id() + "' , " +
-                    "(SELECT MAX(" + MySqlLiteHelper.PlayerColumns.player_id.toString() + ") + 1 FROM " + MySqlLiteHelper.PLAYER_TABLE + ") , " +
+                    lastId + " , " +
                     "'" + playerModel.getFirst_name() + "' , " +
                     "'" + playerModel.getLast_name() + "' , " +
                     "'" + playerModel.getYear() + "' , " +
                     playerModel.getNumber() +
-                    " )";
+                    " )");
         }
 
         return playerModel;
@@ -283,9 +287,11 @@ public class DbDataSource {
                     " AND " + MySqlLiteHelper.StatColumns.game_id.toString() + " = " + statModel.getGame_id());
         }
         else {
-            insertQuery = "INSERT OR IGNORE INTO " + MySqlLiteHelper.STAT_TABLE +
+            int lastId = getLastId(MySqlLiteHelper.SeasonColumns.season_id.toString(), MySqlLiteHelper.SEASON_TABLE) + 1;
+
+            database.execSQL("INSERT OR IGNORE INTO " + MySqlLiteHelper.STAT_TABLE +
                     " VALUES ( '"+ statModel.getAndroid_id().toString() + "' , " +
-                    "(SELECT MAX(" + MySqlLiteHelper.StatColumns.stat_id.toString() + ") + 1 FROM " + MySqlLiteHelper.STAT_TABLE + ") , " +
+                    lastId + " , " +
                     statModel.getGame_id() + " , " +
                     statModel.getPlayer_id() + " , " +
                     statModel.getO_rebound() + " , " +
@@ -300,7 +306,7 @@ public class DbDataSource {
                     statModel.getFree_throw() + " , " +
                     statModel.getFree_throw_made() + " , " +
                     statModel.getCharge() +
-                    " )";
+                    " )");
         }
 
         return statModel;
@@ -564,12 +570,20 @@ public class DbDataSource {
                     " AND " + MySqlLiteHelper.SeasonColumns.season_id.toString() + " = " + seasonModel.getSeason_id() );
         }
         else {
-            insertQuery = "INSERT OR IGNORE INTO " + MySqlLiteHelper.SEASON_TABLE +
-                    " VALUES ( '"+ seasonModel.getAndroid_id().toString() + "' , " +
-                    "(SELECT MAX(" + MySqlLiteHelper.SeasonColumns.season_id.toString() + ") + 1 FROM " + MySqlLiteHelper.SEASON_TABLE + ") , " +
-                    seasonModel.getSeason_name() +
-                    " )";
+            int lastId = getLastId(MySqlLiteHelper.SeasonColumns.season_id.toString(), MySqlLiteHelper.SEASON_TABLE) + 1;
 
+            try {
+                database.execSQL("INSERT OR IGNORE INTO " + MySqlLiteHelper.SEASON_TABLE +
+                        " VALUES ( '" + seasonModel.getAndroid_id().toString() + "' , " +
+                        lastId + " , " +
+                        seasonModel.getSeason_name() +
+                        " )");
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+            /*
             ContentValues contentValues = new ContentValues();
 
             contentValues.put(MySqlLiteHelper.SeasonColumns.android_id.toString(), seasonModel.getAndroid_id().toString());
@@ -579,6 +593,7 @@ public class DbDataSource {
                     null, contentValues);
 
             seasonModel.setSeason_id((int) id);
+            */
         }
 
         return seasonModel;
@@ -639,6 +654,23 @@ public class DbDataSource {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public int getLastId(String field_name, String table_name) {
+
+        int id = 0;
+        final String MY_QUERY = "SELECT MAX(" + field_name + ") AS id FROM " + table_name;
+        Cursor mCursor = database.rawQuery(MY_QUERY, null);
+        try {
+            if (mCursor.getCount() > 0) {
+                mCursor.moveToFirst();
+                id = mCursor.getInt(0);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return id;
     }
 
 }

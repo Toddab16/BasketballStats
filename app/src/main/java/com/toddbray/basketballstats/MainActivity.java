@@ -82,14 +82,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         List<SeasonModel> seasons = dataSource.getAllSeasons();
 
         // TESTING SYNCHRONIZATION HERE
-        myDataSource.execute(getApplicationContext());
-
-        /*
-        Date dateTest = new Date();
+        //myDataSource.execute(getApplicationContext());
 
         // checkPermission();
 
-
+        /*
         PlayerModel player = new PlayerModel(m_androidId);
         player.setFirst_name("Brad");
         player.setLast_name("Jordan");
@@ -97,7 +94,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         player.setYear("Sophomore");
 
         player = dataSource.createPlayer(player);
+        */
 
+        /*
+        Date dateTest = new Date();
         GameModel game = new GameModel(m_androidId);
         game.setGame_date(dateTest);
         game.setVenue("Arena");
@@ -110,13 +110,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         game.setSeason_id(1);
 
         game = dataSource.createGame(game);
+        */
+
+        /*
 
         SeasonModel season = new SeasonModel(m_androidId);
 
-        season.setSeason_name(2014);
+        season.setSeason_name(2015);
 
         season = dataSource.createSeason(season);
+
         */
+
 
         /*
         ArrayAdapter<GameModel> adapter = new ArrayAdapter<GameModel>(this,
