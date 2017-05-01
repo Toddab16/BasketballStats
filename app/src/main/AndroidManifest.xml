@@ -10,24 +10,24 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" android:screenOrientation="landscape" android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NewPlayer">
+        <activity android:name=".NewPlayer" android:screenOrientation="landscape" android:noHistory="true">
         </activity>
-        <activity android:name=".NewGame">
+        <activity android:name=".NewGame" android:screenOrientation="landscape" android:noHistory="true">
         </activity>
-        <activity android:name=".ViewPlayer">
+        <activity android:name=".ViewPlayer" android:screenOrientation="landscape" android:noHistory="true">
         </activity>
-        <activity android:name=".ViewSchedule">
+        <activity android:name=".ViewSchedule" android:screenOrientation="landscape" android:noHistory="true">
         </activity>
-        <activity android:name=".NewStats">
+        <activity android:name=".NewStats" android:screenOrientation="landscape" android:noHistory="true">
         </activity>
-        <activity android:name=".ViewStats">
+        <activity android:name=".ViewStats" android:screenOrientation="landscape" android:noHistory="true">
         </activity>
 
     </application>

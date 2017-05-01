@@ -9,26 +9,19 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
-
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
-
 import java.security.Timestamp;
 import java.util.Date;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-
 import java.util.List;
-
 import static android.R.id.input;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -38,6 +31,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String m_androidId = "Todd Bray Marshmallow";
 
     private final int GET_INTERNET = 5150;
+    public static final String GAME_ID = "GAME_ID";
+    public static final String OPP = "OPP";
+    public static final String MODE = "MODE";
+    public static final String PLAYER_ID = "PLAYER_ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.season_stats_button:
                 intent = new Intent(getApplicationContext(), ViewStats.class);
-                intent.putExtra("MODE", 2);
+                intent.putExtra(MODE, 2);
                 startActivity(intent);
                 break;
             case R.id.player_stats_button:
@@ -259,15 +256,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(DialogInterface dialog, int item) {
                 if (mode_select == 0) {
                     Intent intent = new Intent(getApplicationContext(), NewStats.class);
-                    intent.putExtra("GAME_ID", games.get(item).getGame_id());
-                    intent.putExtra("OPP", games.get(item).getOpp_name());
+                    intent.putExtra(GAME_ID, games.get(item).getGame_id());
+                    intent.putExtra(OPP, games.get(item).getOpp_name());
                     startActivity(intent);
                 }
                 if (mode_select == 1) {
                     Intent intent = new Intent(getApplicationContext(), ViewStats.class);
-                    intent.putExtra("GAME_ID", games.get(item).getGame_id());
-                    intent.putExtra("OPP", games.get(item).getOpp_name());
-                    intent.putExtra("MODE", 1);
+                    intent.putExtra(GAME_ID, games.get(item).getGame_id());
+                    intent.putExtra(OPP, games.get(item).getOpp_name());
+                    intent.putExtra(MODE, 1);
                     startActivity(intent);
                 }
             }
@@ -296,13 +293,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         builder.setItems(players_list, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                     Intent intent = new Intent(getApplicationContext(), ViewStats.class);
-                    intent.putExtra("PLAYER_ID", players.get(item).getPlayer_id());
-                    intent.putExtra("MODE", 3);
+                    intent.putExtra(PLAYER_ID, players.get(item).getPlayer_id());
+                    intent.putExtra(MODE, 3);
                     startActivity(intent);
             }
         });
         AlertDialog alert = builder.create();
         alert.show();
 
+    }
+
+    public void onBackPressed() {
+        finish();
     }
 }
