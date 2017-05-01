@@ -16,7 +16,7 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
     public static final int NEW_ROW = 99;
     public static final String GAME_TABLE = "Game";
     public static final String PLAYER_TABLE = "Player";
-    public static final String STAT_TABLE = "Stats";
+    public static final String STAT_TABLE = "Stat";
     public static final String SEASON_TABLE = "Season";
 
     // UPDATE SQLITE_SEQUENCE SET seq = <n> WHERE name = '<table>'

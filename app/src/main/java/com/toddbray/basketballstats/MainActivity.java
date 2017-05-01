@@ -82,9 +82,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         List<SeasonModel> seasons = dataSource.getAllSeasons();
 
         // TESTING SYNCHRONIZATION HERE
-        //myDataSource.execute(getApplicationContext());
+        myDataSource.execute(getApplicationContext());
 
         // checkPermission();
+
+        // Date dateTest = new Date();
 
         /*
         PlayerModel player = new PlayerModel(m_androidId);

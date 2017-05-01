@@ -113,7 +113,7 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                 }
             }
             ///////////////////////// END SEASON DATA //////////////////////////////////////////////
-
+            /*
             ///////////////////////// GAME DATA ////////////////////////////////////////////////////
 
             // Send all game data
@@ -135,7 +135,7 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                 }
             }
             ///////////////////////// END GAME DATA ////////////////////////////////////////////////
-
+            */
             ///////////////////////// STAT DATA ////////////////////////////////////////////////////
 
             // Send all stat data
@@ -359,7 +359,7 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
     private List<StatModel> getAllStats(Statement st) throws SQLException {
         List<StatModel> stats = new ArrayList<>();
 
-        ResultSet rs = st.executeQuery("SELECT * FROM " + MySqlLiteHelper.STAT_TABLE);
+        ResultSet rs = st.executeQuery("SELECT * FROM " + MySqlLiteHelper.STAT_TABLE );
         //ResultSetMetaData rsmd = rs.getMetaData();
 
         rs.first();
