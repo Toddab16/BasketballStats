@@ -59,7 +59,7 @@ public class DbDataSource {
                 " AND " + MySqlLiteHelper.GameColumns.game_id.toString() + " = '" + gameModel.getGame_id() + "'" );
         }
         else {
-            int lastId = getLastId(MySqlLiteHelper.SeasonColumns.season_id.toString(), MySqlLiteHelper.SEASON_TABLE) + 1;
+            int lastId = getLastId(MySqlLiteHelper.GameColumns.game_id.toString(), MySqlLiteHelper.GAME_TABLE) + 1;
 
             database.execSQL("INSERT OR IGNORE INTO " + MySqlLiteHelper.GAME_TABLE +
                     " VALUES ( '"+ gameModel.getAndroid_id().toString() + "' , " +
@@ -180,16 +180,24 @@ public class DbDataSource {
                     " AND " + MySqlLiteHelper.PlayerColumns.player_id.toString() + " = '" + playerModel.getPlayer_id() + "'" );
         }
         else {
-            int lastId = getLastId(MySqlLiteHelper.SeasonColumns.season_id.toString(), MySqlLiteHelper.SEASON_TABLE) + 1;
+            int lastId = getLastId(MySqlLiteHelper.PlayerColumns.player_id.toString(), MySqlLiteHelper.PLAYER_TABLE) + 1;
 
-            database.execSQL("INSERT OR IGNORE INTO " + MySqlLiteHelper.PLAYER_TABLE +
-                    " VALUES ( '"+ playerModel.getAndroid_id() + "' , " +
-                    lastId + " , " +
-                    "'" + playerModel.getFirst_name() + "' , " +
-                    "'" + playerModel.getLast_name() + "' , " +
-                    "'" + playerModel.getYear() + "' , " +
-                    playerModel.getNumber() +
-                    " )");
+            try {
+                String values = "INSERT OR IGNORE INTO " + MySqlLiteHelper.PLAYER_TABLE +
+                        " VALUES ( '" + playerModel.getAndroid_id() + "' , " +
+                        lastId + " , " +
+                        "'" + playerModel.getFirst_name() + "' , " +
+                        "'" + playerModel.getLast_name() + "' , " +
+                        "'" + playerModel.getYear() + "' , " +
+                        playerModel.getNumber() +
+                        " )";
+
+                database.execSQL(values);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         }
 
         return playerModel;
@@ -287,7 +295,7 @@ public class DbDataSource {
                     " AND " + MySqlLiteHelper.StatColumns.game_id.toString() + " = " + statModel.getGame_id());
         }
         else {
-            int lastId = getLastId(MySqlLiteHelper.SeasonColumns.season_id.toString(), MySqlLiteHelper.SEASON_TABLE) + 1;
+            int lastId = getLastId(MySqlLiteHelper.StatColumns.stat_id.toString(), MySqlLiteHelper.STAT_TABLE) + 1;
 
             database.execSQL("INSERT OR IGNORE INTO " + MySqlLiteHelper.STAT_TABLE +
                     " VALUES ( '"+ statModel.getAndroid_id().toString() + "' , " +
