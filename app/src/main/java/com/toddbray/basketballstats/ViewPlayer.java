@@ -28,10 +28,36 @@ public class ViewPlayer extends AppCompatActivity {
 
         final int num = players.size();
         TableLayout layout = (TableLayout) findViewById(R.id.roster_table);
+
+        TableRow row = new TableRow(this);
+        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+        row.setLayoutParams(lp);
+
+        TextView tvNumber = new TextView(this);
+        tvNumber.setText("#");
+        tvNumber.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
+        tvNumber.setTextSize(24);
+
+        TextView tvPlayer = new TextView(this);
+        tvPlayer.setText("PLAYER");
+        tvPlayer.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 4 ) );
+        tvPlayer.setTextSize(24);
+
+        TextView tvClass = new TextView(this);
+        tvClass.setText("CLASS");
+        tvClass.setLayoutParams( new TableRow.LayoutParams( 0, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, 1 ) );
+        tvClass.setTextSize(24);
+
+        row.addView(tvNumber);
+        row.addView(tvPlayer);
+        row.addView(tvClass);
+        layout.addView(row);
+
+
         for (int i = 0; i < players.size(); i++) {
             PlayerModel currentPlayer = players.get(i);
-            TableRow row = new TableRow(this);
-            TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+            row = new TableRow(this);
+            lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
             row.setLayoutParams(lp);
             TextView tvNum = new TextView(this);
             tvNum.setText(Integer.toString(currentPlayer.getNumber()));
