@@ -60,6 +60,23 @@ public class DbDataSource {
                 " AND " + MySqlLiteHelper.GameColumns.game_id.toString() + " = '" + gameModel.getGame_id() + "'" );
         }
         else {
+
+            int lastId = getLastId(MySqlLiteHelper.SeasonColumns.season_id.toString(), MySqlLiteHelper.SEASON_TABLE) + 1;
+
+            database.execSQL("INSERT OR IGNORE INTO " + MySqlLiteHelper.GAME_TABLE +
+                    " VALUES ( '"+ gameModel.getAndroid_id().toString() + "' , " +
+                    lastId + " , " +
+                    gameModel.getSeason_id() + " , " +
+                    "'" + gameModel.getGame_date().toString() + "' , " +
+                    "'" + gameModel.getLocation() + "' , " +
+                    "'" + gameModel.getVenue() + "' , " +
+                    "'" + gameModel.getGirls_jv().toString() + "' , " +
+                    "'" + gameModel.getBoys_jv().toString() + "' , " +
+                    "'" + gameModel.getGirls_v().toString() + "' , " +
+                    "'" + gameModel.getBoys_v().toString() + "' , " +
+                    "'" + gameModel.getOpp_name() + "'" +
+                    " )");
+
             ContentValues contentValues = new ContentValues();
             contentValues.put(MySqlLiteHelper.GameColumns.android_id.toString(), gameModel.getAndroid_id().toString());
             contentValues.put(MySqlLiteHelper.GameColumns.season_id.toString(), gameModel.getAndroid_id().toString());
@@ -76,6 +93,7 @@ public class DbDataSource {
                     null, contentValues);
 
             gameModel.setGame_id((int) id);
+
         }
 
         return gameModel;
@@ -182,18 +200,16 @@ public class DbDataSource {
                     " AND " + MySqlLiteHelper.PlayerColumns.player_id.toString() + " = '" + playerModel.getPlayer_id() + "'" );
         }
         else {
-            ContentValues contentValues = new ContentValues();
+            int lastId = getLastId(MySqlLiteHelper.SeasonColumns.season_id.toString(), MySqlLiteHelper.SEASON_TABLE) + 1;
 
-            contentValues.put(MySqlLiteHelper.PlayerColumns.android_id.toString(), playerModel.getAndroid_id().toString());
-            contentValues.put(MySqlLiteHelper.PlayerColumns.first_name.toString(), playerModel.getFirst_name().toString());
-            contentValues.put(MySqlLiteHelper.PlayerColumns.last_name.toString(), playerModel.getLast_name().toString());
-            contentValues.put(MySqlLiteHelper.PlayerColumns.year.toString(), playerModel.getYear().toString());
-            contentValues.put(MySqlLiteHelper.PlayerColumns.number.toString(), playerModel.getNumber());
-
-            long id = database.insert(MySqlLiteHelper.PLAYER_TABLE,
-                    null, contentValues);
-
-            playerModel.setPlayer_id((int) id);
+            database.execSQL("INSERT OR IGNORE INTO " + MySqlLiteHelper.PLAYER_TABLE +
+                    " VALUES ( '"+ playerModel.getAndroid_id() + "' , " +
+                    lastId + " , " +
+                    "'" + playerModel.getFirst_name() + "' , " +
+                    "'" + playerModel.getLast_name() + "' , " +
+                    "'" + playerModel.getYear() + "' , " +
+                    playerModel.getNumber() +
+                    " )");
         }
 
         return playerModel;
@@ -274,46 +290,43 @@ public class DbDataSource {
         if(statModel.getStat_id() != MySqlLiteHelper.NEW_ROW) {
             database.execSQL("UPDATE " + MySqlLiteHelper.STAT_TABLE + " " +
                     "SET " + MySqlLiteHelper.StatColumns.game_id.toString() + " = " + statModel.getGame_id() + " , " +
-                    "SET " + MySqlLiteHelper.StatColumns.player_id.toString() + " = " + statModel.getPlayer_id() + " , " +
-                    "SET " + MySqlLiteHelper.StatColumns.o_rebound.toString() + " = " + statModel.getO_rebound() + " , " +
-                    "SET " + MySqlLiteHelper.StatColumns.d_rebound.toString() + " = " + statModel.getD_rebound() + " , " +
-                    "SET " + MySqlLiteHelper.StatColumns.assist.toString() + " = " + statModel.getAssist() + " , " +
-                    "SET " + MySqlLiteHelper.StatColumns.steal.toString() + " = " + statModel.getSteal() + " , " +
-                    "SET " + MySqlLiteHelper.StatColumns.turnover.toString() + " = " + statModel.getTurnover() + " , " +
-                    "SET " + MySqlLiteHelper.StatColumns.two_pointer.toString() + " = " + statModel.getTwo_pointer() + " , " +
-                    "SET " + MySqlLiteHelper.StatColumns.two_pointer_made.toString() + " = " + statModel.getTwo_pointer_made() + " , " +
-                    "SET " + MySqlLiteHelper.StatColumns.three_pointer.toString() + " = " + statModel.getThree_pointer() + " , " +
-                    "SET " + MySqlLiteHelper.StatColumns.three_pointer_made.toString() + " = " + statModel.getThree_pointer_made() + " , " +
-                    "SET " + MySqlLiteHelper.StatColumns.free_throw.toString() + " = " + statModel.getFree_throw() + " , " +
-                    "SET " + MySqlLiteHelper.StatColumns.free_throw_made.toString() + " = " + statModel.getFree_throw_made() + " , " +
-                    "SET " + MySqlLiteHelper.StatColumns.charge.toString() + " = " + statModel.getCharge() + " " +
+                    MySqlLiteHelper.StatColumns.player_id.toString() + " = " + statModel.getPlayer_id() + " , " +
+                    MySqlLiteHelper.StatColumns.o_rebound.toString() + " = " + statModel.getO_rebound() + " , " +
+                    MySqlLiteHelper.StatColumns.d_rebound.toString() + " = " + statModel.getD_rebound() + " , " +
+                    MySqlLiteHelper.StatColumns.assist.toString() + " = " + statModel.getAssist() + " , " +
+                    MySqlLiteHelper.StatColumns.steal.toString() + " = " + statModel.getSteal() + " , " +
+                    MySqlLiteHelper.StatColumns.turnover.toString() + " = " + statModel.getTurnover() + " , " +
+                    MySqlLiteHelper.StatColumns.two_pointer.toString() + " = " + statModel.getTwo_pointer() + " , " +
+                    MySqlLiteHelper.StatColumns.two_pointer_made.toString() + " = " + statModel.getTwo_pointer_made() + " , " +
+                    MySqlLiteHelper.StatColumns.three_pointer.toString() + " = " + statModel.getThree_pointer() + " , " +
+                    MySqlLiteHelper.StatColumns.three_pointer_made.toString() + " = " + statModel.getThree_pointer_made() + " , " +
+                    MySqlLiteHelper.StatColumns.free_throw.toString() + " = " + statModel.getFree_throw() + " , " +
+                    MySqlLiteHelper.StatColumns.free_throw_made.toString() + " = " + statModel.getFree_throw_made() + " , " +
+                    MySqlLiteHelper.StatColumns.charge.toString() + " = " + statModel.getCharge() + " " +
                     "WHERE " + MySqlLiteHelper.StatColumns.android_id.toString() + " = '" + statModel.getAndroid_id().toString() + "'" +
                     " AND " + MySqlLiteHelper.StatColumns.game_id.toString() + " = " + statModel.getGame_id());
         }
         else {
-            ContentValues contentValues = new ContentValues();
+            int lastId = getLastId(MySqlLiteHelper.SeasonColumns.season_id.toString(), MySqlLiteHelper.SEASON_TABLE) + 1;
 
-            contentValues.put(MySqlLiteHelper.StatColumns.android_id.toString(), statModel.getAndroid_id().toString());
-            contentValues.put(MySqlLiteHelper.StatColumns.game_id.toString(), statModel.getGame_id());
-            contentValues.put(MySqlLiteHelper.StatColumns.player_id.toString(), statModel.getPlayer_id());
-            contentValues.put(MySqlLiteHelper.StatColumns.steal.toString(), statModel.getSteal());
-            contentValues.put(MySqlLiteHelper.StatColumns.d_rebound.toString(), statModel.getD_rebound());
-            contentValues.put(MySqlLiteHelper.StatColumns.o_rebound.toString(), statModel.getO_rebound());
-            contentValues.put(MySqlLiteHelper.StatColumns.assist.toString(), statModel.getAssist());
-            contentValues.put(MySqlLiteHelper.StatColumns.turnover.toString(), statModel.getTurnover());
-            contentValues.put(MySqlLiteHelper.StatColumns.two_pointer.toString(), statModel.getTwo_pointer());
-            contentValues.put(MySqlLiteHelper.StatColumns.two_pointer_made.toString(), statModel.getTwo_pointer_made());
-            contentValues.put(MySqlLiteHelper.StatColumns.three_pointer.toString(), statModel.getThree_pointer());
-            contentValues.put(MySqlLiteHelper.StatColumns.three_pointer_made.toString(), statModel.getThree_pointer_made());
-            contentValues.put(MySqlLiteHelper.StatColumns.free_throw.toString(), statModel.getFree_throw());
-            contentValues.put(MySqlLiteHelper.StatColumns.free_throw_made.toString(), statModel.getFree_throw_made());
-            contentValues.put(MySqlLiteHelper.StatColumns.charge.toString(), statModel.getCharge());
-
-            long id = database.insert(MySqlLiteHelper.STAT_TABLE,
-                    null, contentValues);
-
-
-            statModel.setStat_id((int) id);
+            database.execSQL("INSERT OR IGNORE INTO " + MySqlLiteHelper.STAT_TABLE +
+                    " VALUES ( '"+ statModel.getAndroid_id().toString() + "' , " +
+                    lastId + " , " +
+                    statModel.getGame_id() + " , " +
+                    statModel.getPlayer_id() + " , " +
+                    statModel.getO_rebound() + " , " +
+                    statModel.getD_rebound() + " , " +
+                    statModel.getAssist() + " , " +
+                    statModel.getSteal() + " , " +
+                    statModel.getTurnover() + " , " +
+                    statModel.getTwo_pointer() + " , " +
+                    statModel.getTwo_pointer_made() + " , " +
+                    statModel.getThree_pointer() + " , " +
+                    statModel.getThree_pointer_made() + " , " +
+                    statModel.getFree_throw() + " , " +
+                    statModel.getFree_throw_made() + " , " +
+                    statModel.getCharge() +
+                    " )");
         }
 
         return statModel;
@@ -578,6 +591,20 @@ public class DbDataSource {
                     " AND " + MySqlLiteHelper.SeasonColumns.season_id.toString() + " = " + seasonModel.getSeason_id() );
         }
         else {
+            int lastId = getLastId(MySqlLiteHelper.SeasonColumns.season_id.toString(), MySqlLiteHelper.SEASON_TABLE) + 1;
+
+            try {
+                database.execSQL("INSERT OR IGNORE INTO " + MySqlLiteHelper.SEASON_TABLE +
+                        " VALUES ( '" + seasonModel.getAndroid_id().toString() + "' , " +
+                        lastId + " , " +
+                        seasonModel.getSeason_name() +
+                        " )");
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+            /*
             ContentValues contentValues = new ContentValues();
 
             contentValues.put(MySqlLiteHelper.SeasonColumns.android_id.toString(), seasonModel.getAndroid_id().toString());
@@ -587,6 +614,7 @@ public class DbDataSource {
                     null, contentValues);
 
             seasonModel.setSeason_id((int) id);
+            */
         }
 
         return seasonModel;
@@ -622,14 +650,14 @@ public class DbDataSource {
         SeasonModel seasonModel = new SeasonModel(null);
 
         // Build Integers
-        int num = cursor.getInt(MySqlLiteHelper.PlayerColumns.player_id.ordinal());
+        int num = cursor.getInt(MySqlLiteHelper.SeasonColumns.season_id.ordinal());
         seasonModel.setSeason_id(num);
 
-        num = cursor.getInt(MySqlLiteHelper.PlayerColumns.number.ordinal());
+        num = cursor.getInt(MySqlLiteHelper.SeasonColumns.season_name.ordinal());
         seasonModel.setSeason_name(num);
 
         // Build Strings
-        String s = cursor.getString(MySqlLiteHelper.PlayerColumns.android_id.ordinal());
+        String s = cursor.getString(MySqlLiteHelper.SeasonColumns.android_id.ordinal());
         seasonModel.setAndroid_id(s);
 
         return seasonModel;
@@ -647,6 +675,23 @@ public class DbDataSource {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public int getLastId(String field_name, String table_name) {
+
+        int id = 0;
+        final String MY_QUERY = "SELECT MAX(" + field_name + ") AS id FROM " + table_name;
+        Cursor mCursor = database.rawQuery(MY_QUERY, null);
+        try {
+            if (mCursor.getCount() > 0) {
+                mCursor.moveToFirst();
+                id = mCursor.getInt(0);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return id;
     }
 
 }

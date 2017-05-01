@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
+import java.security.Timestamp;
 import java.util.Date;
 
 import java.text.DateFormat;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private DbDataSource dataSource;
     private MyDbDataSource myDataSource;
+    private String m_androidId = "Todd Bray Marshmallow";
 
     private final int GET_INTERNET = 5150;
 
@@ -80,18 +82,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         List<StatModel> stats = dataSource.getAllStats();
         List<SeasonModel> seasons = dataSource.getAllSeasons();
 
-        Date dateTest = new Date();
+        // TESTING SYNCHRONIZATION HERE
+        myDataSource.execute(getApplicationContext());
 
         // checkPermission();
 
+        // Date dateTest = new Date();
+
         /*
-        PlayerModel player = new PlayerModel();
+
+        PlayerModel player = new PlayerModel(m_androidId);
         player.setFirst_name("Brad");
         player.setLast_name("Jordan");
         player.setNumber(18);
         player.setYear("Sophomore");
 
         player = dataSource.createPlayer(player);
+
+        Date dateTest = new Date();
+        GameModel game = new GameModel(m_androidId);
+        game.setGame_date(dateTest);
+        game.setVenue("Arena");
+        game.setOpp_name("Gladiators");
+        game.setLocation("Parking Lot");
+        game.setBoys_jv(dateTest);
+        game.setBoys_v(dateTest);
+        game.setGirls_jv(dateTest);
+        game.setGirls_v(dateTest);
+        game.setSeason_id(1);
+
+        game = dataSource.createGame(game);
+
+        SeasonModel season = new SeasonModel(m_androidId);
+
+        season.setSeason_name(2014);
+
+        season = dataSource.createSeason(season);
+
         */
 
         /*

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.provider.Settings;
 
+import java.security.Timestamp;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -11,6 +12,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -60,6 +62,7 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
 
             // Open SQLite connection
             DbDataSource sqLite = new DbDataSource(contexts[0]);
+            sqLite.open();
 
             String result = "Database connection was successful\n";
 
@@ -69,91 +72,96 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
 
             Statement st = con.createStatement();
 
-            ///////////////////////// GAME DATA ////////////////////////////////////////////////////
-
-            // Send all game data
-            games = sqLite.getAllGames();
-            for (GameModel game : games) {
-                createGameQuery(game);
-                st.executeQuery(insertQuery);
-                st.executeQuery(updateQuery);
-            }
-
-            // Receive all MySQL game data
-            games = getAllGames(st);
-
-            for (GameModel game : games) {
-                createGameQuery(game);
-                sqLite.runQuery(insertQuery);
-                sqLite.runQuery(updateQuery);
-            }
-
-            ///////////////////////// END GAME DATA ////////////////////////////////////////////////
-
             ///////////////////////// PLAYER DATA //////////////////////////////////////////////////
 
             // Send all player data
             players = sqLite.getAllPlayers();
-            for (PlayerModel player : players) {
-                createPlayerQuery(player);
-                st.executeQuery(insertQuery);
-                st.executeQuery(updateQuery);
+            if(players.size() > 0) {
+                for (PlayerModel player : players) {
+                    createPlayerQuery(player, false);
+                    st.executeUpdate(insertQuery);
+                    st.executeUpdate(updateQuery);
+                }
             }
-
             // Get all MySQL player data
             players = getAllPlayers(st);
-
-            for (PlayerModel player : players) {
-                createPlayerQuery(player);
-                sqLite.runQuery(insertQuery);
-                sqLite.runQuery(updateQuery);
+            if (players.size() > 0) {
+                for (PlayerModel player : players) {
+                    createPlayerQuery(player, true);
+                    sqLite.runQuery(insertQuery);
+                    sqLite.runQuery(updateQuery);
+                }
             }
-
             ///////////////////////// END PLAYER DATA //////////////////////////////////////////////
-
-            ///////////////////////// STAT DATA ////////////////////////////////////////////////////
-
-            // Send all stat data
-            stats = sqLite.getAllStats();
-            for (StatModel stat : stats) {
-                createStatQuery(stat);
-                st.executeQuery(insertQuery);
-                st.executeQuery(updateQuery);
-            }
-
-            // Get all MySQL stat data
-            stats = getAllStats(st);
-
-            for (StatModel stat : stats) {
-                createStatQuery(stat);
-                sqLite.runQuery(insertQuery);
-                sqLite.runQuery(updateQuery);
-            }
-
-            ///////////////////////// END STAT DATA ////////////////////////////////////////////////
 
             ///////////////////////// SEASON DATA //////////////////////////////////////////////////
 
             // Send all season data
             seasons = sqLite.getAllSeasons();
-            for (SeasonModel season : seasons) {
-                createSeasonQuery(season);
-                st.executeQuery(insertQuery);
-                st.executeQuery(updateQuery);
+            if(seasons.size() > 0) {
+                for (SeasonModel season : seasons) {
+                    createSeasonQuery(season, false);
+                    st.executeUpdate(insertQuery);
+                    st.executeUpdate(updateQuery);
+                }
             }
-
             // Get all MySQL season data
             seasons = getAllSeasons(st);
-
-            for (SeasonModel season : seasons) {
-                createSeasonQuery(season);
-                sqLite.runQuery(insertQuery);
-                sqLite.runQuery(updateQuery);
+            if(seasons.size() > 0) {
+                for (SeasonModel season : seasons) {
+                    createSeasonQuery(season, true);
+                    sqLite.runQuery(insertQuery);
+                    sqLite.runQuery(updateQuery);
+                }
             }
-
             ///////////////////////// END SEASON DATA //////////////////////////////////////////////
 
+            ///////////////////////// GAME DATA ////////////////////////////////////////////////////
+
+            // Send all game data
+            games = sqLite.getAllGames();
+            if(games.size() > 0) {
+                for (GameModel game : games) {
+                    createGameQuery(game, false);
+                    st.executeUpdate(insertQuery);
+                    st.executeUpdate(updateQuery);
+                }
+            }
+            // Receive all MySQL game data
+            games = getAllGames(st);
+            if(games.size() > 0) {
+                for (GameModel game : games) {
+                    createGameQuery(game, true);
+                    sqLite.runQuery(insertQuery);
+                    sqLite.runQuery(updateQuery);
+                }
+            }
+            ///////////////////////// END GAME DATA ////////////////////////////////////////////////
+
+            ///////////////////////// STAT DATA ////////////////////////////////////////////////////
+
+            // Send all stat data
+            stats = sqLite.getAllStats();
+            if (stats.size() > 0) {
+                for (StatModel stat : stats) {
+                    createStatQuery(stat, false);
+                    st.executeUpdate(insertQuery);
+                    st.executeUpdate(updateQuery);
+                }
+            }
+            // Get all MySQL stat data
+            stats = getAllStats(st);
+            if(stats.size() > 0) {
+                for (StatModel stat : stats) {
+                    createStatQuery(stat, true);
+                    sqLite.runQuery(insertQuery);
+                    sqLite.runQuery(updateQuery);
+                }
+            }
+            ///////////////////////// END STAT DATA ////////////////////////////////////////////////
+
             con.close();
+            sqLite.close();
             return result;
         }
         catch(Exception e) {
@@ -189,32 +197,77 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
         */
     }
 
-    private void createGameQuery(GameModel gameModel) {
+    private void createGameQuery(GameModel gameModel, boolean isSQLite) {
 
-        insertQuery = "INSERT OR IGNORE INTO " + MySqlLiteHelper.GAME_TABLE +
+        java.sql.Timestamp game_date;
+        java.sql.Timestamp girls_jv;
+        java.sql.Timestamp boys_jv;
+        java.sql.Timestamp girls_v;
+        java.sql.Timestamp boys_v;
+
+        if(!isSQLite) {
+            game_date = new java.sql.Timestamp(gameModel.getGame_date().getTime());
+            girls_jv = new java.sql.Timestamp(gameModel.getGirls_jv().getTime());
+            boys_jv = new java.sql.Timestamp(gameModel.getBoys_jv().getTime());
+            girls_v = new java.sql.Timestamp(gameModel.getGirls_v().getTime());
+            boys_v = new java.sql.Timestamp(gameModel.getBoys_v().getTime());
+        }
+        else {
+            Date date = new Date();
+            game_date = new java.sql.Timestamp(date.getTime());
+            girls_jv = new java.sql.Timestamp(date.getTime());
+            boys_jv = new java.sql.Timestamp(date.getTime());
+            girls_v = new java.sql.Timestamp(date.getTime());
+            boys_v = new java.sql.Timestamp(date.getTime());
+        }
+
+        insertQuery = "INSERT ";
+        if(isSQLite) insertQuery += "OR";
+        insertQuery += " IGNORE INTO " + MySqlLiteHelper.GAME_TABLE +
                 " VALUES ( '"+ gameModel.getAndroid_id().toString() + "' , " +
                 gameModel.getGame_id() + " , " +
-                gameModel.getSeason_id() + " , " +
-                "'" + gameModel.getGame_date().toString() + "' , " +
-                "'" + gameModel.getLocation() + "' , " +
-                "'" + gameModel.getVenue() + "' , " +
-                "'" + gameModel.getGirls_jv().toString() + "' , " +
-                "'" + gameModel.getBoys_jv().toString() + "' , " +
-                "'" + gameModel.getGirls_v().toString() + "' , " +
-                "'" + gameModel.getBoys_v().toString() + "' , " +
-                "'" + gameModel.getOpp_name() + "'" +
-                " )";
+                gameModel.getSeason_id() + " , ";
+        if(isSQLite) insertQuery += "'" + gameModel.getGame_date().toString() + "' , ";
+        else insertQuery += "'" + game_date + "' , ";
+        insertQuery += "'" + gameModel.getLocation() + "' , " +
+            "'" + gameModel.getVenue() + "' , ";
+        if(isSQLite) insertQuery +=
+            "'" + gameModel.getGirls_jv().toString() + "' , " +
+            "'" + gameModel.getBoys_jv().toString() + "' , " +
+            "'" + gameModel.getGirls_v().toString() + "' , " +
+            "'" + gameModel.getBoys_v().toString() + "' , ";
+        else insertQuery +=
+            "'" + girls_jv + "' , " +
+            "'" + boys_jv + "' , " +
+            "'" + girls_v + "' , " +
+            "'" + boys_v + "' , ";
+        insertQuery +=
+            "'" + gameModel.getOpp_name() + "'" +
+            " )";
 
-        updateQuery = "UPDATE " + MySqlLiteHelper.GAME_TABLE + " " +
-                "SET " + MySqlLiteHelper.GameColumns.season_id.toString() + " = " + gameModel.getSeason_id() + " , " +
-                "SET " + MySqlLiteHelper.GameColumns.game_date.toString() + " = '" + gameModel.getGame_date().toString() + "' , " +
-                "SET " + MySqlLiteHelper.GameColumns.location.toString() + " = '" + gameModel.getLocation() + "' , " +
-                "SET " + MySqlLiteHelper.GameColumns.venue.toString() + " = '" + gameModel.getVenue() + "' , " +
-                "SET " + MySqlLiteHelper.GameColumns.girls_jv.toString() + " = '" + gameModel.getGirls_jv().toString() + "' , " +
-                "SET " + MySqlLiteHelper.GameColumns.boys_jv.toString() + " = '" + gameModel.getBoys_jv().toString() + "' , " +
-                "SET " + MySqlLiteHelper.GameColumns.girls_v.toString() + " = '" + gameModel.getGirls_v().toString() + "' , " +
-                "SET " + MySqlLiteHelper.GameColumns.boys_v.toString() + " = '" + gameModel.getBoys_v().toString() + "' , " +
-                "SET " + MySqlLiteHelper.GameColumns.opp_name.toString() + " = '" + gameModel.getOpp_name() + "' " +
+        updateQuery =
+            "UPDATE " + MySqlLiteHelper.GAME_TABLE + " " +
+            "SET " + MySqlLiteHelper.GameColumns.season_id.toString() + " = " + gameModel.getSeason_id() + " , " +
+            MySqlLiteHelper.GameColumns.location.toString() + " = '" + gameModel.getLocation() + "' , " +
+            MySqlLiteHelper.GameColumns.venue.toString() + " = '" + gameModel.getVenue() + "' , ";
+        if (isSQLite) {
+            updateQuery +=
+                MySqlLiteHelper.GameColumns.game_date.toString() + " = '" + gameModel.getGame_date().toString() + "' , " +
+                MySqlLiteHelper.GameColumns.girls_jv.toString() + " = '" + gameModel.getGirls_jv().toString() + "' , " +
+                MySqlLiteHelper.GameColumns.boys_jv.toString() + " = '" + gameModel.getBoys_jv().toString() + "' , " +
+                MySqlLiteHelper.GameColumns.girls_v.toString() + " = '" + gameModel.getGirls_v().toString() + "' , " +
+                MySqlLiteHelper.GameColumns.boys_v.toString() + " = '" + gameModel.getBoys_v().toString() + "' , ";
+        }
+        else {
+            updateQuery +=
+            MySqlLiteHelper.GameColumns.game_date.toString() + " = '" + game_date + "' , " +
+            MySqlLiteHelper.GameColumns.girls_jv.toString() + " = '" + girls_jv + "' , " +
+            MySqlLiteHelper.GameColumns.boys_jv.toString() + " = '" + boys_jv + "' , " +
+            MySqlLiteHelper.GameColumns.girls_v.toString() + " = '" + girls_v + "' , " +
+            MySqlLiteHelper.GameColumns.boys_v.toString() + " = '" + boys_v + "' , ";
+        }
+        updateQuery +=
+                MySqlLiteHelper.GameColumns.opp_name.toString() + " = '" + gameModel.getOpp_name() + "' " +
                 "WHERE " + MySqlLiteHelper.GameColumns.android_id.toString() + " = '" + gameModel.getAndroid_id().toString() + "'"+
                 " AND " + MySqlLiteHelper.GameColumns.game_id.toString() + " = " + gameModel.getGame_id();
     }
@@ -238,25 +291,43 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
 
     private GameModel resultSetToGameModel(ResultSet rs) throws SQLException {
         GameModel gameModel = new GameModel(null);
+        java.sql.Timestamp timestamp;
 
         gameModel.setAndroid_id(rs.getString(MySqlLiteHelper.GameColumns.android_id.toString()));
         gameModel.setGame_id(rs.getInt(MySqlLiteHelper.GameColumns.game_id.toString()));
         gameModel.setSeason_id(rs.getInt(MySqlLiteHelper.GameColumns.season_id.toString()));
-        gameModel.setGame_date(rs.getDate(MySqlLiteHelper.GameColumns.game_date.toString()));
+        //gameModel.setGame_date(rs.getDate(MySqlLiteHelper.GameColumns.game_date.toString()));
+        timestamp = rs.getTimestamp(MySqlLiteHelper.GameColumns.game_date.toString());
+        if (timestamp != null)
+            gameModel.setGame_date(new java.util.Date(timestamp.getTime()));
         gameModel.setLocation(rs.getString(MySqlLiteHelper.GameColumns.location.toString()));
         gameModel.setVenue(rs.getString(MySqlLiteHelper.GameColumns.venue.toString()));
-        gameModel.setGirls_jv(rs.getDate(MySqlLiteHelper.GameColumns.girls_jv.toString()));
-        gameModel.setBoys_jv(rs.getDate(MySqlLiteHelper.GameColumns.boys_jv.toString()));
-        gameModel.setGirls_v(rs.getDate(MySqlLiteHelper.GameColumns.girls_v.toString()));
-        gameModel.setBoys_v(rs.getDate(MySqlLiteHelper.GameColumns.boys_v.toString()));
+        //gameModel.setGirls_jv(rs.getDate(MySqlLiteHelper.GameColumns.girls_jv.toString()));
+        timestamp = rs.getTimestamp(MySqlLiteHelper.GameColumns.girls_jv.toString());
+        if (timestamp != null)
+            gameModel.setGirls_jv(new java.util.Date(timestamp.getTime()));
+        //gameModel.setBoys_jv(rs.getDate(MySqlLiteHelper.GameColumns.boys_jv.toString()));
+        timestamp = rs.getTimestamp(MySqlLiteHelper.GameColumns.boys_jv.toString());
+        if (timestamp != null)
+            gameModel.setBoys_jv(new java.util.Date(timestamp.getTime()));
+        //gameModel.setGirls_v(rs.getDate(MySqlLiteHelper.GameColumns.girls_v.toString()));
+        timestamp = rs.getTimestamp(MySqlLiteHelper.GameColumns.girls_v.toString());
+        if (timestamp != null)
+            gameModel.setGirls_v(new java.util.Date(timestamp.getTime()));
+        //gameModel.setBoys_v(rs.getDate(MySqlLiteHelper.GameColumns.boys_v.toString()));
+        timestamp = rs.getTimestamp(MySqlLiteHelper.GameColumns.boys_v.toString());
+        if (timestamp != null)
+            gameModel.setBoys_v(new java.util.Date(timestamp.getTime()));
         gameModel.setOpp_name(rs.getString(MySqlLiteHelper.GameColumns.opp_name.toString()));
 
         return gameModel;
     }
 
-    private void createPlayerQuery(PlayerModel playerModel) {
+    private void createPlayerQuery(PlayerModel playerModel, boolean isSQLite) {
 
-        insertQuery = "INSERT OR IGNORE INTO " + MySqlLiteHelper.PLAYER_TABLE +
+        insertQuery = "INSERT ";
+        if(isSQLite) insertQuery += "OR";
+        insertQuery += " IGNORE INTO " + MySqlLiteHelper.PLAYER_TABLE +
                 " VALUES ( '"+ playerModel.getAndroid_id() + "' , " +
                 playerModel.getPlayer_id() + " , " +
                 "'" + playerModel.getFirst_name() + "' , " +
@@ -267,9 +338,9 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
 
         updateQuery = "UPDATE " + MySqlLiteHelper.PLAYER_TABLE + " " +
                 "SET " + MySqlLiteHelper.PlayerColumns.first_name.toString() + " = '" + playerModel.getFirst_name() + "' , " +
-                "SET " + MySqlLiteHelper.PlayerColumns.last_name.toString() + " = '" + playerModel.getLast_name() + "' , " +
-                "SET " + MySqlLiteHelper.PlayerColumns.year.toString() + " = '" + playerModel.getYear() + "' , " +
-                "SET " + MySqlLiteHelper.PlayerColumns.number.toString() + " = '" + playerModel.getNumber() + "' " +
+                MySqlLiteHelper.PlayerColumns.last_name.toString() + " = '" + playerModel.getLast_name() + "' , " +
+                MySqlLiteHelper.PlayerColumns.year.toString() + " = '" + playerModel.getYear() + "' , " +
+                MySqlLiteHelper.PlayerColumns.number.toString() + " = '" + playerModel.getNumber() + "' " +
                 "WHERE " + MySqlLiteHelper.PlayerColumns.android_id.toString() + " = '" + playerModel.getAndroid_id().toString() + "'" +
                 " AND " + MySqlLiteHelper.PlayerColumns.player_id.toString() + " = " + playerModel.getPlayer_id();
     }
@@ -304,9 +375,11 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
         return playerModel;
     }
 
-    private void createStatQuery(StatModel statModel) {
+    private void createStatQuery(StatModel statModel, boolean isSQLite) {
 
-        insertQuery = "INSERT OR IGNORE INTO " + MySqlLiteHelper.STAT_TABLE +
+        insertQuery = "INSERT ";
+        if(isSQLite) insertQuery += "OR";
+        insertQuery += " IGNORE INTO " + MySqlLiteHelper.STAT_TABLE +
                 " VALUES ( '"+ statModel.getAndroid_id().toString() + "' , " +
                 statModel.getStat_id() + " , " +
                 statModel.getGame_id() + " , " +
@@ -327,19 +400,19 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
 
         updateQuery = "UPDATE " + MySqlLiteHelper.STAT_TABLE + " " +
                 "SET " + MySqlLiteHelper.StatColumns.game_id.toString() + " = " + statModel.getGame_id() + " , " +
-                "SET " + MySqlLiteHelper.StatColumns.player_id.toString() + " = " + statModel.getPlayer_id() + " , " +
-                "SET " + MySqlLiteHelper.StatColumns.o_rebound.toString() + " = " + statModel.getO_rebound() + " , " +
-                "SET " + MySqlLiteHelper.StatColumns.d_rebound.toString() + " = " + statModel.getD_rebound() + " , " +
-                "SET " + MySqlLiteHelper.StatColumns.assist.toString() + " = " + statModel.getAssist() + " , " +
-                "SET " + MySqlLiteHelper.StatColumns.steal.toString() + " = " + statModel.getSteal() + " , " +
-                "SET " + MySqlLiteHelper.StatColumns.turnover.toString() + " = " + statModel.getTurnover() + " , " +
-                "SET " + MySqlLiteHelper.StatColumns.two_pointer.toString() + " = " + statModel.getTwo_pointer() + " , " +
-                "SET " + MySqlLiteHelper.StatColumns.two_pointer_made.toString() + " = " + statModel.getTwo_pointer_made() + " , " +
-                "SET " + MySqlLiteHelper.StatColumns.three_pointer.toString() + " = " + statModel.getThree_pointer() + " , " +
-                "SET " + MySqlLiteHelper.StatColumns.three_pointer_made.toString() + " = " + statModel.getThree_pointer_made() + " , " +
-                "SET " + MySqlLiteHelper.StatColumns.free_throw.toString() + " = " + statModel.getFree_throw() + " , " +
-                "SET " + MySqlLiteHelper.StatColumns.free_throw_made.toString() + " = " + statModel.getFree_throw_made() + " , " +
-                "SET " + MySqlLiteHelper.StatColumns.charge.toString() + " = " + statModel.getCharge() + " " +
+                MySqlLiteHelper.StatColumns.player_id.toString() + " = " + statModel.getPlayer_id() + " , " +
+                MySqlLiteHelper.StatColumns.o_rebound.toString() + " = " + statModel.getO_rebound() + " , " +
+                MySqlLiteHelper.StatColumns.d_rebound.toString() + " = " + statModel.getD_rebound() + " , " +
+                MySqlLiteHelper.StatColumns.assist.toString() + " = " + statModel.getAssist() + " , " +
+                MySqlLiteHelper.StatColumns.steal.toString() + " = " + statModel.getSteal() + " , " +
+                MySqlLiteHelper.StatColumns.turnover.toString() + " = " + statModel.getTurnover() + " , " +
+                MySqlLiteHelper.StatColumns.two_pointer.toString() + " = " + statModel.getTwo_pointer() + " , " +
+                MySqlLiteHelper.StatColumns.two_pointer_made.toString() + " = " + statModel.getTwo_pointer_made() + " , " +
+                MySqlLiteHelper.StatColumns.three_pointer.toString() + " = " + statModel.getThree_pointer() + " , " +
+                MySqlLiteHelper.StatColumns.three_pointer_made.toString() + " = " + statModel.getThree_pointer_made() + " , " +
+                MySqlLiteHelper.StatColumns.free_throw.toString() + " = " + statModel.getFree_throw() + " , " +
+                MySqlLiteHelper.StatColumns.free_throw_made.toString() + " = " + statModel.getFree_throw_made() + " , " +
+                MySqlLiteHelper.StatColumns.charge.toString() + " = " + statModel.getCharge() + " " +
                 "WHERE " + MySqlLiteHelper.StatColumns.android_id.toString() + " = '" + statModel.getAndroid_id().toString() + "'" +
                 " AND " + MySqlLiteHelper.StatColumns.stat_id.toString() + " = " + statModel.getStat_id();
     }
@@ -347,7 +420,7 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
     private List<StatModel> getAllStats(Statement st) throws SQLException {
         List<StatModel> stats = new ArrayList<>();
 
-        ResultSet rs = st.executeQuery("SELECT * FROM " + MySqlLiteHelper.STAT_TABLE);
+        ResultSet rs = st.executeQuery("SELECT * FROM " + MySqlLiteHelper.STAT_TABLE );
         //ResultSetMetaData rsmd = rs.getMetaData();
 
         rs.first();
@@ -384,9 +457,11 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
         return statModel;
     }
 
-    private void createSeasonQuery(SeasonModel seasonModel) {
+    private void createSeasonQuery(SeasonModel seasonModel, boolean isSQLite) {
 
-        insertQuery = "INSERT OR IGNORE INTO " + MySqlLiteHelper.SEASON_TABLE +
+        insertQuery = "INSERT ";
+        if(isSQLite) insertQuery += "OR";
+        insertQuery += " IGNORE INTO " + MySqlLiteHelper.SEASON_TABLE +
                 " VALUES ( '"+ seasonModel.getAndroid_id().toString() + "' , " +
                 seasonModel.getSeason_id() + " , " +
                 seasonModel.getSeason_name() +
