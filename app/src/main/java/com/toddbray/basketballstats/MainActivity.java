@@ -31,6 +31,17 @@ import java.util.List;
 
 import static android.R.id.input;
 
+/*
+NOTE: Gradle 2.3 and below has a known bug where instant run will not work when Java Database Connector
+is used.  Instant run can be disabled by doing the following:
+Windows / Linux:
+File -> Settings -> Build, Execution, Deployment -> Instant Run -> Uncheck Enable Instant Run
+
+Mac OS:
+Android Studio -> Settings -> Build, Execution, Deployment -> Instant Run -> Uncheck Enable Instant Run
+
+ */
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private DbDataSource dataSource;
@@ -85,62 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         List<StatModel> stats = dataSource.getAllStats();
         List<SeasonModel> seasons = dataSource.getAllSeasons();
 
-        // TESTING SYNCHRONIZATION HERE
-        //myDataSource.execute(getApplicationContext());
 
-        // checkPermission();
-
-        // Date dateTest = new Date();
-
-
-        /*
-        PlayerModel player = new PlayerModel(m_androidId);
-        player.setFirst_name("Bradley A");
-        player.setLast_name("Jordan");
-        player.setNumber(12);
-        player.setYear("Freshmen");
-
-        player = dataSource.createPlayer(player);
-
-        Date dateTest = new Date();
-        GameModel game = new GameModel(m_androidId);
-        game.setGame_date(dateTest);
-        game.setVenue("ArenaAAA");
-        game.setOpp_name("GladiatorsAAA");
-        game.setLocation("Parking LotAAA");
-        game.setBoys_jv(dateTest);
-        game.setBoys_v(dateTest);
-        game.setGirls_jv(dateTest);
-        game.setGirls_v(dateTest);
-        game.setSeason_id(1);
-
-        game = dataSource.createGame(game);
-
-        SeasonModel season = new SeasonModel(m_androidId);
-
-        season.setSeason_name(2016);
-
-        season = dataSource.createSeason(season);
-        */
-
-
-        /*
-        ArrayAdapter<GameModel> adapter = new ArrayAdapter<GameModel>(this,
-                R.layout.textview_nameofGameView, comments);
-        setListAdapter(adapter);
-        */
-
-        /*
-        ArrayAdapter<PlayerModel> adapter = new ArrayAdapter<PlayerModel>(this,
-                R.layout.textview_nameofPlayerView, comments);
-        setListAdapter(adapter);
-        */
-
-        /*
-        ArrayAdapter<StatModel> adapter = new ArrayAdapter<StatModel>(this,
-                R.layout.textview_nameofStatView, comments);
-        setListAdapter(adapter);
-        */
     }
 
     @Override

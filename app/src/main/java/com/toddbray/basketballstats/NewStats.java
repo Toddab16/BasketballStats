@@ -186,7 +186,7 @@ public class NewStats extends AppCompatActivity {
                         db.createStat(game_stats.get(players.get(i).getPlayer_id()));
                     }
                     if (game_stats.get(players.get(i).getPlayer_id()).getGame_id() == game_id && b) {
-                        db.updateStat(game_stats.get(players.get(i).getPlayer_id()));
+                        db.createStat(game_stats.get(players.get(i).getPlayer_id()));
 
                     }
                 }

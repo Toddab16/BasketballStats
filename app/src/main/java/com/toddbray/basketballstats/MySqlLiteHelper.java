@@ -19,8 +19,6 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
     public static final String STAT_TABLE = "Stat";
     public static final String SEASON_TABLE = "Season";
 
-    // UPDATE SQLITE_SEQUENCE SET seq = <n> WHERE name = '<table>'
-
     public enum GameColumns {
 
         android_id, season_id, game_id, game_date, opp_name, location, venue, girls_jv, boys_jv, girls_v, boys_v;
@@ -159,56 +157,14 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion == 1 && newVersion == 2) {
-            /*
-            String sql = "alter table " + GAME_TABLE + " add column extra integer";
-            db.execSQL(sql);
-
-            sql = "update " + GAME_TABLE + " set extra = 42";
-            db.execSQL(sql);
-            */
+            // Not Implemented
         }
     }
 
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (newVersion == 1 && oldVersion != newVersion) {
-            /*
-            // The reason we need all this code is because
-            // SQLite does not support ALTER TABLE ... DROP COLUMN
-            try {
-                db.beginTransaction();
-
-                // copy table that needs column dropped
-                String sql = "alter table " + GAME_TABLE + " rename to tmp";
-                db.execSQL(sql);
-
-                // recreate the table in the old schema
-                sql = "CREATE TABLE " + GAME_TABLE + " (" +
-                        GameColumns.game_id + " INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , " +
-                        GameColumns.opp_name + " TEXT NOT NULL , " +
-                        GameColumns.game_date + " TEXT NOT NULL )";
-                db.execSQL(sql);
-
-                // copy the data we want from the old table
-                sql = "insert into " + GAME_TABLE +
-                        " select " +
-                        GameColumns.game_id + ", " +
-                        GameColumns.opp_name + ", " +
-                        GameColumns.game_date +
-                        " from tmp";
-                db.execSQL(sql);
-
-                // get rid of the temprary table
-                sql = "drop table tmp";
-                db.execSQL(sql);
-
-                db.setTransactionSuccessful();
-            }  catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                db.endTransaction();
-            }
-            */
+            // Not Implemented
         }
 
     }

@@ -24,8 +24,6 @@ public class DbDataSource {
     private SQLiteDatabase database;
     private MySqlLiteHelper databaseHelper;
 
-    private String insertQuery, updateQuery;
-
     public DbDataSource(Context context) {
         databaseHelper = new MySqlLiteHelper(context);
     }
@@ -37,7 +35,6 @@ public class DbDataSource {
     public void close() {
         database.close();
     }
-
 
     public void runQuery(String query) {
         database.execSQL(query);
@@ -78,11 +75,6 @@ public class DbDataSource {
         }
 
         return gameModel;
-    }
-
-    public void removeGame(int id) {
-        database.delete(MySqlLiteHelper.STAT_TABLE, (MySqlLiteHelper.StatColumns.game_id.toString() + "=?"), new String[]{Integer.toString(id)});
-        database.delete(MySqlLiteHelper.GAME_TABLE, (MySqlLiteHelper.GameColumns.game_id.toString() + "=?"), new String[]{Integer.toString(id)});
     }
 
     public List<GameModel> getAllGames() {
@@ -194,11 +186,6 @@ public class DbDataSource {
         }
 
         return playerModel;
-    }
-
-    public void removePlayer(int id) {
-        database.delete(MySqlLiteHelper.STAT_TABLE, (MySqlLiteHelper.StatColumns.player_id.toString() + "=?"), new String[]{Integer.toString(id)});
-        database.delete(MySqlLiteHelper.PLAYER_TABLE, (MySqlLiteHelper.PlayerColumns.player_id.toString() + "=?"), new String[]{Integer.toString(id)});
     }
 
     public List<PlayerModel> getAllPlayers() {
@@ -313,38 +300,6 @@ public class DbDataSource {
         return statModel;
     }
 
-    // This method is not necessary
-    public void updateStat(StatModel statModel) {
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(MySqlLiteHelper.StatColumns.player_id.toString(), statModel.getPlayer_id());
-        contentValues.put(MySqlLiteHelper.StatColumns.game_id.toString(), statModel.getGame_id());
-
-            database.execSQL("UPDATE " + MySqlLiteHelper.STAT_TABLE +
-                    " SET " + MySqlLiteHelper.StatColumns.steal.toString() + " = '" + statModel.getSteal() + "'," +
-                    MySqlLiteHelper.StatColumns.o_rebound.toString() + " = '" + statModel.getO_rebound() + "'," +
-                    MySqlLiteHelper.StatColumns.d_rebound.toString() + " = '" + statModel.getD_rebound() + "'," +
-                    MySqlLiteHelper.StatColumns.assist.toString() + " = '" + statModel.getAssist() + "'," +
-                    MySqlLiteHelper.StatColumns.turnover.toString() + " = '" + statModel.getTurnover() + "'," +
-                    MySqlLiteHelper.StatColumns.two_pointer.toString() + " = '" + statModel.getTwo_pointer() + "'," +
-                    MySqlLiteHelper.StatColumns.two_pointer_made.toString() + " = '" + statModel.getTwo_pointer_made() + "'," +
-                    MySqlLiteHelper.StatColumns.three_pointer.toString() + " = '" + statModel.getThree_pointer() + "'," +
-                    MySqlLiteHelper.StatColumns.three_pointer_made.toString() + " = '" + statModel.getThree_pointer_made() + "'," +
-                    MySqlLiteHelper.StatColumns.free_throw.toString() + " = '" + statModel.getFree_throw() + "'," +
-                    MySqlLiteHelper.StatColumns.free_throw_made.toString() + " = '" + statModel.getFree_throw_made() + "'," +
-                    MySqlLiteHelper.StatColumns.charge.toString() + " = '" + statModel.getCharge() + "'" +
-                    " WHERE " + MySqlLiteHelper.StatColumns.player_id.toString() + " = '" + statModel.getPlayer_id() + "'" +
-                    " AND " + MySqlLiteHelper.StatColumns.game_id.toString() + " = '" + statModel.getGame_id() + "'"
-            );
-
-    }
-
-    public void removeStat(int g_id, int p_id) {
-        database.execSQL("DELETE FROM " + MySqlLiteHelper.STAT_TABLE +
-                " WHERE " + MySqlLiteHelper.StatColumns.game_id.toString() + " = '" + g_id + "'" +
-                " AND " + MySqlLiteHelper.StatColumns.player_id.toString() + " = '" + p_id + "'" );
-    }
-
     public List<StatModel> getAllStats() {
         List<StatModel> stats = new ArrayList<>();
 
@@ -411,7 +366,6 @@ public class DbDataSource {
         return stats;
     }
 
-    // TODO: This one won't work until the multiple table query is properly defined
     public StatModel getSeasonStats(int player_id, int season_id, String android_id) {
         StatModel stats = new StatModel(null);
         SQLiteQueryBuilder sq = new SQLiteQueryBuilder();
@@ -586,26 +540,9 @@ public class DbDataSource {
                 e.printStackTrace();
                 return null;
             }
-            /*
-            ContentValues contentValues = new ContentValues();
-
-            contentValues.put(MySqlLiteHelper.SeasonColumns.android_id.toString(), seasonModel.getAndroid_id().toString());
-            contentValues.put(MySqlLiteHelper.SeasonColumns.season_name.toString(), seasonModel.getSeason_name());
-
-            long id = database.insert(MySqlLiteHelper.SEASON_TABLE,
-                    null, contentValues);
-
-            seasonModel.setSeason_id((int) id);
-            */
         }
 
         return seasonModel;
-    }
-
-    public void removeSeason(int id) {
-        database.delete(MySqlLiteHelper.STAT_TABLE, (MySqlLiteHelper.StatColumns.player_id.toString() + "=?"), new String[]{Integer.toString(id)});
-        database.delete(MySqlLiteHelper.GAME_TABLE, (MySqlLiteHelper.GameColumns.game_id.toString() + "=?"), new String[]{Integer.toString(id)});
-        database.delete(MySqlLiteHelper.SEASON_TABLE, (MySqlLiteHelper.SeasonColumns.season_id.toString() + "=?"), new String[]{Integer.toString(id)});
     }
 
     public List<SeasonModel> getAllSeasons() {
@@ -675,5 +612,4 @@ public class DbDataSource {
 
         return id;
     }
-
 }

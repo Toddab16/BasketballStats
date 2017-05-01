@@ -1,8 +1,12 @@
 package com.toddbray.basketballstats;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
+import android.widget.Toast;
 
 import java.security.Timestamp;
 import java.sql.Connection;
@@ -30,41 +34,16 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
     private List<StatModel> stats;
     private List<SeasonModel> seasons;
 
-    private String insertQuery;
-    private String updateQuery;
-
-    /*
-    Synchronize MySQL
-    INSERT INTO table (id, name, age) VALUES(1, "A", 19) ON DUPLICATE KEY UPDATE
-    name="A", age=19
-
-    Synchronize SQLite
-    INSERT OR IGNORE INTO table_name VALUES ($variable_id, $variable_name);
-    UPDATE visits SET field_name = $variable_field WHERE id = $variable_id;
-     */
-
-
-    @Override
-    protected void onPreExecute() {
-        /*
-        TextView tv = (TextView) findViewById(R.id.result_textView);
-        tv.setText("Download 0% complete");
-        progressBar.setProgress(0);
-        */
-        //DbDataSource sqlite = new DbDataSource();
-
-    }
+    private String insertQuery, updateQuery;
 
     @Override
     protected String doInBackground(Context... contexts) {
         try {
-            // TODO: Implement Progress Update
-
             // Open SQLite connection
             DbDataSource sqLite = new DbDataSource(contexts[0]);
             sqLite.open();
 
-            String result = "Database connection was successful\n";
+            notifyUser(contexts[0], "Synchronizing, Please Wait...");
 
             // Open MySQL connection
             Class.forName("com.mysql.jdbc.Driver");
@@ -83,9 +62,10 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                     st.executeUpdate(updateQuery);
 
                     if (isCancelled()) {
-                        // displayCancelMessage();
+                        notifyUser(contexts[0], "Synchronization Cancelled.");
                         return null;
                     }
+
                     Thread.sleep(30);
                 }
             }
@@ -98,14 +78,13 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                     sqLite.runQuery(updateQuery);
 
                     if (isCancelled()) {
-                        // displayCancelMessage();
+                        notifyUser(contexts[0], "Synchronization Cancelled.");
                         return null;
                     }
                     Thread.sleep(30);
                 }
             }
             ///////////////////////// END PLAYER DATA //////////////////////////////////////////////
-
 
             ///////////////////////// SEASON DATA //////////////////////////////////////////////////
 
@@ -118,7 +97,7 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                     st.executeUpdate(updateQuery);
 
                     if (isCancelled()) {
-                        // displayCancelMessage();
+                        notifyUser(contexts[0], "Synchronization Cancelled.");
                         return null;
                     }
                     Thread.sleep(30);
@@ -133,14 +112,13 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                     sqLite.runQuery(updateQuery);
 
                     if (isCancelled()) {
-                        // displayCancelMessage();
+                        notifyUser(contexts[0], "Synchronization Cancelled.");
                         return null;
                     }
                     Thread.sleep(30);
                 }
             }
             ///////////////////////// END SEASON DATA //////////////////////////////////////////////
-
 
             ///////////////////////// GAME DATA ////////////////////////////////////////////////////
 
@@ -153,7 +131,7 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                     st.executeUpdate(updateQuery);
 
                     if (isCancelled()) {
-                        // displayCancelMessage();
+                        notifyUser(contexts[0], "Synchronization Cancelled.");
                         return null;
                     }
                     Thread.sleep(30);
@@ -168,7 +146,7 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                     sqLite.runQuery(updateQuery);
 
                     if (isCancelled()) {
-                        // displayCancelMessage();
+                        notifyUser(contexts[0], "Synchronization Cancelled.");
                         return null;
                     }
                     Thread.sleep(30);
@@ -187,7 +165,7 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                     st.executeUpdate(updateQuery);
 
                     if (isCancelled()) {
-                        // displayCancelMessage();
+                        notifyUser(contexts[0], "Synchronization Cancelled.");
                         return null;
                     }
                     Thread.sleep(30);
@@ -202,7 +180,7 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
                     sqLite.runQuery(updateQuery);
 
                     if (isCancelled()) {
-                        // displayCancelMessage();
+                        notifyUser(contexts[0], "Synchronization Cancelled.");
                         return null;
                     }
                     Thread.sleep(30);
@@ -210,41 +188,16 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
             }
             ///////////////////////// END STAT DATA ////////////////////////////////////////////////
 
+            notifyUser(contexts[0], "Synchronization Complete!");
+
             con.close();
             sqLite.close();
-            return result;
+            return null;
         }
         catch(Exception e) {
             e.printStackTrace();
             return e.toString();
         }
-    }
-
-    @Override
-    protected void onProgressUpdate(Integer... values) {
-        /*
-        TextView tv = (TextView) findViewById(R.id.result_textView);
-        int percent = (100 * values[0]) / values[1];
-        tv.setText("Download " + percent + "% complete");
-        progressBar.setProgress(percent);
-        */
-    }
-
-    @Override
-    protected void onPostExecute(String s) {
-        /*
-        super.onPostExecute(integer);
-        TextView tv = (TextView) findViewById(R.id.result_textView);
-        tv.setText("Download complete.  Downloaded " + integer + " bytes");
-        */
-    }
-
-    @Override
-    protected void onCancelled() {
-        /*
-        TextView tv = (TextView) findViewById(R.id.result_textView);
-        tv.setText("Download canceled");
-        */
     }
 
     private void createGameQuery(GameModel gameModel, boolean isSQLite) {
@@ -326,7 +279,6 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
         List<GameModel> games = new ArrayList<>();
 
         ResultSet rs = st.executeQuery("SELECT * FROM " + MySqlLiteHelper.GAME_TABLE);
-        //ResultSetMetaData rsmd = rs.getMetaData();
 
         rs.first();
         while(!rs.isAfterLast()) {
@@ -346,25 +298,25 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
         gameModel.setAndroid_id(rs.getString(MySqlLiteHelper.GameColumns.android_id.toString()));
         gameModel.setGame_id(rs.getInt(MySqlLiteHelper.GameColumns.game_id.toString()));
         gameModel.setSeason_id(rs.getInt(MySqlLiteHelper.GameColumns.season_id.toString()));
-        //gameModel.setGame_date(rs.getDate(MySqlLiteHelper.GameColumns.game_date.toString()));
+
         timestamp = rs.getTimestamp(MySqlLiteHelper.GameColumns.game_date.toString());
         if (timestamp != null)
             gameModel.setGame_date(new java.util.Date(timestamp.getTime()));
         gameModel.setLocation(rs.getString(MySqlLiteHelper.GameColumns.location.toString()));
         gameModel.setVenue(rs.getString(MySqlLiteHelper.GameColumns.venue.toString()));
-        //gameModel.setGirls_jv(rs.getDate(MySqlLiteHelper.GameColumns.girls_jv.toString()));
+
         timestamp = rs.getTimestamp(MySqlLiteHelper.GameColumns.girls_jv.toString());
         if (timestamp != null)
             gameModel.setGirls_jv(new java.util.Date(timestamp.getTime()));
-        //gameModel.setBoys_jv(rs.getDate(MySqlLiteHelper.GameColumns.boys_jv.toString()));
+
         timestamp = rs.getTimestamp(MySqlLiteHelper.GameColumns.boys_jv.toString());
         if (timestamp != null)
             gameModel.setBoys_jv(new java.util.Date(timestamp.getTime()));
-        //gameModel.setGirls_v(rs.getDate(MySqlLiteHelper.GameColumns.girls_v.toString()));
+
         timestamp = rs.getTimestamp(MySqlLiteHelper.GameColumns.girls_v.toString());
         if (timestamp != null)
             gameModel.setGirls_v(new java.util.Date(timestamp.getTime()));
-        //gameModel.setBoys_v(rs.getDate(MySqlLiteHelper.GameColumns.boys_v.toString()));
+
         timestamp = rs.getTimestamp(MySqlLiteHelper.GameColumns.boys_v.toString());
         if (timestamp != null)
             gameModel.setBoys_v(new java.util.Date(timestamp.getTime()));
@@ -377,29 +329,30 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
 
         insertQuery = "INSERT ";
         if(isSQLite) insertQuery += "OR";
-        insertQuery += " IGNORE INTO " + MySqlLiteHelper.PLAYER_TABLE +
-                " VALUES ( '"+ playerModel.getAndroid_id() + "' , " +
-                playerModel.getPlayer_id() + " , " +
-                "'" + playerModel.getFirst_name() + "' , " +
-                "'" + playerModel.getLast_name() + "' , " +
-                "'" + playerModel.getYear() + "' , " +
-                playerModel.getNumber() +
-                " )";
+        insertQuery +=
+            " IGNORE INTO " + MySqlLiteHelper.PLAYER_TABLE +
+            " VALUES ( '"+ playerModel.getAndroid_id() + "' , " +
+            playerModel.getPlayer_id() + " , " +
+            "'" + playerModel.getFirst_name() + "' , " +
+            "'" + playerModel.getLast_name() + "' , " +
+            "'" + playerModel.getYear() + "' , " +
+            playerModel.getNumber() +
+            " )";
 
-        updateQuery = "UPDATE " + MySqlLiteHelper.PLAYER_TABLE + " " +
-                "SET " + MySqlLiteHelper.PlayerColumns.first_name.toString() + " = '" + playerModel.getFirst_name() + "' , " +
-                MySqlLiteHelper.PlayerColumns.last_name.toString() + " = '" + playerModel.getLast_name() + "' , " +
-                MySqlLiteHelper.PlayerColumns.year.toString() + " = '" + playerModel.getYear() + "' , " +
-                MySqlLiteHelper.PlayerColumns.number.toString() + " = '" + playerModel.getNumber() + "' " +
-                "WHERE " + MySqlLiteHelper.PlayerColumns.android_id.toString() + " = '" + playerModel.getAndroid_id().toString() + "'" +
-                " AND " + MySqlLiteHelper.PlayerColumns.player_id.toString() + " = " + playerModel.getPlayer_id();
+        updateQuery =
+            "UPDATE " + MySqlLiteHelper.PLAYER_TABLE + " " +
+            "SET " + MySqlLiteHelper.PlayerColumns.first_name.toString() + " = '" + playerModel.getFirst_name() + "' , " +
+            MySqlLiteHelper.PlayerColumns.last_name.toString() + " = '" + playerModel.getLast_name() + "' , " +
+            MySqlLiteHelper.PlayerColumns.year.toString() + " = '" + playerModel.getYear() + "' , " +
+            MySqlLiteHelper.PlayerColumns.number.toString() + " = '" + playerModel.getNumber() + "' " +
+            "WHERE " + MySqlLiteHelper.PlayerColumns.android_id.toString() + " = '" + playerModel.getAndroid_id().toString() + "'" +
+            " AND " + MySqlLiteHelper.PlayerColumns.player_id.toString() + " = " + playerModel.getPlayer_id();
     }
 
     private List<PlayerModel> getAllPlayers(Statement st) throws SQLException {
         List<PlayerModel> players = new ArrayList<>();
 
         ResultSet rs = st.executeQuery("SELECT * FROM " + MySqlLiteHelper.PLAYER_TABLE);
-        //ResultSetMetaData rsmd = rs.getMetaData();
 
         rs.first();
         while(!rs.isAfterLast()) {
@@ -429,49 +382,50 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
 
         insertQuery = "INSERT ";
         if(isSQLite) insertQuery += "OR";
-        insertQuery += " IGNORE INTO " + MySqlLiteHelper.STAT_TABLE +
-                " VALUES ( '"+ statModel.getAndroid_id().toString() + "' , " +
-                statModel.getStat_id() + " , " +
-                statModel.getGame_id() + " , " +
-                statModel.getPlayer_id() + " , " +
-                statModel.getO_rebound() + " , " +
-                statModel.getD_rebound() + " , " +
-                statModel.getAssist() + " , " +
-                statModel.getSteal() + " , " +
-                statModel.getTurnover() + " , " +
-                statModel.getTwo_pointer() + " , " +
-                statModel.getTwo_pointer_made() + " , " +
-                statModel.getThree_pointer() + " , " +
-                statModel.getThree_pointer_made() + " , " +
-                statModel.getFree_throw() + " , " +
-                statModel.getFree_throw_made() + " , " +
-                statModel.getCharge() +
-                " )";
+        insertQuery +=
+            " IGNORE INTO " + MySqlLiteHelper.STAT_TABLE +
+            " VALUES ( '"+ statModel.getAndroid_id().toString() + "' , " +
+            statModel.getStat_id() + " , " +
+            statModel.getGame_id() + " , " +
+            statModel.getPlayer_id() + " , " +
+            statModel.getO_rebound() + " , " +
+            statModel.getD_rebound() + " , " +
+            statModel.getAssist() + " , " +
+            statModel.getSteal() + " , " +
+            statModel.getTurnover() + " , " +
+            statModel.getTwo_pointer() + " , " +
+            statModel.getTwo_pointer_made() + " , " +
+            statModel.getThree_pointer() + " , " +
+            statModel.getThree_pointer_made() + " , " +
+            statModel.getFree_throw() + " , " +
+            statModel.getFree_throw_made() + " , " +
+            statModel.getCharge() +
+            " )";
 
-        updateQuery = "UPDATE " + MySqlLiteHelper.STAT_TABLE + " " +
-                "SET " + MySqlLiteHelper.StatColumns.game_id.toString() + " = " + statModel.getGame_id() + " , " +
-                MySqlLiteHelper.StatColumns.player_id.toString() + " = " + statModel.getPlayer_id() + " , " +
-                MySqlLiteHelper.StatColumns.o_rebound.toString() + " = " + statModel.getO_rebound() + " , " +
-                MySqlLiteHelper.StatColumns.d_rebound.toString() + " = " + statModel.getD_rebound() + " , " +
-                MySqlLiteHelper.StatColumns.assist.toString() + " = " + statModel.getAssist() + " , " +
-                MySqlLiteHelper.StatColumns.steal.toString() + " = " + statModel.getSteal() + " , " +
-                MySqlLiteHelper.StatColumns.turnover.toString() + " = " + statModel.getTurnover() + " , " +
-                MySqlLiteHelper.StatColumns.two_pointer.toString() + " = " + statModel.getTwo_pointer() + " , " +
-                MySqlLiteHelper.StatColumns.two_pointer_made.toString() + " = " + statModel.getTwo_pointer_made() + " , " +
-                MySqlLiteHelper.StatColumns.three_pointer.toString() + " = " + statModel.getThree_pointer() + " , " +
-                MySqlLiteHelper.StatColumns.three_pointer_made.toString() + " = " + statModel.getThree_pointer_made() + " , " +
-                MySqlLiteHelper.StatColumns.free_throw.toString() + " = " + statModel.getFree_throw() + " , " +
-                MySqlLiteHelper.StatColumns.free_throw_made.toString() + " = " + statModel.getFree_throw_made() + " , " +
-                MySqlLiteHelper.StatColumns.charge.toString() + " = " + statModel.getCharge() + " " +
-                "WHERE " + MySqlLiteHelper.StatColumns.android_id.toString() + " = '" + statModel.getAndroid_id().toString() + "'" +
-                " AND " + MySqlLiteHelper.StatColumns.stat_id.toString() + " = " + statModel.getStat_id();
+        updateQuery =
+            "UPDATE " + MySqlLiteHelper.STAT_TABLE + " " +
+            "SET " + MySqlLiteHelper.StatColumns.game_id.toString() + " = " + statModel.getGame_id() + " , " +
+            MySqlLiteHelper.StatColumns.player_id.toString() + " = " + statModel.getPlayer_id() + " , " +
+            MySqlLiteHelper.StatColumns.o_rebound.toString() + " = " + statModel.getO_rebound() + " , " +
+            MySqlLiteHelper.StatColumns.d_rebound.toString() + " = " + statModel.getD_rebound() + " , " +
+            MySqlLiteHelper.StatColumns.assist.toString() + " = " + statModel.getAssist() + " , " +
+            MySqlLiteHelper.StatColumns.steal.toString() + " = " + statModel.getSteal() + " , " +
+            MySqlLiteHelper.StatColumns.turnover.toString() + " = " + statModel.getTurnover() + " , " +
+            MySqlLiteHelper.StatColumns.two_pointer.toString() + " = " + statModel.getTwo_pointer() + " , " +
+            MySqlLiteHelper.StatColumns.two_pointer_made.toString() + " = " + statModel.getTwo_pointer_made() + " , " +
+            MySqlLiteHelper.StatColumns.three_pointer.toString() + " = " + statModel.getThree_pointer() + " , " +
+            MySqlLiteHelper.StatColumns.three_pointer_made.toString() + " = " + statModel.getThree_pointer_made() + " , " +
+            MySqlLiteHelper.StatColumns.free_throw.toString() + " = " + statModel.getFree_throw() + " , " +
+            MySqlLiteHelper.StatColumns.free_throw_made.toString() + " = " + statModel.getFree_throw_made() + " , " +
+            MySqlLiteHelper.StatColumns.charge.toString() + " = " + statModel.getCharge() + " " +
+            "WHERE " + MySqlLiteHelper.StatColumns.android_id.toString() + " = '" + statModel.getAndroid_id().toString() + "'" +
+            " AND " + MySqlLiteHelper.StatColumns.stat_id.toString() + " = " + statModel.getStat_id();
     }
 
     private List<StatModel> getAllStats(Statement st) throws SQLException {
         List<StatModel> stats = new ArrayList<>();
 
         ResultSet rs = st.executeQuery("SELECT * FROM " + MySqlLiteHelper.STAT_TABLE );
-        //ResultSetMetaData rsmd = rs.getMetaData();
 
         rs.first();
         while(!rs.isAfterLast()) {
@@ -511,23 +465,24 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
 
         insertQuery = "INSERT ";
         if(isSQLite) insertQuery += "OR";
-        insertQuery += " IGNORE INTO " + MySqlLiteHelper.SEASON_TABLE +
-                " VALUES ( '"+ seasonModel.getAndroid_id().toString() + "' , " +
-                seasonModel.getSeason_id() + " , " +
-                seasonModel.getSeason_name() +
-                " )";
+        insertQuery +=
+            " IGNORE INTO " + MySqlLiteHelper.SEASON_TABLE +
+            " VALUES ( '"+ seasonModel.getAndroid_id().toString() + "' , " +
+            seasonModel.getSeason_id() + " , " +
+            seasonModel.getSeason_name() +
+            " )";
 
-        updateQuery = "UPDATE " + MySqlLiteHelper.SEASON_TABLE + " " +
-                "SET " + MySqlLiteHelper.SeasonColumns.season_name.toString() + " = " + seasonModel.getSeason_name() + " " +
-                "WHERE " + MySqlLiteHelper.SeasonColumns.android_id.toString() + " = '" + seasonModel.getAndroid_id().toString() + "'" +
-                " AND " + MySqlLiteHelper.SeasonColumns.season_id.toString() + " = " + seasonModel.getSeason_id();
+        updateQuery =
+            "UPDATE " + MySqlLiteHelper.SEASON_TABLE + " " +
+            "SET " + MySqlLiteHelper.SeasonColumns.season_name.toString() + " = " + seasonModel.getSeason_name() + " " +
+            "WHERE " + MySqlLiteHelper.SeasonColumns.android_id.toString() + " = '" + seasonModel.getAndroid_id().toString() + "'" +
+            " AND " + MySqlLiteHelper.SeasonColumns.season_id.toString() + " = " + seasonModel.getSeason_id();
     }
 
     private List<SeasonModel> getAllSeasons(Statement st) throws SQLException {
         List<SeasonModel> seasons = new ArrayList<>();
 
         ResultSet rs = st.executeQuery("SELECT * FROM " + MySqlLiteHelper.SEASON_TABLE);
-        //ResultSetMetaData rsmd = rs.getMetaData();
 
         rs.first();
         while(!rs.isAfterLast()) {
@@ -550,4 +505,16 @@ public class MyDbDataSource extends AsyncTask<Context, Integer, String> {
         return seasonModel;
     }
 
+    private void notifyUser (Context ctx, String message) {
+        // Notify User
+        final Context c = ctx;
+        final String s = message;
+
+        Handler h = new Handler(Looper.getMainLooper());
+        h.post(new Runnable() {
+            public void run() {
+                Toast.makeText(c, s, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 }
