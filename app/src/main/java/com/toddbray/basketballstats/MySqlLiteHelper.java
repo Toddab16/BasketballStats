@@ -64,15 +64,15 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
     }
 
     public enum SumStatColumns {
-        game_id, player_id, o_rebound, d_rebound, assist, steal, turnover, two_pointer, three_pointer,
+        android_id, stat_id, game_id, player_id, o_rebound, d_rebound, assist, steal, turnover, two_pointer, three_pointer,
         two_pointer_made, three_pointer_made, free_throw, free_throw_made, charge;
 
         public static String[] names() {
             SumStatColumns[] v = values();
             String[] names = new String[v.length];
             for (int i = 0; i < v.length; i++) {
-                if(i < 2) {
-                    names[i] = v[i].toString();
+                if(i < 3) {
+                    names[i] = "Stats." + v[i].toString();
                 }else {
                     names[i] = "sum(" + v[i].toString() + ")";
                 }

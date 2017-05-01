@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -30,6 +31,7 @@ public class ViewStats extends AppCompatActivity {
     int game_id = 0;
     int player_id;
     String opp_name;
+    int season_id = 2017;
 
     // This value only works on physical devices
     //private String m_androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -183,7 +185,7 @@ public class ViewStats extends AppCompatActivity {
 
     public void getPlayerStats() {
         if (db.checkStatPlayer(player_id, m_androidId)) {
-            stats.add(db.getSeasonStats(player_id, 1, m_androidId)); // TODO: We need to reference a Season_ID where 1 is
+            stats.add(db.getSeasonStats(player_id, season_id, m_androidId)); // TODO: We need to reference a Season_ID where 1 is
         } else {
             StatModel newPlayer = new StatModel(m_androidId);
             newPlayer.setPlayer_id(player_id);
@@ -197,7 +199,7 @@ public class ViewStats extends AppCompatActivity {
         List<PlayerModel> players = db.getAllPlayers();
         for (int i = 0; i < players.size(); i++) {
             if (db.checkStatPlayer(players.get(i).getPlayer_id(), m_androidId)) {
-                stats.add(db.getSeasonStats(players.get(i).getPlayer_id(),1, m_androidId)); // TODO: We need to reference a Season_ID where 1 is
+                stats.add(db.getSeasonStats(players.get(i).getPlayer_id(),season_id, m_androidId)); // TODO: We need to reference a Season_ID where 1 is
             } else {
                 StatModel newPlayer = new StatModel(m_androidId);
                 newPlayer.setPlayer_id(players.get(i).getPlayer_id());
