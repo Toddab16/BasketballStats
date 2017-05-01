@@ -54,6 +54,7 @@ public class NewGame extends AppCompatActivity implements View.OnFocusChangeList
                 EditText location = (EditText) findViewById(R.id.location_editText);
                 String loc = location.getText().toString();
 
+                
                 GameModel newGame = new GameModel(m_androidId);
                 newGame.setSeason_id(season_id);
                 newGame.setGame_date(date);
