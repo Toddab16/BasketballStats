@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private DbDataSource dataSource;
     private MyDbDataSource myDataSource;
-    private String m_androidId = "Todd Bray Marshmallow";
 
     private final int GET_INTERNET = 5150;
     public static final String GAME_ID = "GAME_ID";

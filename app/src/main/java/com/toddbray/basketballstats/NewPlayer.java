@@ -28,27 +28,44 @@ public class NewPlayer extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
+                boolean isValid;
+                int number;
+
                 EditText et = (EditText)findViewById(R.id.lname_editText);
                 String lname = et.getText().toString();
+
+                isValid = HelperV.isValidString(lname, getApplicationContext());
+                if(!isValid) return;
+
+
                 et = (EditText)findViewById(R.id.fname_editText);
                 String fname = et.getText().toString();
+
+                isValid = HelperV.isValidString(lname, getApplicationContext());
+                if(!isValid) return;
+
+                et = (EditText)findViewById(R.id.number_editText);
+
+                isValid = HelperV.isValidString(lname, getApplicationContext());
+                if(!isValid) return;
+                else number = Integer.parseInt(et.getText().toString());
+
+
                 RadioGroup rgroup = (RadioGroup) findViewById(R.id.player_class_group);
                 int gradeId = rgroup.getCheckedRadioButtonId();
                 RadioButton gradeButton = (RadioButton) findViewById(gradeId);
                 String grade = gradeButton.getText().toString();
-                et = (EditText)findViewById(R.id.number_editText);
-                int number = Integer.parseInt(et.getText().toString());
+
 
                 PlayerModel newPlayer = new PlayerModel(m_androidId);
-
                 newPlayer.setFirst_name(fname);
                 newPlayer.setLast_name(lname);
                 newPlayer.setNumber(number);
                 newPlayer.setYear(grade);
 
-                    db.open();
-                    db.createPlayer(newPlayer);
-                    db.close();
+                db.open();
+                db.createPlayer(newPlayer);
+                db.close();
 
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
@@ -60,7 +77,6 @@ public class NewPlayer extends AppCompatActivity {
 
 
     }
-
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

@@ -112,7 +112,7 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
                 GameColumns.girls_v + " TEXT , " +
                 GameColumns.boys_v + " TEXT , " +
                 GameColumns.opp_name + " TEXT NOT NULL , " +
-                "UNIQUE ( " + GameColumns.android_id + " , " + GameColumns.game_id + " ) ON CONFLICT IGNORE )"; // TODO: Verify we want to IGNORE here or REPLACE
+                "UNIQUE ( " + GameColumns.android_id + " , " + GameColumns.game_id + " ) ON CONFLICT IGNORE )";
 
         db.execSQL(sql);
 
@@ -123,7 +123,7 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
                 PlayerColumns.last_name + " TEXT NOT NULL , " +
                 PlayerColumns.year + " TEXT NOT NULL , " +
                 PlayerColumns.number + " TEXT NOT NULL ," +
-                "UNIQUE ( " + PlayerColumns.android_id + " , " + PlayerColumns.player_id + " ) ON CONFLICT IGNORE )"; // TODO: Verify we want to IGNORE here or REPLACE
+                "UNIQUE ( " + PlayerColumns.android_id + " , " + PlayerColumns.player_id + " ) ON CONFLICT IGNORE )";
         db.execSQL(sql);
 
         sql = "CREATE TABLE " + STAT_TABLE + " (" +
@@ -143,14 +143,14 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
                 StatColumns.free_throw + " INTEGER NOT NULL DEFAULT 0 , " +
                 StatColumns.free_throw_made + " INTEGER NOT NULL DEFAULT 0 , " +
                 StatColumns.charge + " INTEGER NOT NULL DEFAULT 0 , " +
-                "UNIQUE ( " + StatColumns.android_id + " , " + StatColumns.stat_id + " ) ON CONFLICT IGNORE )"; // TODO: Verify we want to IGNORE here or REPLACE
+                "UNIQUE ( " + StatColumns.android_id + " , " + StatColumns.stat_id + " ) ON CONFLICT IGNORE )";
         db.execSQL(sql);
 
         sql = "CREATE TABLE " + SEASON_TABLE + " (" +
                 SeasonColumns.android_id + " TEXT NOT NULL , " +
                 SeasonColumns.season_id + " INTEGER NOT NULL DEFAULT 0 , " +
                 SeasonColumns.season_name + " INTEGER NOT NULL ," +
-                "UNIQUE ( " + SeasonColumns.android_id + " , " + SeasonColumns.season_id + " ) ON CONFLICT IGNORE )"; // TODO: Verify we want to IGNORE here or REPLACE
+                "UNIQUE ( " + SeasonColumns.android_id + " , " + SeasonColumns.season_id + " ) ON CONFLICT IGNORE )";
         db.execSQL(sql);
     }
 
