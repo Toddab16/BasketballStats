@@ -64,7 +64,7 @@ public class PlayerModel {
 
     @Override
     public String toString() {
-        String tmp = first_name + last_name;
+        String tmp = first_name + " " + last_name;
         if (tmp.length() > 20) {
             tmp = tmp.substring(0, 20) + "...";
         }

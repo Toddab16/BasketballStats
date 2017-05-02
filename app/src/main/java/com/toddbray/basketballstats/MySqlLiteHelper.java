@@ -19,8 +19,6 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
     public static final String STAT_TABLE = "Stat";
     public static final String SEASON_TABLE = "Season";
 
-    // UPDATE SQLITE_SEQUENCE SET seq = <n> WHERE name = '<table>'
-
     public enum GameColumns {
 
         android_id, season_id, game_id, game_date, opp_name, location, venue, girls_jv, boys_jv, girls_v, boys_v;
@@ -114,7 +112,7 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
                 GameColumns.girls_v + " TEXT , " +
                 GameColumns.boys_v + " TEXT , " +
                 GameColumns.opp_name + " TEXT NOT NULL , " +
-                "UNIQUE ( " + GameColumns.android_id + " , " + GameColumns.game_id + " ) ON CONFLICT IGNORE )"; // TODO: Verify we want to IGNORE here or REPLACE
+                "UNIQUE ( " + GameColumns.android_id + " , " + GameColumns.game_id + " ) ON CONFLICT IGNORE )";
 
         db.execSQL(sql);
 
@@ -125,7 +123,7 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
                 PlayerColumns.last_name + " TEXT NOT NULL , " +
                 PlayerColumns.year + " TEXT NOT NULL , " +
                 PlayerColumns.number + " TEXT NOT NULL ," +
-                "UNIQUE ( " + PlayerColumns.android_id + " , " + PlayerColumns.player_id + " ) ON CONFLICT IGNORE )"; // TODO: Verify we want to IGNORE here or REPLACE
+                "UNIQUE ( " + PlayerColumns.android_id + " , " + PlayerColumns.player_id + " ) ON CONFLICT IGNORE )";
         db.execSQL(sql);
 
         sql = "CREATE TABLE " + STAT_TABLE + " (" +
@@ -145,70 +143,28 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
                 StatColumns.free_throw + " INTEGER NOT NULL DEFAULT 0 , " +
                 StatColumns.free_throw_made + " INTEGER NOT NULL DEFAULT 0 , " +
                 StatColumns.charge + " INTEGER NOT NULL DEFAULT 0 , " +
-                "UNIQUE ( " + StatColumns.android_id + " , " + StatColumns.stat_id + " ) ON CONFLICT IGNORE )"; // TODO: Verify we want to IGNORE here or REPLACE
+                "UNIQUE ( " + StatColumns.android_id + " , " + StatColumns.stat_id + " ) ON CONFLICT IGNORE )";
         db.execSQL(sql);
 
         sql = "CREATE TABLE " + SEASON_TABLE + " (" +
                 SeasonColumns.android_id + " TEXT NOT NULL , " +
                 SeasonColumns.season_id + " INTEGER NOT NULL DEFAULT 0 , " +
                 SeasonColumns.season_name + " INTEGER NOT NULL ," +
-                "UNIQUE ( " + SeasonColumns.android_id + " , " + SeasonColumns.season_id + " ) ON CONFLICT IGNORE )"; // TODO: Verify we want to IGNORE here or REPLACE
+                "UNIQUE ( " + SeasonColumns.android_id + " , " + SeasonColumns.season_id + " ) ON CONFLICT IGNORE )";
         db.execSQL(sql);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion == 1 && newVersion == 2) {
-            /*
-            String sql = "alter table " + GAME_TABLE + " add column extra integer";
-            db.execSQL(sql);
-
-            sql = "update " + GAME_TABLE + " set extra = 42";
-            db.execSQL(sql);
-            */
+            // Not Implemented
         }
     }
 
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (newVersion == 1 && oldVersion != newVersion) {
-            /*
-            // The reason we need all this code is because
-            // SQLite does not support ALTER TABLE ... DROP COLUMN
-            try {
-                db.beginTransaction();
-
-                // copy table that needs column dropped
-                String sql = "alter table " + GAME_TABLE + " rename to tmp";
-                db.execSQL(sql);
-
-                // recreate the table in the old schema
-                sql = "CREATE TABLE " + GAME_TABLE + " (" +
-                        GameColumns.game_id + " INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , " +
-                        GameColumns.opp_name + " TEXT NOT NULL , " +
-                        GameColumns.game_date + " TEXT NOT NULL )";
-                db.execSQL(sql);
-
-                // copy the data we want from the old table
-                sql = "insert into " + GAME_TABLE +
-                        " select " +
-                        GameColumns.game_id + ", " +
-                        GameColumns.opp_name + ", " +
-                        GameColumns.game_date +
-                        " from tmp";
-                db.execSQL(sql);
-
-                // get rid of the temprary table
-                sql = "drop table tmp";
-                db.execSQL(sql);
-
-                db.setTransactionSuccessful();
-            }  catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                db.endTransaction();
-            }
-            */
+            // Not Implemented
         }
 
     }

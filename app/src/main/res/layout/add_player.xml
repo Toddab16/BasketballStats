@@ -96,7 +96,8 @@
             android:id="@+id/fr_radioButton"
             android:layout_marginEnd="20dp"
             android:layout_weight="1"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:checked="true" />
 
         <RadioButton
             android:text="Sophomore"

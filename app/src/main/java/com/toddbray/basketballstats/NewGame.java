@@ -17,6 +17,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.toddbray.basketballstats.R.id.time;
+
 public class NewGame extends AppCompatActivity implements View.OnFocusChangeListener{
 
     DbDataSource db = new DbDataSource(this);
@@ -39,25 +41,44 @@ public class NewGame extends AppCompatActivity implements View.OnFocusChangeList
         bjv.setOnFocusChangeListener(this);
         gv.setOnFocusChangeListener(this);
         bv.setOnFocusChangeListener(this);
+
+        for(int i = 0; i < times.length; i++) {
+            times[i] = new Date();
+            times[i].setHours(1);
+            times[i].setMinutes(0);
+        }
+
         Button save = (Button)findViewById(R.id.game_save_button);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 DatePicker dp = (DatePicker) findViewById(R.id.datePicker);
                 date = getDateFromDatePicker(dp);
+                boolean isValid;
+
                 EditText opp = (EditText) findViewById(R.id.opponent_editText);
                 String opponent = opp.getText().toString();
+
+                isValid = HelperV.isValidString(opponent, getApplicationContext());
+                if(!isValid) return;
+
+                EditText location = (EditText) findViewById(R.id.location_editText);
+                String loc = location.getText().toString();
+
+                isValid = HelperV.isValidString(loc, getApplicationContext());
+                if(!isValid) return;
+
                 RadioGroup rgroup = (RadioGroup) findViewById(R.id.location_group);
                 int venue = rgroup.getCheckedRadioButtonId();
                 RadioButton venueButton = (RadioButton) findViewById(venue);
                 String venue_name = venueButton.getText().toString();
-                EditText location = (EditText) findViewById(R.id.location_editText);
-                String loc = location.getText().toString();
 
                 
                 GameModel newGame = new GameModel(m_androidId);
                 newGame.setSeason_id(season_id);
                 newGame.setGame_date(date);
+
                 newGame.setGirls_jv(times[0]);
                 newGame.setBoys_jv(times[1]);
                 newGame.setGirls_v(times[2]);
